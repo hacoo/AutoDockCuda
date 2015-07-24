@@ -1,0 +1,350 @@
+main.o: main.cc /usr/include/math.h /usr/include/features.h \
+  /usr/include/sys/cdefs.h /usr/include/bits/wordsize.h \
+  /usr/include/gnu/stubs.h /usr/include/gnu/stubs-64.h \
+  /usr/include/bits/huge_val.h /usr/include/bits/huge_valf.h \
+  /usr/include/bits/huge_vall.h /usr/include/bits/inf.h \
+  /usr/include/bits/nan.h /usr/include/bits/mathdef.h \
+  /usr/include/bits/mathcalls.h /usr/include/sys/types.h \
+  /usr/include/bits/types.h /usr/include/bits/typesizes.h \
+  /usr/include/time.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.3.0/include/stddef.h \
+  /usr/include/endian.h /usr/include/bits/endian.h \
+  /usr/include/sys/select.h /usr/include/bits/select.h \
+  /usr/include/bits/sigset.h /usr/include/bits/time.h \
+  /usr/include/sys/sysmacros.h /usr/include/bits/pthreadtypes.h \
+  /usr/include/xlocale.h /usr/include/sys/times.h /usr/include/stdlib.h \
+  /usr/include/bits/waitflags.h /usr/include/bits/waitstatus.h \
+  /usr/include/alloca.h /usr/include/string.h /usr/include/sys/param.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.3.0/include/limits.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.3.0/include/syslimits.h \
+  /usr/include/limits.h /usr/include/bits/posix1_lim.h \
+  /usr/include/bits/local_lim.h /usr/include/linux/limits.h \
+  /usr/include/bits/posix2_lim.h /usr/include/bits/xopen_lim.h \
+  /usr/include/bits/stdio_lim.h /usr/include/linux/param.h \
+  /usr/include/asm/param.h /usr/include/ctype.h /usr/include/unistd.h \
+  /usr/include/bits/posix_opt.h /usr/include/bits/environments.h \
+  /usr/include/bits/confname.h /usr/include/getopt.h coliny.h hybrids.h \
+  constants.h autocomm.h typedefs.h dpftoken.h partokens.h ranlib.h \
+  structs.h grid.h parameters.h gs.h support.h /usr/include/stdio.h \
+  /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.3.0/include/stdarg.h \
+  /usr/include/bits/sys_errlist.h rep.h rep_constants.h eval.h \
+  qmultiply.h cnv_state_to_coords.h torsion.h qtransform.h writePDBQT.h \
+  printEnergies.h trilinterp.h stateLibrary.h torNorVec.h stop.h \
+  print_2x.h eintcal.h energy.h ls.h distdepdiel.h calculateEnergies.h \
+  conformation_sampler.h getrms.h main.h analysis.h getpdbcrds.h \
+  openfile.h timesys.h sort_enrg.h quicksort.h swap.h cluster_analysis.h \
+  prClusterHist.h print_rem.h strindex.h print_avsfld.h \
+  /usr/include/assert.h atom_parameter_manager.h autoglobal.h banner.h \
+  clmode.h readPDBQT.h get_atom_type.h mkTorTree.h parse_PDBQT_line.h \
+  PDBQT_tokens.h nonbonds.h weedbonds.h success.h timesyshms.h printhms.h \
+  bestpdb.h cmdmode.h set_cmd_io_std.h parse_com_line.h eintcalPrint.h \
+  parse_trj_line.h input_state.h intnbtable.h investigate.h \
+  mkRandomState.h changeState.h nbe.h parse_dpf_line.h parse_param_line.h \
+  parsetypes.h printdate.h readfield.h readmap.h warn_bad_file.h \
+  check_header_line.h check_header_float.h check_header_int.h \
+  read_parameter_library.h setflags.h usage.h simanneal.h \
+  getInitialState.h initautodock.h prInitialState.h \
+  print_atomic_energies.h mkNewState.h output_state.h
+
+/usr/include/math.h:
+
+/usr/include/features.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/bits/wordsize.h:
+
+/usr/include/gnu/stubs.h:
+
+/usr/include/gnu/stubs-64.h:
+
+/usr/include/bits/huge_val.h:
+
+/usr/include/bits/huge_valf.h:
+
+/usr/include/bits/huge_vall.h:
+
+/usr/include/bits/inf.h:
+
+/usr/include/bits/nan.h:
+
+/usr/include/bits/mathdef.h:
+
+/usr/include/bits/mathcalls.h:
+
+/usr/include/sys/types.h:
+
+/usr/include/bits/types.h:
+
+/usr/include/bits/typesizes.h:
+
+/usr/include/time.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.3.0/include/stddef.h:
+
+/usr/include/endian.h:
+
+/usr/include/bits/endian.h:
+
+/usr/include/sys/select.h:
+
+/usr/include/bits/select.h:
+
+/usr/include/bits/sigset.h:
+
+/usr/include/bits/time.h:
+
+/usr/include/sys/sysmacros.h:
+
+/usr/include/bits/pthreadtypes.h:
+
+/usr/include/xlocale.h:
+
+/usr/include/sys/times.h:
+
+/usr/include/stdlib.h:
+
+/usr/include/bits/waitflags.h:
+
+/usr/include/bits/waitstatus.h:
+
+/usr/include/alloca.h:
+
+/usr/include/string.h:
+
+/usr/include/sys/param.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.3.0/include/limits.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.3.0/include/syslimits.h:
+
+/usr/include/limits.h:
+
+/usr/include/bits/posix1_lim.h:
+
+/usr/include/bits/local_lim.h:
+
+/usr/include/linux/limits.h:
+
+/usr/include/bits/posix2_lim.h:
+
+/usr/include/bits/xopen_lim.h:
+
+/usr/include/bits/stdio_lim.h:
+
+/usr/include/linux/param.h:
+
+/usr/include/asm/param.h:
+
+/usr/include/ctype.h:
+
+/usr/include/unistd.h:
+
+/usr/include/bits/posix_opt.h:
+
+/usr/include/bits/environments.h:
+
+/usr/include/bits/confname.h:
+
+/usr/include/getopt.h:
+
+coliny.h:
+
+hybrids.h:
+
+constants.h:
+
+autocomm.h:
+
+typedefs.h:
+
+dpftoken.h:
+
+partokens.h:
+
+ranlib.h:
+
+structs.h:
+
+grid.h:
+
+parameters.h:
+
+gs.h:
+
+support.h:
+
+/usr/include/stdio.h:
+
+/usr/include/libio.h:
+
+/usr/include/_G_config.h:
+
+/usr/include/wchar.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.3.0/include/stdarg.h:
+
+/usr/include/bits/sys_errlist.h:
+
+rep.h:
+
+rep_constants.h:
+
+eval.h:
+
+qmultiply.h:
+
+cnv_state_to_coords.h:
+
+torsion.h:
+
+qtransform.h:
+
+writePDBQT.h:
+
+printEnergies.h:
+
+trilinterp.h:
+
+stateLibrary.h:
+
+torNorVec.h:
+
+stop.h:
+
+print_2x.h:
+
+eintcal.h:
+
+energy.h:
+
+ls.h:
+
+distdepdiel.h:
+
+calculateEnergies.h:
+
+conformation_sampler.h:
+
+getrms.h:
+
+main.h:
+
+analysis.h:
+
+getpdbcrds.h:
+
+openfile.h:
+
+timesys.h:
+
+sort_enrg.h:
+
+quicksort.h:
+
+swap.h:
+
+cluster_analysis.h:
+
+prClusterHist.h:
+
+print_rem.h:
+
+strindex.h:
+
+print_avsfld.h:
+
+/usr/include/assert.h:
+
+atom_parameter_manager.h:
+
+autoglobal.h:
+
+banner.h:
+
+clmode.h:
+
+readPDBQT.h:
+
+get_atom_type.h:
+
+mkTorTree.h:
+
+parse_PDBQT_line.h:
+
+PDBQT_tokens.h:
+
+nonbonds.h:
+
+weedbonds.h:
+
+success.h:
+
+timesyshms.h:
+
+printhms.h:
+
+bestpdb.h:
+
+cmdmode.h:
+
+set_cmd_io_std.h:
+
+parse_com_line.h:
+
+eintcalPrint.h:
+
+parse_trj_line.h:
+
+input_state.h:
+
+intnbtable.h:
+
+investigate.h:
+
+mkRandomState.h:
+
+changeState.h:
+
+nbe.h:
+
+parse_dpf_line.h:
+
+parse_param_line.h:
+
+parsetypes.h:
+
+printdate.h:
+
+readfield.h:
+
+readmap.h:
+
+warn_bad_file.h:
+
+check_header_line.h:
+
+check_header_float.h:
+
+check_header_int.h:
+
+read_parameter_library.h:
+
+setflags.h:
+
+usage.h:
+
+simanneal.h:
+
+getInitialState.h:
+
+initautodock.h:
+
+prInitialState.h:
+
+print_atomic_energies.h:
+
+mkNewState.h:
+
+output_state.h:
