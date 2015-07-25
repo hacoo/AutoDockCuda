@@ -1,3 +1,0 @@
-swap.o: swap.cc swap.h
-
-swap.h:

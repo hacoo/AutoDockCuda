@@ -1,7 +1,0 @@
-quicksort.o: quicksort.cc quicksort.h swap.h typedefs.h
-
-quicksort.h:
-
-swap.h:
-
-typedefs.h:
