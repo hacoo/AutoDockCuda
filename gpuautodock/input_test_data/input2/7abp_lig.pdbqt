@@ -1,0 +1,33 @@
+REMARK  4 active torsions:
+REMARK  status: ('A' for Active; 'I' for Inactive)
+REMARK    1  A    between atoms: C3_4677  and  O3_4683 
+REMARK    2  A    between atoms: C1_4675  and  O1_4681 
+REMARK    3  A    between atoms: C2_4676  and  O2_4682 
+REMARK    4  A    between atoms: C4_4678  and  O4_4684 
+REMARK RMS_REF  0.3100
+ROOT
+ATOM      1  C1  B7A     1      14.084  57.274  55.363  1.00  7.77     0.288 C 
+ATOM      2  C2  B7A     1      12.623  57.434  54.993  1.00  8.07     0.204 C 
+ATOM      3  C3  B7A     1      12.155  56.528  53.930  1.00  7.82     0.182 C 
+ATOM      4  C4  B7A     1      13.009  56.668  52.645  1.00  7.49     0.178 C 
+ATOM      5  C5  B7A     1      14.471  56.395  53.049  1.00  8.95     0.152 C 
+ATOM      6  C6  B7A     1      15.486  56.800  51.973  1.00  7.68     0.042 C 
+ATOM      7  O5  B7A     1      14.867  57.179  54.155  1.00  7.76    -0.351 OA
+ENDROOT
+BRANCH   1   8
+ATOM      8  O1  B7A     1      14.270  56.110  56.094  1.00  9.50    -0.369 OA
+ATOM      9  H9  B7A     1      15.184  56.014  56.332  1.00  0.00     0.212 HD
+ENDBRANCH   1   8
+BRANCH   2  10
+ATOM     10  O2  B7A     1      11.830  57.206  56.211  1.00  8.93    -0.388 OA
+ATOM     11  H10 B7A     1      10.933  57.451  56.018  1.00  0.00     0.210 HD
+ENDBRANCH   2  10
+BRANCH   3  12
+ATOM     12  O3  B7A     1      10.799  56.826  53.588  1.00  9.65    -0.390 OA
+ATOM     13  H11 B7A     1      10.438  56.136  53.044  1.00  0.00     0.210 HD
+ENDBRANCH   3  12
+BRANCH   4  14
+ATOM     14  O4  B7A     1      12.823  57.943  52.004  1.00  8.35    -0.390 OA
+ATOM     15  H12 B7A     1      13.285  58.000  51.176  1.00  0.00     0.210 HD
+ENDBRANCH   4  14
+TORSDOF 0

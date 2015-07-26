@@ -1,0 +1,32 @@
+Potentials for optimizing AutoDock
+
+1. Other locations in the code could use our eval or a slightly modified version
+of our eval.  The idea is to have all  calls to trilinterp and eintcal to be
+done on the gpu.
+
+2. Optimizations outside of the graphics kernel.
+    a.) Eval preparation loops could be done on graphics (eval_prep function)
+    b.) Check for infinite or is not a number (ISNAN... etc...) for energy
+        calculations could possibly be done within trilinterp and eintcal 
+        kernels. The checks are done in e_complete_eval, however the function
+        still requires inputing the final energy of each individual into
+        individual's phenotype value.
+    c.) Try to optimize the number of memory copies being done from the host
+        to the device and back.
+
+3. Optimizations inside of the graphics kernel.
+    a.) Minimize if's and branching done in the CUDA kernel
+    b.) Combine eintcal and trilinterp kernels into giant energy calculating
+        kernel... possibilities with combining this with "a.)"
+    c.) Use http://forums.nvidia.com/index.php?showtopic=31279&mode=threaded
+        occupancy calculator to determine adequate threads per block and other
+        important resource managements to achieve most effective use of CUDA.
+
+4. Parallelize other parts of the genetic algorithm and the local search
+    function.
+    a.) Mutation
+    b.) Parent Selection
+    c.) Cross-over
+    d.) Local search is equivalent to the lamarckian search that autoDock uses.
+        The lamarckian search can be found in call_glss.cc and ls.cc
+

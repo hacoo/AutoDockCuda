@@ -1,0 +1,2045 @@
+      ________________________________________________________________
+
+__________//___________________________/////___________________/____________
+_________/__/__________________________/____/__________________/____________
+________/____/___________/_____________/_____/_________________/____________
+________/____/__/_____/_/////___/////__/_____/__/////___/////__/___/________
+_______/______/_/_____/__/_____/_____/_/_____/_/_____/_/_____/_/_//_________
+_______////////_/_____/__/_____/_____/_/_____/_/_____/_/_______//_/_________
+_______/______/_/____//__/___/_/_____/_/____/__/_____/_/_____/_/___/________
+_______/______/__////_/___///___/////__/////____/////___/////__/____/_______
+
+      ________________________________________________________________
+
+                                ______
+                               /      \
+                              /        \
+                             /          \
+                             \    /\    /
+                              \  /  \  /
+                               \/ /\ \/
+                                 /  \
+                                /____\
+
+                  ______________________________________ 
+                 |                                      |
+                 |            AutoDock 4.00             |
+                 |                                      |
+                 |            (c) 1991-2006             |
+                 |    The Scripps Research Institute    |
+                 |                                      |
+                 |       Garrett M. Morris, TSRI        |
+                 |            Ruth Huey, TSRI           |
+                 |        William E. Hart, Sandia       |
+                 |        William Lindstrom, TSRI       |
+                 |        Alexander Gillet, TSRI        |
+                 |       David S. Goodsell, TSRI        |
+                 |        Arthur J. Olson, TSRI         |
+                 |______________________________________|
+
+                  ______________________________________ 
+                 |                                      |
+                 | Automated Docking of Flexible Ligand |
+                 |  to Flexible Macromolecular Receptor |
+                 |______________________________________|
+
+
+
+                           $Revision: 1.66 $
+
+                   Compiled on Mar 21 2007 at 08:16:36
+
+
+This file was created at:			7:28 48" p.m., 03/21/2007
+                   using:			"bluefish0193"
+
+NOTE: "rus" stands for:
+
+      r = Real, wall-clock or elapsed time;
+      u = User or cpu-usage time;
+      s = System time
+
+All timings are in seconds, unless otherwise stated.
+
+
+
+      ________________________________________________________________
+
+                   SETTING UP DEFAULT PARAMETER LIBRARY
+      ________________________________________________________________
+
+
+Setting up parameter library with factory default values.
+
+
+Free energy coefficient for the van der Waals term = 	0.1560
+
+Free energy coefficient for the H-bonding term     = 	0.0974
+
+Free energy coefficient for the electrostatic term = 	0.1465
+
+Free energy coefficient for the desolvation term   = 	0.1159
+
+Free energy coefficient for the torsional term     = 	0.2744
+
+Parameters for the atom type "H" were initialised with the following default values:
+
+	R-eqm = 2.00 Angstrom,  weighted epsilon = 0.003,
+	At.frag.vol. = 0.000,  At.solv.par. = 0.001,
+	Hb R-eqm = 0.000,  weighted Hb epsilon = 0.000,
+	Hb type = 0,  bond index = 3
+
+Parameters for the atom type "HD" were initialised with the following default values:
+
+	R-eqm = 2.00 Angstrom,  weighted epsilon = 0.003,
+	At.frag.vol. = 0.000,  At.solv.par. = 0.001,
+	Hb R-eqm = 0.000,  weighted Hb epsilon = 0.000,
+	Hb type = 2,  bond index = 3
+
+Parameters for the atom type "HS" were initialised with the following default values:
+
+	R-eqm = 2.00 Angstrom,  weighted epsilon = 0.003,
+	At.frag.vol. = 0.000,  At.solv.par. = 0.001,
+	Hb R-eqm = 0.000,  weighted Hb epsilon = 0.000,
+	Hb type = 1,  bond index = 3
+
+Parameters for the atom type "C" were initialised with the following default values:
+
+	R-eqm = 4.00 Angstrom,  weighted epsilon = 0.023,
+	At.frag.vol. = 33.510,  At.solv.par. = -0.001,
+	Hb R-eqm = 0.000,  weighted Hb epsilon = 0.000,
+	Hb type = 0,  bond index = 0
+
+Parameters for the atom type "A" were initialised with the following default values:
+
+	R-eqm = 4.00 Angstrom,  weighted epsilon = 0.023,
+	At.frag.vol. = 33.510,  At.solv.par. = -0.001,
+	Hb R-eqm = 0.000,  weighted Hb epsilon = 0.000,
+	Hb type = 0,  bond index = 0
+
+Parameters for the atom type "N" were initialised with the following default values:
+
+	R-eqm = 3.50 Angstrom,  weighted epsilon = 0.025,
+	At.frag.vol. = 22.449,  At.solv.par. = -0.002,
+	Hb R-eqm = 0.000,  weighted Hb epsilon = 0.000,
+	Hb type = 0,  bond index = 1
+
+Parameters for the atom type "NA" were initialised with the following default values:
+
+	R-eqm = 3.50 Angstrom,  weighted epsilon = 0.025,
+	At.frag.vol. = 22.449,  At.solv.par. = -0.002,
+	Hb R-eqm = 1.900,  weighted Hb epsilon = 0.487,
+	Hb type = 4,  bond index = 1
+
+Parameters for the atom type "NS" were initialised with the following default values:
+
+	R-eqm = 3.50 Angstrom,  weighted epsilon = 0.025,
+	At.frag.vol. = 22.449,  At.solv.par. = -0.002,
+	Hb R-eqm = 1.900,  weighted Hb epsilon = 0.487,
+	Hb type = 3,  bond index = 1
+
+Parameters for the atom type "OA" were initialised with the following default values:
+
+	R-eqm = 3.20 Angstrom,  weighted epsilon = 0.031,
+	At.frag.vol. = 17.157,  At.solv.par. = -0.003,
+	Hb R-eqm = 1.900,  weighted Hb epsilon = 0.487,
+	Hb type = 5,  bond index = 2
+
+Parameters for the atom type "OS" were initialised with the following default values:
+
+	R-eqm = 3.20 Angstrom,  weighted epsilon = 0.031,
+	At.frag.vol. = 17.157,  At.solv.par. = -0.003,
+	Hb R-eqm = 1.900,  weighted Hb epsilon = 0.487,
+	Hb type = 3,  bond index = 2
+
+Parameters for the atom type "F" were initialised with the following default values:
+
+	R-eqm = 3.09 Angstrom,  weighted epsilon = 0.012,
+	At.frag.vol. = 15.448,  At.solv.par. = -0.001,
+	Hb R-eqm = 0.000,  weighted Hb epsilon = 0.000,
+	Hb type = 0,  bond index = 4
+
+Parameters for the atom type "Mg" were initialised with the following default values:
+
+	R-eqm = 1.30 Angstrom,  weighted epsilon = 0.137,
+	At.frag.vol. = 1.560,  At.solv.par. = -0.001,
+	Hb R-eqm = 0.000,  weighted Hb epsilon = 0.000,
+	Hb type = 0,  bond index = 4
+
+Parameters for the atom type "MG" were initialised with the following default values:
+
+	R-eqm = 1.30 Angstrom,  weighted epsilon = 0.137,
+	At.frag.vol. = 1.560,  At.solv.par. = -0.001,
+	Hb R-eqm = 0.000,  weighted Hb epsilon = 0.000,
+	Hb type = 0,  bond index = 4
+
+Parameters for the atom type "P" were initialised with the following default values:
+
+	R-eqm = 4.20 Angstrom,  weighted epsilon = 0.031,
+	At.frag.vol. = 38.792,  At.solv.par. = -0.001,
+	Hb R-eqm = 0.000,  weighted Hb epsilon = 0.000,
+	Hb type = 0,  bond index = 5
+
+Parameters for the atom type "SA" were initialised with the following default values:
+
+	R-eqm = 4.00 Angstrom,  weighted epsilon = 0.031,
+	At.frag.vol. = 33.510,  At.solv.par. = -0.002,
+	Hb R-eqm = 2.500,  weighted Hb epsilon = 0.097,
+	Hb type = 5,  bond index = 6
+
+Parameters for the atom type "S" were initialised with the following default values:
+
+	R-eqm = 4.00 Angstrom,  weighted epsilon = 0.031,
+	At.frag.vol. = 33.510,  At.solv.par. = -0.002,
+	Hb R-eqm = 0.000,  weighted Hb epsilon = 0.000,
+	Hb type = 0,  bond index = 6
+
+Parameters for the atom type "Cl" were initialised with the following default values:
+
+	R-eqm = 4.09 Angstrom,  weighted epsilon = 0.043,
+	At.frag.vol. = 35.824,  At.solv.par. = -0.001,
+	Hb R-eqm = 0.000,  weighted Hb epsilon = 0.000,
+	Hb type = 0,  bond index = 4
+
+Parameters for the atom type "CL" were initialised with the following default values:
+
+	R-eqm = 4.09 Angstrom,  weighted epsilon = 0.043,
+	At.frag.vol. = 35.824,  At.solv.par. = -0.001,
+	Hb R-eqm = 0.000,  weighted Hb epsilon = 0.000,
+	Hb type = 0,  bond index = 4
+
+Parameters for the atom type "Ca" were initialised with the following default values:
+
+	R-eqm = 1.98 Angstrom,  weighted epsilon = 0.086,
+	At.frag.vol. = 2.770,  At.solv.par. = -0.001,
+	Hb R-eqm = 0.000,  weighted Hb epsilon = 0.000,
+	Hb type = 0,  bond index = 4
+
+Parameters for the atom type "CA" were initialised with the following default values:
+
+	R-eqm = 1.98 Angstrom,  weighted epsilon = 0.086,
+	At.frag.vol. = 2.770,  At.solv.par. = -0.001,
+	Hb R-eqm = 0.000,  weighted Hb epsilon = 0.000,
+	Hb type = 0,  bond index = 4
+
+Parameters for the atom type "Mn" were initialised with the following default values:
+
+	R-eqm = 1.30 Angstrom,  weighted epsilon = 0.137,
+	At.frag.vol. = 2.140,  At.solv.par. = -0.001,
+	Hb R-eqm = 0.000,  weighted Hb epsilon = 0.000,
+	Hb type = 0,  bond index = 4
+
+Parameters for the atom type "MN" were initialised with the following default values:
+
+	R-eqm = 1.30 Angstrom,  weighted epsilon = 0.137,
+	At.frag.vol. = 2.140,  At.solv.par. = -0.001,
+	Hb R-eqm = 0.000,  weighted Hb epsilon = 0.000,
+	Hb type = 0,  bond index = 4
+
+Parameters for the atom type "Fe" were initialised with the following default values:
+
+	R-eqm = 1.30 Angstrom,  weighted epsilon = 0.002,
+	At.frag.vol. = 1.840,  At.solv.par. = -0.001,
+	Hb R-eqm = 0.000,  weighted Hb epsilon = 0.000,
+	Hb type = 0,  bond index = 4
+
+Parameters for the atom type "FE" were initialised with the following default values:
+
+	R-eqm = 1.30 Angstrom,  weighted epsilon = 0.002,
+	At.frag.vol. = 1.840,  At.solv.par. = -0.001,
+	Hb R-eqm = 0.000,  weighted Hb epsilon = 0.000,
+	Hb type = 0,  bond index = 4
+
+Parameters for the atom type "Zn" were initialised with the following default values:
+
+	R-eqm = 1.48 Angstrom,  weighted epsilon = 0.086,
+	At.frag.vol. = 1.700,  At.solv.par. = -0.001,
+	Hb R-eqm = 0.000,  weighted Hb epsilon = 0.000,
+	Hb type = 0,  bond index = 4
+
+Parameters for the atom type "ZN" were initialised with the following default values:
+
+	R-eqm = 1.48 Angstrom,  weighted epsilon = 0.086,
+	At.frag.vol. = 1.700,  At.solv.par. = -0.001,
+	Hb R-eqm = 0.000,  weighted Hb epsilon = 0.000,
+	Hb type = 0,  bond index = 4
+
+Parameters for the atom type "Br" were initialised with the following default values:
+
+	R-eqm = 4.33 Angstrom,  weighted epsilon = 0.061,
+	At.frag.vol. = 42.566,  At.solv.par. = -0.001,
+	Hb R-eqm = 0.000,  weighted Hb epsilon = 0.000,
+	Hb type = 0,  bond index = 4
+
+Parameters for the atom type "BR" were initialised with the following default values:
+
+	R-eqm = 4.33 Angstrom,  weighted epsilon = 0.061,
+	At.frag.vol. = 42.566,  At.solv.par. = -0.001,
+	Hb R-eqm = 0.000,  weighted Hb epsilon = 0.000,
+	Hb type = 0,  bond index = 4
+
+Parameters for the atom type "I" were initialised with the following default values:
+
+	R-eqm = 4.72 Angstrom,  weighted epsilon = 0.086,
+	At.frag.vol. = 55.059,  At.solv.par. = -0.001,
+	Hb R-eqm = 0.000,  weighted Hb epsilon = 0.000,
+	Hb type = 0,  bond index = 4
+
+
+
+Preparing Energy Tables for Bound Calculation:
+
+Preparing Energy Tables for Unbound Calculation:
+
+
+      ___________________________________________________
+
+             PARSING INPUT DOCKING PARAMETER FILE
+      ___________________________________________________
+
+Docking parameter file (DPF) used for this docking:		3ptb_3ptb.dpf
+
+
+
+DPF> outlev 0                             # diagnostic output level
+
+Output Level = 0.
+
+	Output every 30000 generations.
+DPF> 
+
+
+DPF> intelec                              # calculate internal electrostatics
+
+Electrostatic energies will be calculated for all non-bonds between moving atoms.
+
+
+
+DPF> seed pid time                        # seeds for random generator
+
+2 seeds found.
+argument "pid" found
+argument "time" found
+Random number generator was seeded with the process ID, value   = 17041
+Random number generator was seeded with the current time, value = 1174530528
+
+Portable random number generator was seeded with the user-specified values  17041, 1174530528
+
+
+DPF> ligand_types A C  HD  N              # atoms types in ligand
+
+
+
+
+Calculating internal non-bonded interaction energies for docking calculation;
+
+Non-bonded parameters for A-A interactions, used in internal energy calculations:
+
+                392586.8           191.7 
+    E      =  -----------  -  -----------
+      A,A          12               6
+                  r               r 
+
+Calculating A-A interaction energy versus atomic separation (2048 data points).
+Time taken: Real= 0.00,  CPU= 0.00,  System= 0.00
+
+Calculating internal non-bonded interaction energies for unbound conformation calculation;
+
+Non-bonded parameters for A-A interactions, used in internal energy calculations:
+
+                392586.8             0.0 
+    E      =  -----------  -  -----------
+      A,A          12               6
+                  r               r 
+
+Calculating A-A interaction energy versus atomic separation (2048 data points).
+Time taken: Real= 0.00,  CPU= 0.01,  System= 0.00
+
+Calculating internal non-bonded interaction energies for docking calculation;
+
+Non-bonded parameters for A-C and C-A interactions, used in internal energy calculations:
+
+                392586.8           191.7 
+    E      =  -----------  -  -----------
+      A,C          12               6
+                  r               r 
+
+Calculating A-C interaction energy versus atomic separation (2048 data points).
+Time taken: Real= 0.00,  CPU= 0.00,  System= 0.00
+
+Calculating internal non-bonded interaction energies for unbound conformation calculation;
+
+Non-bonded parameters for A-C and C-A interactions, used in internal energy calculations:
+
+                392586.8             0.0 
+    E      =  -----------  -  -----------
+      A,C          12               6
+                  r               r 
+
+Calculating A-C interaction energy versus atomic separation (2048 data points).
+Time taken: Real= 0.00,  CPU= 0.00,  System= 0.00
+
+Calculating internal non-bonded interaction energies for docking calculation;
+
+Non-bonded parameters for A-HD and HD-A interactions, used in internal energy calculations:
+
+                  4540.9            12.5 
+    E      =  -----------  -  -----------
+      A,HD         12               6
+                  r               r 
+
+Calculating A-HD interaction energy versus atomic separation (2048 data points).
+Time taken: Real= 0.01,  CPU= 0.00,  System= 0.00
+
+Calculating internal non-bonded interaction energies for unbound conformation calculation;
+
+Non-bonded parameters for A-HD and HD-A interactions, used in internal energy calculations:
+
+                392586.8             0.0 
+    E      =  -----------  -  -----------
+      A,HD         12               6
+                  r               r 
+
+Calculating A-HD interaction energy versus atomic separation (2048 data points).
+Time taken: Real= 0.00,  CPU= 0.00,  System= 0.00
+
+Calculating internal non-bonded interaction energies for docking calculation;
+
+Non-bonded parameters for A-N and N-A interactions, used in internal energy calculations:
+
+                186898.3           134.4 
+    E      =  -----------  -  -----------
+      A,N          12               6
+                  r               r 
+
+Calculating A-N interaction energy versus atomic separation (2048 data points).
+Time taken: Real= 0.00,  CPU= 0.00,  System= 0.00
+
+Calculating internal non-bonded interaction energies for unbound conformation calculation;
+
+Non-bonded parameters for A-N and N-A interactions, used in internal energy calculations:
+
+                392586.8             0.0 
+    E      =  -----------  -  -----------
+      A,N          12               6
+                  r               r 
+
+Calculating A-N interaction energy versus atomic separation (2048 data points).
+Time taken: Real= 0.00,  CPU= 0.00,  System= 0.00
+
+Calculating internal non-bonded interaction energies for docking calculation;
+
+Non-bonded parameters for C-C interactions, used in internal energy calculations:
+
+                392586.8           191.7 
+    E      =  -----------  -  -----------
+      C,C          12               6
+                  r               r 
+
+Calculating C-C interaction energy versus atomic separation (2048 data points).
+Time taken: Real= 0.00,  CPU= 0.00,  System= 0.00
+
+Calculating internal non-bonded interaction energies for unbound conformation calculation;
+
+Non-bonded parameters for C-C interactions, used in internal energy calculations:
+
+                392586.8             0.0 
+    E      =  -----------  -  -----------
+      C,C          12               6
+                  r               r 
+
+Calculating C-C interaction energy versus atomic separation (2048 data points).
+Time taken: Real= 0.00,  CPU= 0.00,  System= 0.00
+
+Calculating internal non-bonded interaction energies for docking calculation;
+
+Non-bonded parameters for C-HD and HD-C interactions, used in internal energy calculations:
+
+                  4540.9            12.5 
+    E      =  -----------  -  -----------
+      C,HD         12               6
+                  r               r 
+
+Calculating C-HD interaction energy versus atomic separation (2048 data points).
+Time taken: Real= 0.00,  CPU= 0.00,  System= 0.00
+
+Calculating internal non-bonded interaction energies for unbound conformation calculation;
+
+Non-bonded parameters for C-HD and HD-C interactions, used in internal energy calculations:
+
+                392586.8             0.0 
+    E      =  -----------  -  -----------
+      C,HD         12               6
+                  r               r 
+
+Calculating C-HD interaction energy versus atomic separation (2048 data points).
+Time taken: Real= 0.00,  CPU= 0.00,  System= 0.00
+
+Calculating internal non-bonded interaction energies for docking calculation;
+
+Non-bonded parameters for C-N and N-C interactions, used in internal energy calculations:
+
+                186898.3           134.4 
+    E      =  -----------  -  -----------
+      C,N          12               6
+                  r               r 
+
+Calculating C-N interaction energy versus atomic separation (2048 data points).
+Time taken: Real= 0.00,  CPU= 0.00,  System= 0.00
+
+Calculating internal non-bonded interaction energies for unbound conformation calculation;
+
+Non-bonded parameters for C-N and N-C interactions, used in internal energy calculations:
+
+                392586.8             0.0 
+    E      =  -----------  -  -----------
+      C,N          12               6
+                  r               r 
+
+Calculating C-N interaction energy versus atomic separation (2048 data points).
+Time taken: Real= 0.00,  CPU= 0.00,  System= 0.00
+
+Calculating internal non-bonded interaction energies for docking calculation;
+
+Non-bonded parameters for HD-HD interactions, used in internal energy calculations:
+
+                    12.8             0.4 
+    E      =  -----------  -  -----------
+     HD,HD         12               6
+                  r               r 
+
+Calculating HD-HD interaction energy versus atomic separation (2048 data points).
+Time taken: Real= 0.00,  CPU= 0.00,  System= 0.00
+
+Calculating internal non-bonded interaction energies for unbound conformation calculation;
+
+Non-bonded parameters for HD-HD interactions, used in internal energy calculations:
+
+                392586.8             0.0 
+    E      =  -----------  -  -----------
+     HD,HD         12               6
+                  r               r 
+
+Calculating HD-HD interaction energy versus atomic separation (2048 data points).
+Time taken: Real= 0.00,  CPU= 0.00,  System= 0.00
+
+Calculating internal non-bonded interaction energies for docking calculation;
+
+Non-bonded parameters for HD-N and N-HD interactions, used in internal energy calculations:
+
+                  1650.8             7.6 
+    E      =  -----------  -  -----------
+     HD,N          12               6
+                  r               r 
+
+Calculating HD-N interaction energy versus atomic separation (2048 data points).
+Time taken: Real= 0.00,  CPU= 0.01,  System= 0.00
+
+Calculating internal non-bonded interaction energies for unbound conformation calculation;
+
+Non-bonded parameters for HD-N and N-HD interactions, used in internal energy calculations:
+
+                392586.8             0.0 
+    E      =  -----------  -  -----------
+     HD,N          12               6
+                  r               r 
+
+Calculating HD-N interaction energy versus atomic separation (2048 data points).
+Time taken: Real= 0.00,  CPU= 0.00,  System= 0.00
+
+Calculating internal non-bonded interaction energies for docking calculation;
+
+Non-bonded parameters for N-N interactions, used in internal energy calculations:
+
+                 84345.3            91.8 
+    E      =  -----------  -  -----------
+      N,N          12               6
+                  r               r 
+
+Calculating N-N interaction energy versus atomic separation (2048 data points).
+Time taken: Real= 0.00,  CPU= 0.00,  System= 0.00
+
+Calculating internal non-bonded interaction energies for unbound conformation calculation;
+
+Non-bonded parameters for N-N interactions, used in internal energy calculations:
+
+                392586.8             0.0 
+    E      =  -----------  -  -----------
+      N,N          12               6
+                  r               r 
+
+Calculating N-N interaction energy versus atomic separation (2048 data points).
+Time taken: Real= 0.01,  CPU= 0.00,  System= 0.00
+
+
+DPF> fld 3ptb_rec.maps.fld                # grid_data_file
+
+Opening Grid Map Dimensions file:		3ptb_rec.maps.fld
+
+Grid Point Spacing =				0.375 Angstroms
+
+Even Number of User-specified Grid Points =	60 x-points
+						60 y-points
+						60 z-points
+
+Adding the Central Grid Point makes:		61 x-points
+						61 y-points
+						61 z-points
+
+Coordinates of Central Grid Point of Maps =	(-1.961, 14.057, 16.236)
+
+Macromolecule file used to create Grid Maps =	3ptb_rec.pdbqt
+
+Grid Parameter file used to create Grid Maps =	3ptb_3ptb.gpf
+
+Minimum coordinates in grid = (-13.211, 2.807, 4.986)
+Maximum coordinates in grid = (9.289, 25.307, 27.486)
+
+
+
+DPF> map 3ptb_rec.A.map                   # atom-specific affinity map
+
+Opened Grid Map 1 (A):				3ptb_rec.A.map
+Checking header information.
+Number of grid points expected in  x-dimension:  61
+Number of grid points expected in  y-dimension:  61
+Number of grid points expected in  z-dimension:  61
+Looking for 226981 energies from Grid Map 1... 
+Closing file.
+226981 energies found for map 1
+Minimum energy = -0.84,  maximum energy = 201452.03
+
+Time taken (s): Real= 0.17,  CPU= 0.17,  System= 0.01
+
+Min= -0.844 Mean= 14622.275 Max= 201452.031
+
+
+
+DPF> map 3ptb_rec.C.map                   # atom-specific affinity map
+
+Opened Grid Map 2 (C):				3ptb_rec.C.map
+Checking header information.
+Number of grid points expected in  x-dimension:  61
+Number of grid points expected in  y-dimension:  61
+Number of grid points expected in  z-dimension:  61
+Looking for 226981 energies from Grid Map 2... 
+Closing file.
+226981 energies found for map 2
+Minimum energy = -0.94,  maximum energy = 201451.94
+
+Time taken (s): Real= 0.15,  CPU= 0.14,  System= 0.00
+
+Min= -0.935 Mean= 14622.210 Max= 201451.938
+
+
+
+DPF> map 3ptb_rec.HD.map                  # atom-specific affinity map
+
+Opened Grid Map 3 (HD):				3ptb_rec.HD.map
+Checking header information.
+Number of grid points expected in  x-dimension:  61
+Number of grid points expected in  y-dimension:  61
+Number of grid points expected in  z-dimension:  61
+Looking for 226981 energies from Grid Map 3... 
+Closing file.
+226981 energies found for map 3
+Minimum energy = -0.58,  maximum energy = 107010.15
+
+Time taken (s): Real= 0.13,  CPU= 0.12,  System= 0.01
+
+Min= -0.584 Mean= 3518.763 Max= 107010.148
+
+
+
+DPF> map 3ptb_rec.N.map                   # atom-specific affinity map
+
+Opened Grid Map 4 (N):				3ptb_rec.N.map
+Checking header information.
+Number of grid points expected in  x-dimension:  61
+Number of grid points expected in  y-dimension:  61
+Number of grid points expected in  z-dimension:  61
+Looking for 226981 energies from Grid Map 4... 
+Closing file.
+226981 energies found for map 4
+Minimum energy = -0.93,  maximum energy = 200280.39
+
+Time taken (s): Real= 0.14,  CPU= 0.14,  System= 0.01
+
+Min= -0.934 Mean= 11442.724 Max= 200280.391
+
+
+
+DPF> elecmap 3ptb_rec.e.map                   # electrostatics map
+
+Opened Grid Map 5 (e):				3ptb_rec.e.map
+Checking header information.
+Number of grid points expected in  x-dimension:  61
+Number of grid points expected in  y-dimension:  61
+Number of grid points expected in  z-dimension:  61
+Looking for 226981 energies from Grid Map 5... 
+Closing file.
+226981 energies found for map 5
+Minimum electrostatic potential = -39.64,  maximum electrostatic potential = 17.04
+
+Time taken (s): Real= 0.13,  CPU= 0.13,  System= 0.00
+
+Min= -39.638 Mean= 0.095 Max= 17.040
+
+
+
+DPF> desolvmap 3ptb_rec.d.map                   # desolvation map
+
+Opened Grid Map 6 (d):				3ptb_rec.d.map
+Checking header information.
+Number of grid points expected in  x-dimension:  61
+Number of grid points expected in  y-dimension:  61
+Number of grid points expected in  z-dimension:  61
+Looking for 226981 energies from Grid Map 6... 
+Closing file.
+226981 energies found for map 6
+Minimum energy = 0.00,  maximum energy = 1.33
+
+Time taken (s): Real= 0.12,  CPU= 0.12,  System= 0.00
+
+Min= 0.000 Mean= 0.785 Max= 1.325
+
+
+
+DPF> move 3ptb_lig.pdbqt                  # small molecule
+
+1,4-interactions will be _ignored_ in the non-bonded internal energy calculation.
+
+Ligand PDBQT file = "3ptb_lig.pdbqt"
+
+INPUT LIGAND PDBQT FILE:
+________________________
+
+INPUT-LIGAND-PDBQT: REMARK  0 active torsions:
+INPUT-LIGAND-PDBQT: REMARK  status: ('A' for Active; 'I' for Inactive)
+INPUT-LIGAND-PDBQT: REMARK       I    between atoms: A1_3221  and  C7_3227 
+INPUT-LIGAND-PDBQT: REMARK       I    between atoms: C7_3227  and  N1_3228 
+INPUT-LIGAND-PDBQT: REMARK RMS_REF  0.3200
+INPUT-LIGAND-PDBQT: ROOT
+INPUT-LIGAND-PDBQT: ATOM      1  A1  PTB     1      -1.764  14.033  16.577  1.00 19.86     0.198 A 
+INPUT-LIGAND-PDBQT: ATOM      2  A2  PTB     1      -2.072  15.355  16.759  1.00 19.86     0.019 A 
+INPUT-LIGAND-PDBQT: ATOM      3  A3  PTB     1      -1.776  15.979  17.977  1.00 19.86     0.001 A 
+INPUT-LIGAND-PDBQT: ATOM      4  A4  PTB     1      -1.160  15.258  19.011  1.00 19.86     0.000 A 
+INPUT-LIGAND-PDBQT: ATOM      5  A5  PTB     1      -0.844  13.912  18.808  1.00 19.86     0.001 A 
+INPUT-LIGAND-PDBQT: ATOM      6  A6  PTB     1      -1.150  13.314  17.589  1.00 19.86     0.019 A 
+INPUT-LIGAND-PDBQT: ATOM      7  C7  PTB     1      -2.067  13.411  15.371  1.00 19.86     0.582 C 
+INPUT-LIGAND-PDBQT: ATOM      8  N1  PTB     1      -2.687  14.057  14.400  1.00 19.86    -0.254 N 
+INPUT-LIGAND-PDBQT: ATOM      9  N2  PTB     1      -1.586  12.207  15.111  1.00 19.86    -0.254 N 
+INPUT-LIGAND-PDBQT: ATOM     10  H6  PTB     1      -2.906  13.613  13.534  1.00  0.00     0.172 HD
+INPUT-LIGAND-PDBQT: ATOM     11  H7  PTB     1      -3.108  14.946  14.565  1.00  0.00     0.172 HD
+INPUT-LIGAND-PDBQT: ATOM     12  H8  PTB     1      -1.859  11.711  14.282  1.00  0.00     0.172 HD
+INPUT-LIGAND-PDBQT: ATOM     13  H9  PTB     1      -1.178  11.633  15.821  1.00  0.00     0.172 HD
+INPUT-LIGAND-PDBQT: ENDROOT
+INPUT-LIGAND-PDBQT: TORSDOF 0
+________________________________________________________________________________
+
+
+Determining Atom Types and Parameters for the Moving Atoms
+__________________________________________________________
+
+
+Number of atoms found in flexible receptor sidechains ("residues") =	0 atoms
+
+Total number of atoms found =	13 atoms
+
+Number of flexible residues found in the receptor =	0 residues
+
+
+Summary of number of atoms of a given atom type:
+------------------------------------------------
+
+Number of atoms with atom type 1 =  6
+Number of atoms with atom type 2 =  1
+Number of atoms with atom type 3 =  4
+Number of atoms with atom type 4 =  2
+
+
+Summary of total charge on ligand, residues and overall:
+-------------------------------------------------------
+
+Total charge on ligand                               =	+1.000 e
+REMARK  0 active torsions:
+REMARK  status: ('A' for Active; 'I' for Inactive)
+REMARK       I    between atoms: A1_3221  and  C7_3227 
+REMARK       I    between atoms: C7_3227  and  N1_3228 
+REMARK RMS_REF  0.3200
+
+TORSDOF record detected: number of torsional degress of freedom has been set to 0.
+
+*** No Rotatable Bonds detected in Small Molecule. ***
+
+>>> No torsions detected, so skipping "nonbonds", "weedbonds" and "torNorVec" <<<
+
+Number of atoms in ligand:  13
+
+Number of vibrational degrees of freedom of ligand:  33
+
+
+Number of torsional degrees of freedom = 0
+Estimated loss of torsional free energy upon binding = +0.0000 kcal/mol
+
+
+
+
+DPF> about -1.8582 13.8022 16.1388        # small molecule center
+
+Small molecule center of rotation =	(-1.858, +13.802, +16.139)
+
+Translating small molecule by:	(+1.858, -13.802, -16.139)
+
+Furthest ligand atom from "about" center is 3.295 Angstroms (maxrad).
+
+
+
+DPF> tran0 random                         # initial coordinates/A or random
+
+
+
+DPF> quat0 random                         # initial quaternion
+
+Each run will begin with a new, random initial orientation.
+Initial axis-angle,  (nx,ny,nz,ang) =	( 0.000, 0.000, 0.000, 0.0 deg ),
+Normalized axis,     (nx,ny,nz)     =	( 0.078 0.746 -0.662 )
+
+
+DPF> ndihe 0                              # number of active torsions
+
+/bluefish/people-a/rhuey/bin/autodock4_3_21: WARNING!  The "ndihe" command is no longer supported.  The number of torsions in the PDBQT file(s) is the number that will be used (i.e. 0)
+
+
+DPF> dihe0 random                         # initial dihedrals (relative) or random
+
+
+
+DPF> tstep 2.0                            # translation step/A
+
+Initial cycle, maximum translation step = +/- 2.0 Angstroms
+
+
+DPF> qstep 50.0                           # quaternion step/deg
+
+Initial cycle, maximum quaternion angle step = +/- 50.0 deg
+
+
+DPF> dstep 50.0                           # torsion step/deg
+
+Initial cycle, maximum torsion angle step = +/- 50.0 deg
+
+
+DPF> torsdof 0                            # torsional degrees of freedom and coefficient
+
+Number of torsional degrees of freedom = 0
+Free energy coefficient for torsional degrees of freedom = 0.2744, the factory default value.
+
+Estimated loss of torsional free energy upon binding = +0.0000 kcal/mol
+
+
+
+DPF> unbound 0.0                          # free energy of ligand's unbound state 
+
+The internal energy of the unbound state was set to +0.000 kcal/mol
+
+
+
+DPF> rmstol 0.5                           # cluster_tolerance/A
+
+Maximum RMS tolerance for conformational cluster analysis = 0.50 Angstroms
+
+
+DPF> extnrg 1000.0                        # external grid energy
+
+External grid energy (beyond grid map walls) = 1000.00
+
+
+
+DPF> e0max 0.0 10000                      # max initial energy; max number of retries
+
+Using user-specified maximum number of retries for initialization, 10000 retries.
+
+
+If the initial energy is greater than e0max, 0.000,
+then a new, random initial state will be created.
+
+
+
+DPF> ga_pop_size 150                      # number of individuals in population
+
+A population of 150 individuals will be used
+
+
+DPF> ga_num_evals 25000000                # maximum number of energy evaluations  
+
+There will be at most 25000000 function evaluations used.
+
+
+DPF> ga_num_generations 27000             # maximum number of generations
+
+The GA will run for at most 27000 generations.
+
+
+DPF> ga_elitism 1                         # number of top individuals to survive to next generation
+
+The 1 best will be preserved each generation.
+
+
+DPF> ga_mutation_rate 0.02                # rate of gene mutation
+
+The mutation rate is 0.020000.
+
+
+DPF> ga_crossover_rate 0.8                # rate of crossover
+
+The crossover rate is 0.800000.
+
+
+DPF> ga_window_size 10                    # 
+
+The GA's selection window is 10 generations.
+
+
+DPF> ga_cauchy_alpha 0.0                  # Alpha parameter of Cauchy distribution
+
+The alpha parameter (for the Cauchy distribution) is being set to 0.000000.
+
+
+DPF> ga_cauchy_beta 1.0                   # Beta parameter Cauchy distribution
+
+The beta parameter (for the Cauchy distribution) is being set to 1.000000.
+
+
+DPF> set_ga                               # set the above parameters for GA or LGA
+
+
+
+DPF> sw_max_its 300                       # iterations of Solis & Wets local search
+
+Solis & Wets algorithms will perform at most 300 iterations.
+
+
+DPF> sw_max_succ 4                        # consecutive successes before changing rho
+
+Solis & Wets algorithms expand rho every 4 in a row successes.
+
+
+DPF> sw_max_fail 4                        # consecutive failures before changing rho
+
+Solis & Wets algorithms contract rho every 4 in a row failures.
+
+
+DPF> sw_rho 1.0                           # size of local search space to sample
+
+rho is set to 1.000000.
+
+
+DPF> sw_lb_rho 0.01                       # lower bound on rho
+
+rho will never get smaller than 0.010000.
+
+
+DPF> ls_search_freq 0.06                  # probability of performing local search on individual
+
+Local search will be performed with frequency 0.060000.
+
+
+DPF> set_sw1                              # set the above Solis & Wets parameters
+
+Creating a new Local Search object using the Solis-Wets algorithm (SW1) with the current settings.
+
+
+
+DPF> compute_unbound_extended             # compute extended ligand energy
+
+NOTE:  AutoDock cannot compute the energy of the unbound state, since the ligand is rigid.
+
+NOTE:  Use the "unbound" command to set the energy of the unbound state, if known from a previous calculation where the ligand was treated as flexible.
+
+
+
+The internal energy of the unbound state was set to +0.000 kcal/mol
+
+________________________________________________________________________________
+
+
+
+DPF> ga_run 10                            # do this many hybrid GA-LS runs
+
+Number of requested LGA dockings = 10 runs
+
+
+	BEGINNING LAMARCKIAN GENETIC ALGORITHM DOCKING
+
+Run:	1 / 10
+Date:	Wed Mar 21 19:28:48 2007
+Output level is set to 0.
+
+
+Creating an initial population of 150 individuals.
+
+Assigning a random translation and a random orientation to each of the 150 individuals.
+
+Beginning Lamarckian Genetic Algorithm (LGA), with a maximum of 25000000
+energy evaluations.
+
+Final-Value: -6.283
+
+Run completed;  time taken for this run:
+Real= 3m 11.80s,  CPU= 3m 11.73s,  System= 0.06s
+
+7:32 00" p.m., 03/21/2007
+Total number of Energy Evaluations: 25000225
+Total number of Generations:        19518
+
+
+	FINAL LAMARCKIAN GENETIC ALGORITHM DOCKED STATE
+	_______________________________________________
+
+
+State:	-2.013 13.822 16.067  0.311 0.832 0.460 5.689  
+
+DOCKED: MODEL        1
+DOCKED: USER    Run = 1
+DOCKED: USER    DPF = 3ptb_3ptb.dpf
+DOCKED: USER  
+DOCKED: USER    Estimated Free Energy of Binding    =   -6.28 kcal/mol  [=(1)+(2)+(3)-(4)]
+DOCKED: USER    Estimated Inhibition Constant, Ki   =   24.82 uM (micromolar)  [Temperature = 298.15 K]
+DOCKED: USER    
+DOCKED: USER    (1) Final Intermolecular Energy     =   -6.28 kcal/mol
+DOCKED: USER        vdW + Hbond + desolv Energy     =   -4.98 kcal/mol
+DOCKED: USER        Electrostatic Energy            =   -1.31 kcal/mol
+DOCKED: USER    (2) Final Total Internal Energy     =   +0.00 kcal/mol
+DOCKED: USER    (3) Torsional Free Energy           =   +0.00 kcal/mol
+DOCKED: USER    (4) Unbound System's Energy         =   +0.00 kcal/mol
+DOCKED: USER    
+DOCKED: USER    
+DOCKED: USER    NEWDPF move 3ptb_lig.pdbqt
+DOCKED: USER    NEWDPF about -1.858200 13.802200 16.138800
+DOCKED: USER    NEWDPF tran0 -2.013440 13.822075 16.066790
+DOCKED: USER    NEWDPF quaternion0 0.015442 0.041269 0.022825 0.998768
+DOCKED: USER    NEWDPF axisangle0 0.311172 0.831626 0.459968 5.688828
+DOCKED: USER    NEWDPF quat0 0.311172 0.831626 0.459968 5.688828 # deprecated
+DOCKED: USER  
+DOCKED: REMARK  0 active torsions:
+DOCKED: REMARK  status: ('A' for Active; 'I' for Inactive)
+DOCKED: REMARK       I    between atoms: A1_3221  and  C7_3227 
+DOCKED: REMARK       I    between atoms: C7_3227  and  N1_3228 
+DOCKED: REMARK RMS_REF  0.3200
+DOCKED: USER                              x       y       z     vdW  Elec       q    Type
+DOCKED: USER                           _______ _______ _______ _____ _____    ______ ____
+DOCKED: ROOT
+DOCKED: ATOM      1  A1  PTB     1      -1.945  14.063  16.504 -0.41 -0.09    +0.198 A 
+DOCKED: ATOM      2  A2  PTB     1      -2.204  15.402  16.622 -0.53 -0.01    +0.019 A 
+DOCKED: ATOM      3  A3  PTB     1      -1.980  16.052  17.842 -0.48 -0.00    +0.001 A 
+DOCKED: ATOM      4  A4  PTB     1      -1.485  15.339  18.944 -0.49 -0.00    +0.000 A 
+DOCKED: ATOM      5  A5  PTB     1      -1.217  13.974  18.807 -0.57 -0.00    +0.001 A 
+DOCKED: ATOM      6  A6  PTB     1      -1.450  13.351  17.584 -0.56 -0.01    +0.019 A 
+DOCKED: ATOM      7  C7  PTB     1      -2.177  13.416  15.296 -0.15 -0.59    +0.582 C 
+DOCKED: ATOM      8  N1  PTB     1      -2.684  14.056  14.258 -0.40 +0.34    -0.254 N 
+DOCKED: ATOM      9  N2  PTB     1      -1.733  12.184  15.112 -0.35 +0.35    -0.254 N 
+DOCKED: ATOM     10  H6  PTB     1      -2.853  13.594  13.390 -0.22 -0.42    +0.172 HD
+DOCKED: ATOM     11  H7  PTB     1      -3.075  14.968  14.362 -0.34 -0.20    +0.172 HD
+DOCKED: ATOM     12  H8  PTB     1      -1.960  11.673  14.278 -0.23 -0.47    +0.172 HD
+DOCKED: ATOM     13  H9  PTB     1      -1.412  11.616  15.870 -0.24 -0.20    +0.172 HD
+DOCKED: ENDROOT
+DOCKED: TORSDOF 0
+DOCKED: TER
+DOCKED: ENDMDL
+________________________________________________________________________________
+
+
+
+	BEGINNING LAMARCKIAN GENETIC ALGORITHM DOCKING
+
+Run:	2 / 10
+Date:	Wed Mar 21 19:32:00 2007
+Output level is set to 0.
+
+
+Creating an initial population of 150 individuals.
+
+Assigning a random translation and a random orientation to each of the 150 individuals.
+
+Beginning Lamarckian Genetic Algorithm (LGA), with a maximum of 25000000
+energy evaluations.
+
+Final-Value: -6.277
+
+Run completed;  time taken for this run:
+Real= 3m 11.49s,  CPU= 3m 11.44s,  System= 0.04s
+
+7:35 12" p.m., 03/21/2007
+Total number of Energy Evaluations: 25001341
+Total number of Generations:        19454
+
+
+	FINAL LAMARCKIAN GENETIC ALGORITHM DOCKED STATE
+	_______________________________________________
+
+
+State:	-2.033 13.861 15.991  -0.365 -0.800 -0.477 -10.522  
+
+DOCKED: MODEL        2
+DOCKED: USER    Run = 2
+DOCKED: USER    DPF = 3ptb_3ptb.dpf
+DOCKED: USER  
+DOCKED: USER    Estimated Free Energy of Binding    =   -6.28 kcal/mol  [=(1)+(2)+(3)-(4)]
+DOCKED: USER    Estimated Inhibition Constant, Ki   =   25.07 uM (micromolar)  [Temperature = 298.15 K]
+DOCKED: USER    
+DOCKED: USER    (1) Final Intermolecular Energy     =   -6.28 kcal/mol
+DOCKED: USER        vdW + Hbond + desolv Energy     =   -4.97 kcal/mol
+DOCKED: USER        Electrostatic Energy            =   -1.31 kcal/mol
+DOCKED: USER    (2) Final Total Internal Energy     =   +0.00 kcal/mol
+DOCKED: USER    (3) Torsional Free Energy           =   +0.00 kcal/mol
+DOCKED: USER    (4) Unbound System's Energy         =   +0.00 kcal/mol
+DOCKED: USER    
+DOCKED: USER    
+DOCKED: USER    NEWDPF move 3ptb_lig.pdbqt
+DOCKED: USER    NEWDPF about -1.858200 13.802200 16.138800
+DOCKED: USER    NEWDPF tran0 -2.032874 13.860503 15.990513
+DOCKED: USER    NEWDPF quaternion0 -0.033441 -0.073326 -0.043737 -0.995787
+DOCKED: USER    NEWDPF axisangle0 -0.364700 -0.799673 -0.476987 -10.522237
+DOCKED: USER    NEWDPF quat0 -0.364700 -0.799673 -0.476987 -10.522237 # deprecated
+DOCKED: USER  
+DOCKED: REMARK  0 active torsions:
+DOCKED: REMARK  status: ('A' for Active; 'I' for Inactive)
+DOCKED: REMARK       I    between atoms: A1_3221  and  C7_3227 
+DOCKED: REMARK       I    between atoms: C7_3227  and  N1_3228 
+DOCKED: REMARK RMS_REF  0.3200
+DOCKED: USER                              x       y       z     vdW  Elec       q    Type
+DOCKED: USER                           _______ _______ _______ _____ _____    ______ ____
+DOCKED: ROOT
+DOCKED: ATOM      1  A1  PTB     1      -1.982  14.114  16.423 -0.41 -0.10    +0.198 A 
+DOCKED: ATOM      2  A2  PTB     1      -2.189  15.467  16.477 -0.53 -0.01    +0.019 A 
+DOCKED: ATOM      3  A3  PTB     1      -2.015  16.152  17.686 -0.48 -0.00    +0.001 A 
+DOCKED: ATOM      4  A4  PTB     1      -1.622  15.460  18.842 -0.48 -0.00    +0.000 A 
+DOCKED: ATOM      5  A5  PTB     1      -1.405  14.081  18.770 -0.55 -0.00    +0.001 A 
+DOCKED: ATOM      6  A6  PTB     1      -1.587  13.423  17.557 -0.56 -0.01    +0.019 A 
+DOCKED: ATOM      7  C7  PTB     1      -2.165  13.433  15.225 -0.16 -0.60    +0.582 C 
+DOCKED: ATOM      8  N1  PTB     1      -2.577  14.055  14.136 -0.39 +0.33    -0.254 N 
+DOCKED: ATOM      9  N2  PTB     1      -1.764  12.178  15.113 -0.33 +0.36    -0.254 N 
+DOCKED: ATOM     10  H6  PTB     1      -2.710  13.568  13.275 -0.27 -0.41    +0.172 HD
+DOCKED: ATOM     11  H7  PTB     1      -2.934  14.985  14.182 -0.31 -0.20    +0.172 HD
+DOCKED: ATOM     12  H8  PTB     1      -1.960  11.646  14.284 -0.23 -0.47    +0.172 HD
+DOCKED: ATOM     13  H9  PTB     1      -1.517  11.625  15.909 -0.26 -0.21    +0.172 HD
+DOCKED: ENDROOT
+DOCKED: TORSDOF 0
+DOCKED: TER
+DOCKED: ENDMDL
+________________________________________________________________________________
+
+
+
+	BEGINNING LAMARCKIAN GENETIC ALGORITHM DOCKING
+
+Run:	3 / 10
+Date:	Wed Mar 21 19:35:12 2007
+Output level is set to 0.
+
+
+Creating an initial population of 150 individuals.
+
+Assigning a random translation and a random orientation to each of the 150 individuals.
+
+Beginning Lamarckian Genetic Algorithm (LGA), with a maximum of 25000000
+energy evaluations.
+
+Final-Value: -6.283
+
+Run completed;  time taken for this run:
+Real= 3m 11.85s,  CPU= 3m 11.77s,  System= 0.08s
+
+7:38 24" p.m., 03/21/2007
+Total number of Energy Evaluations: 25001646
+Total number of Generations:        19531
+
+
+	FINAL LAMARCKIAN GENETIC ALGORITHM DOCKED STATE
+	_______________________________________________
+
+
+State:	-2.034 13.823 16.062  0.294 0.861 0.415 6.186  
+
+DOCKED: MODEL        3
+DOCKED: USER    Run = 3
+DOCKED: USER    DPF = 3ptb_3ptb.dpf
+DOCKED: USER  
+DOCKED: USER    Estimated Free Energy of Binding    =   -6.28 kcal/mol  [=(1)+(2)+(3)-(4)]
+DOCKED: USER    Estimated Inhibition Constant, Ki   =   24.79 uM (micromolar)  [Temperature = 298.15 K]
+DOCKED: USER    
+DOCKED: USER    (1) Final Intermolecular Energy     =   -6.28 kcal/mol
+DOCKED: USER        vdW + Hbond + desolv Energy     =   -4.97 kcal/mol
+DOCKED: USER        Electrostatic Energy            =   -1.31 kcal/mol
+DOCKED: USER    (2) Final Total Internal Energy     =   +0.00 kcal/mol
+DOCKED: USER    (3) Torsional Free Energy           =   +0.00 kcal/mol
+DOCKED: USER    (4) Unbound System's Energy         =   +0.00 kcal/mol
+DOCKED: USER    
+DOCKED: USER    
+DOCKED: USER    NEWDPF move 3ptb_lig.pdbqt
+DOCKED: USER    NEWDPF about -1.858200 13.802200 16.138800
+DOCKED: USER    NEWDPF tran0 -2.033880 13.822826 16.061542
+DOCKED: USER    NEWDPF quaternion0 0.015851 0.046464 0.022376 0.998544
+DOCKED: USER    NEWDPF axisangle0 0.293789 0.861209 0.414737 6.185509
+DOCKED: USER    NEWDPF quat0 0.293789 0.861209 0.414737 6.185509 # deprecated
+DOCKED: USER  
+DOCKED: REMARK  0 active torsions:
+DOCKED: REMARK  status: ('A' for Active; 'I' for Inactive)
+DOCKED: REMARK       I    between atoms: A1_3221  and  C7_3227 
+DOCKED: REMARK       I    between atoms: C7_3227  and  N1_3228 
+DOCKED: REMARK RMS_REF  0.3200
+DOCKED: USER                              x       y       z     vdW  Elec       q    Type
+DOCKED: USER                           _______ _______ _______ _____ _____    ______ ____
+DOCKED: ROOT
+DOCKED: ATOM      1  A1  PTB     1      -1.970  14.064  16.500 -0.41 -0.10    +0.198 A 
+DOCKED: ATOM      2  A2  PTB     1      -2.232  15.403  16.613 -0.53 -0.01    +0.019 A 
+DOCKED: ATOM      3  A3  PTB     1      -2.021  16.055  17.834 -0.48 -0.00    +0.001 A 
+DOCKED: ATOM      4  A4  PTB     1      -1.537  15.343  18.942 -0.49 -0.00    +0.000 A 
+DOCKED: ATOM      5  A5  PTB     1      -1.266  13.979  18.809 -0.57 -0.00    +0.001 A 
+DOCKED: ATOM      6  A6  PTB     1      -1.486  13.354  17.585 -0.56 -0.01    +0.019 A 
+DOCKED: ATOM      7  C7  PTB     1      -2.189  13.415  15.289 -0.15 -0.60    +0.582 C 
+DOCKED: ATOM      8  N1  PTB     1      -2.686  14.054  14.246 -0.39 +0.34    -0.254 N 
+DOCKED: ATOM      9  N2  PTB     1      -1.742  12.184  15.111 -0.34 +0.36    -0.254 N 
+DOCKED: ATOM     10  H6  PTB     1      -2.845  13.591  13.377 -0.23 -0.42    +0.172 HD
+DOCKED: ATOM     11  H7  PTB     1      -3.079  14.966  14.345 -0.34 -0.20    +0.172 HD
+DOCKED: ATOM     12  H8  PTB     1      -1.960  11.672  14.275 -0.23 -0.47    +0.172 HD
+DOCKED: ATOM     13  H9  PTB     1      -1.428  11.617  15.873 -0.24 -0.21    +0.172 HD
+DOCKED: ENDROOT
+DOCKED: TORSDOF 0
+DOCKED: TER
+DOCKED: ENDMDL
+________________________________________________________________________________
+
+
+
+	BEGINNING LAMARCKIAN GENETIC ALGORITHM DOCKING
+
+Run:	4 / 10
+Date:	Wed Mar 21 19:38:24 2007
+Output level is set to 0.
+
+
+Creating an initial population of 150 individuals.
+
+Assigning a random translation and a random orientation to each of the 150 individuals.
+
+Beginning Lamarckian Genetic Algorithm (LGA), with a maximum of 25000000
+energy evaluations.
+
+Final-Value: -6.284
+
+Run completed;  time taken for this run:
+Real= 3m 11.79s,  CPU= 3m 11.74s,  System= 0.06s
+
+7:41 35" p.m., 03/21/2007
+Total number of Energy Evaluations: 25000498
+Total number of Generations:        19562
+
+
+	FINAL LAMARCKIAN GENETIC ALGORITHM DOCKED STATE
+	_______________________________________________
+
+
+State:	-2.049 13.820 16.071  -0.256 -0.889 -0.381 -6.306  
+
+DOCKED: MODEL        4
+DOCKED: USER    Run = 4
+DOCKED: USER    DPF = 3ptb_3ptb.dpf
+DOCKED: USER  
+DOCKED: USER    Estimated Free Energy of Binding    =   -6.28 kcal/mol  [=(1)+(2)+(3)-(4)]
+DOCKED: USER    Estimated Inhibition Constant, Ki   =   24.74 uM (micromolar)  [Temperature = 298.15 K]
+DOCKED: USER    
+DOCKED: USER    (1) Final Intermolecular Energy     =   -6.28 kcal/mol
+DOCKED: USER        vdW + Hbond + desolv Energy     =   -4.97 kcal/mol
+DOCKED: USER        Electrostatic Energy            =   -1.31 kcal/mol
+DOCKED: USER    (2) Final Total Internal Energy     =   +0.00 kcal/mol
+DOCKED: USER    (3) Torsional Free Energy           =   +0.00 kcal/mol
+DOCKED: USER    (4) Unbound System's Energy         =   +0.00 kcal/mol
+DOCKED: USER    
+DOCKED: USER    
+DOCKED: USER    NEWDPF move 3ptb_lig.pdbqt
+DOCKED: USER    NEWDPF about -1.858200 13.802200 16.138800
+DOCKED: USER    NEWDPF tran0 -2.048553 13.820222 16.070538
+DOCKED: USER    NEWDPF quaternion0 -0.014070 -0.048866 -0.020951 -0.998486
+DOCKED: USER    NEWDPF axisangle0 -0.255822 -0.888505 -0.380939 -6.305502
+DOCKED: USER    NEWDPF quat0 -0.255822 -0.888505 -0.380939 -6.305502 # deprecated
+DOCKED: USER  
+DOCKED: REMARK  0 active torsions:
+DOCKED: REMARK  status: ('A' for Active; 'I' for Inactive)
+DOCKED: REMARK       I    between atoms: A1_3221  and  C7_3227 
+DOCKED: REMARK       I    between atoms: C7_3227  and  N1_3228 
+DOCKED: REMARK RMS_REF  0.3200
+DOCKED: USER                              x       y       z     vdW  Elec       q    Type
+DOCKED: USER                           _______ _______ _______ _____ _____    ______ ____
+DOCKED: ROOT
+DOCKED: ATOM      1  A1  PTB     1      -1.987  14.060  16.510 -0.41 -0.10    +0.198 A 
+DOCKED: ATOM      2  A2  PTB     1      -2.254  15.398  16.626 -0.53 -0.01    +0.019 A 
+DOCKED: ATOM      3  A3  PTB     1      -2.051  16.046  17.851 -0.48 -0.00    +0.001 A 
+DOCKED: ATOM      4  A4  PTB     1      -1.570  15.332  18.959 -0.49 -0.00    +0.000 A 
+DOCKED: ATOM      5  A5  PTB     1      -1.294  13.969  18.823 -0.56 -0.00    +0.001 A 
+DOCKED: ATOM      6  A6  PTB     1      -1.506  13.348  17.595 -0.56 -0.01    +0.019 A 
+DOCKED: ATOM      7  C7  PTB     1      -2.199  13.415  15.296 -0.15 -0.60    +0.582 C 
+DOCKED: ATOM      8  N1  PTB     1      -2.693  14.056  14.253 -0.39 +0.34    -0.254 N 
+DOCKED: ATOM      9  N2  PTB     1      -1.747  12.185  15.116 -0.34 +0.36    -0.254 N 
+DOCKED: ATOM     10  H6  PTB     1      -2.846  13.595  13.381 -0.23 -0.42    +0.172 HD
+DOCKED: ATOM     11  H7  PTB     1      -3.089  14.966  14.352 -0.34 -0.20    +0.172 HD
+DOCKED: ATOM     12  H8  PTB     1      -1.960  11.676  14.278 -0.24 -0.47    +0.172 HD
+DOCKED: ATOM     13  H9  PTB     1      -1.435  11.617  15.878 -0.25 -0.21    +0.172 HD
+DOCKED: ENDROOT
+DOCKED: TORSDOF 0
+DOCKED: TER
+DOCKED: ENDMDL
+________________________________________________________________________________
+
+
+
+	BEGINNING LAMARCKIAN GENETIC ALGORITHM DOCKING
+
+Run:	5 / 10
+Date:	Wed Mar 21 19:41:35 2007
+Output level is set to 0.
+
+
+Creating an initial population of 150 individuals.
+
+Assigning a random translation and a random orientation to each of the 150 individuals.
+
+Beginning Lamarckian Genetic Algorithm (LGA), with a maximum of 25000000
+energy evaluations.
+
+Final-Value: -6.285
+
+Run completed;  time taken for this run:
+Real= 3m 11.54s,  CPU= 3m 11.44s,  System= 0.09s
+
+7:44 47" p.m., 03/21/2007
+Total number of Energy Evaluations: 25000789
+Total number of Generations:        19507
+
+
+	FINAL LAMARCKIAN GENETIC ALGORITHM DOCKED STATE
+	_______________________________________________
+
+
+State:	-2.062 13.812 16.071  -0.203 -0.907 -0.369 -6.725  
+
+DOCKED: MODEL        5
+DOCKED: USER    Run = 5
+DOCKED: USER    DPF = 3ptb_3ptb.dpf
+DOCKED: USER  
+DOCKED: USER    Estimated Free Energy of Binding    =   -6.28 kcal/mol  [=(1)+(2)+(3)-(4)]
+DOCKED: USER    Estimated Inhibition Constant, Ki   =   24.74 uM (micromolar)  [Temperature = 298.15 K]
+DOCKED: USER    
+DOCKED: USER    (1) Final Intermolecular Energy     =   -6.28 kcal/mol
+DOCKED: USER        vdW + Hbond + desolv Energy     =   -4.97 kcal/mol
+DOCKED: USER        Electrostatic Energy            =   -1.31 kcal/mol
+DOCKED: USER    (2) Final Total Internal Energy     =   +0.00 kcal/mol
+DOCKED: USER    (3) Torsional Free Energy           =   +0.00 kcal/mol
+DOCKED: USER    (4) Unbound System's Energy         =   +0.00 kcal/mol
+DOCKED: USER    
+DOCKED: USER    
+DOCKED: USER    NEWDPF move 3ptb_lig.pdbqt
+DOCKED: USER    NEWDPF about -1.858200 13.802200 16.138800
+DOCKED: USER    NEWDPF tran0 -2.061720 13.812112 16.071458
+DOCKED: USER    NEWDPF quaternion0 -0.011935 -0.053190 -0.021648 -0.998278
+DOCKED: USER    NEWDPF axisangle0 -0.203476 -0.906847 -0.369088 -6.725035
+DOCKED: USER    NEWDPF quat0 -0.203476 -0.906847 -0.369088 -6.725035 # deprecated
+DOCKED: USER  
+DOCKED: REMARK  0 active torsions:
+DOCKED: REMARK  status: ('A' for Active; 'I' for Inactive)
+DOCKED: REMARK       I    between atoms: A1_3221  and  C7_3227 
+DOCKED: REMARK       I    between atoms: C7_3227  and  N1_3228 
+DOCKED: REMARK RMS_REF  0.3200
+DOCKED: USER                              x       y       z     vdW  Elec       q    Type
+DOCKED: USER                           _______ _______ _______ _____ _____    ______ ____
+DOCKED: ROOT
+DOCKED: ATOM      1  A1  PTB     1      -2.004  14.050  16.512 -0.41 -0.10    +0.198 A 
+DOCKED: ATOM      2  A2  PTB     1      -2.271  15.388  16.632 -0.53 -0.01    +0.019 A 
+DOCKED: ATOM      3  A3  PTB     1      -2.077  16.031  17.861 -0.48 -0.00    +0.001 A 
+DOCKED: ATOM      4  A4  PTB     1      -1.607  15.312  18.970 -0.49 -0.00    +0.000 A 
+DOCKED: ATOM      5  A5  PTB     1      -1.331  13.949  18.831 -0.56 -0.00    +0.001 A 
+DOCKED: ATOM      6  A6  PTB     1      -1.533  13.333  17.599 -0.56 -0.01    +0.019 A 
+DOCKED: ATOM      7  C7  PTB     1      -2.205  13.410  15.294 -0.15 -0.60    +0.582 C 
+DOCKED: ATOM      8  N1  PTB     1      -2.690  14.056  14.249 -0.39 +0.34    -0.254 N 
+DOCKED: ATOM      9  N2  PTB     1      -1.754  12.181  15.113 -0.34 +0.36    -0.254 N 
+DOCKED: ATOM     10  H6  PTB     1      -2.836  13.599  13.374 -0.23 -0.42    +0.172 HD
+DOCKED: ATOM     11  H7  PTB     1      -3.086  14.966  14.349 -0.34 -0.20    +0.172 HD
+DOCKED: ATOM     12  H8  PTB     1      -1.959  11.675  14.271 -0.23 -0.47    +0.172 HD
+DOCKED: ATOM     13  H9  PTB     1      -1.449  11.609  15.875 -0.25 -0.21    +0.172 HD
+DOCKED: ENDROOT
+DOCKED: TORSDOF 0
+DOCKED: TER
+DOCKED: ENDMDL
+________________________________________________________________________________
+
+
+
+	BEGINNING LAMARCKIAN GENETIC ALGORITHM DOCKING
+
+Run:	6 / 10
+Date:	Wed Mar 21 19:44:47 2007
+Output level is set to 0.
+
+
+Creating an initial population of 150 individuals.
+
+Assigning a random translation and a random orientation to each of the 150 individuals.
+
+Beginning Lamarckian Genetic Algorithm (LGA), with a maximum of 25000000
+energy evaluations.
+
+Final-Value: -6.278
+
+Run completed;  time taken for this run:
+Real= 3m 11.59s,  CPU= 3m 11.54s,  System= 0.05s
+
+7:47 58" p.m., 03/21/2007
+Total number of Energy Evaluations: 25000720
+Total number of Generations:        19450
+
+
+	FINAL LAMARCKIAN GENETIC ALGORITHM DOCKED STATE
+	_______________________________________________
+
+
+State:	-2.029 13.855 16.003  -0.354 -0.803 -0.479 -9.811  
+
+DOCKED: MODEL        6
+DOCKED: USER    Run = 6
+DOCKED: USER    DPF = 3ptb_3ptb.dpf
+DOCKED: USER  
+DOCKED: USER    Estimated Free Energy of Binding    =   -6.28 kcal/mol  [=(1)+(2)+(3)-(4)]
+DOCKED: USER    Estimated Inhibition Constant, Ki   =   25.03 uM (micromolar)  [Temperature = 298.15 K]
+DOCKED: USER    
+DOCKED: USER    (1) Final Intermolecular Energy     =   -6.28 kcal/mol
+DOCKED: USER        vdW + Hbond + desolv Energy     =   -4.97 kcal/mol
+DOCKED: USER        Electrostatic Energy            =   -1.31 kcal/mol
+DOCKED: USER    (2) Final Total Internal Energy     =   +0.00 kcal/mol
+DOCKED: USER    (3) Torsional Free Energy           =   +0.00 kcal/mol
+DOCKED: USER    (4) Unbound System's Energy         =   +0.00 kcal/mol
+DOCKED: USER    
+DOCKED: USER    
+DOCKED: USER    NEWDPF move 3ptb_lig.pdbqt
+DOCKED: USER    NEWDPF about -1.858200 13.802200 16.138800
+DOCKED: USER    NEWDPF tran0 -2.029415 13.854714 16.002710
+DOCKED: USER    NEWDPF quaternion0 -0.030278 -0.068681 -0.040975 -0.996337
+DOCKED: USER    NEWDPF axisangle0 -0.354071 -0.803146 -0.479156 -9.811291
+DOCKED: USER    NEWDPF quat0 -0.354071 -0.803146 -0.479156 -9.811291 # deprecated
+DOCKED: USER  
+DOCKED: REMARK  0 active torsions:
+DOCKED: REMARK  status: ('A' for Active; 'I' for Inactive)
+DOCKED: REMARK       I    between atoms: A1_3221  and  C7_3227 
+DOCKED: REMARK       I    between atoms: C7_3227  and  N1_3228 
+DOCKED: REMARK RMS_REF  0.3200
+DOCKED: USER                              x       y       z     vdW  Elec       q    Type
+DOCKED: USER                           _______ _______ _______ _____ _____    ______ ____
+DOCKED: ROOT
+DOCKED: ATOM      1  A1  PTB     1      -1.975  14.106  16.436 -0.41 -0.10    +0.198 A 
+DOCKED: ATOM      2  A2  PTB     1      -2.191  15.457  16.501 -0.53 -0.01    +0.019 A 
+DOCKED: ATOM      3  A3  PTB     1      -2.008  16.135  17.713 -0.48 -0.00    +0.001 A 
+DOCKED: ATOM      4  A4  PTB     1      -1.601  15.438  18.860 -0.48 -0.00    +0.000 A 
+DOCKED: ATOM      5  A5  PTB     1      -1.377  14.061  18.777 -0.56 -0.00    +0.001 A 
+DOCKED: ATOM      6  A6  PTB     1      -1.567  13.410  17.562 -0.56 -0.01    +0.019 A 
+DOCKED: ATOM      7  C7  PTB     1      -2.166  13.431  15.236 -0.16 -0.60    +0.582 C 
+DOCKED: ATOM      8  N1  PTB     1      -2.592  14.058  14.154 -0.39 +0.33    -0.254 N 
+DOCKED: ATOM      9  N2  PTB     1      -1.759  12.179  15.112 -0.33 +0.36    -0.254 N 
+DOCKED: ATOM     10  H6  PTB     1      -2.730  13.576  13.292 -0.26 -0.41    +0.172 HD
+DOCKED: ATOM     11  H7  PTB     1      -2.954  14.986  14.210 -0.31 -0.20    +0.172 HD
+DOCKED: ATOM     12  H8  PTB     1      -1.960  11.652  14.281 -0.23 -0.47    +0.172 HD
+DOCKED: ATOM     13  H9  PTB     1      -1.501  11.623  15.902 -0.26 -0.21    +0.172 HD
+DOCKED: ENDROOT
+DOCKED: TORSDOF 0
+DOCKED: TER
+DOCKED: ENDMDL
+________________________________________________________________________________
+
+
+
+	BEGINNING LAMARCKIAN GENETIC ALGORITHM DOCKING
+
+Run:	7 / 10
+Date:	Wed Mar 21 19:47:58 2007
+Output level is set to 0.
+
+
+Creating an initial population of 150 individuals.
+
+Assigning a random translation and a random orientation to each of the 150 individuals.
+
+Beginning Lamarckian Genetic Algorithm (LGA), with a maximum of 25000000
+energy evaluations.
+
+Final-Value: -6.282
+
+Run completed;  time taken for this run:
+Real= 3m 11.68s,  CPU= 3m 11.63s,  System= 0.04s
+
+7:51 10" p.m., 03/21/2007
+Total number of Energy Evaluations: 25000417
+Total number of Generations:        19535
+
+
+	FINAL LAMARCKIAN GENETIC ALGORITHM DOCKED STATE
+	_______________________________________________
+
+
+State:	-2.071 13.810 16.078  -0.165 -0.921 -0.353 -6.827  
+
+DOCKED: MODEL        7
+DOCKED: USER    Run = 7
+DOCKED: USER    DPF = 3ptb_3ptb.dpf
+DOCKED: USER  
+DOCKED: USER    Estimated Free Energy of Binding    =   -6.28 kcal/mol  [=(1)+(2)+(3)-(4)]
+DOCKED: USER    Estimated Inhibition Constant, Ki   =   24.84 uM (micromolar)  [Temperature = 298.15 K]
+DOCKED: USER    
+DOCKED: USER    (1) Final Intermolecular Energy     =   -6.28 kcal/mol
+DOCKED: USER        vdW + Hbond + desolv Energy     =   -4.97 kcal/mol
+DOCKED: USER        Electrostatic Energy            =   -1.31 kcal/mol
+DOCKED: USER    (2) Final Total Internal Energy     =   +0.00 kcal/mol
+DOCKED: USER    (3) Torsional Free Energy           =   +0.00 kcal/mol
+DOCKED: USER    (4) Unbound System's Energy         =   +0.00 kcal/mol
+DOCKED: USER    
+DOCKED: USER    
+DOCKED: USER    NEWDPF move 3ptb_lig.pdbqt
+DOCKED: USER    NEWDPF about -1.858200 13.802200 16.138800
+DOCKED: USER    NEWDPF tran0 -2.071431 13.810496 16.078308
+DOCKED: USER    NEWDPF quaternion0 -0.009830 -0.054831 -0.021035 -0.998226
+DOCKED: USER    NEWDPF axisangle0 -0.165079 -0.920845 -0.353260 -6.827347
+DOCKED: USER    NEWDPF quat0 -0.165079 -0.920845 -0.353260 -6.827347 # deprecated
+DOCKED: USER  
+DOCKED: REMARK  0 active torsions:
+DOCKED: REMARK  status: ('A' for Active; 'I' for Inactive)
+DOCKED: REMARK       I    between atoms: A1_3221  and  C7_3227 
+DOCKED: REMARK       I    between atoms: C7_3227  and  N1_3228 
+DOCKED: REMARK RMS_REF  0.3200
+DOCKED: USER                              x       y       z     vdW  Elec       q    Type
+DOCKED: USER                           _______ _______ _______ _____ _____    ______ ____
+DOCKED: ROOT
+DOCKED: ATOM      1  A1  PTB     1      -2.016  14.047  16.520 -0.41 -0.10    +0.198 A 
+DOCKED: ATOM      2  A2  PTB     1      -2.285  15.384  16.644 -0.53 -0.01    +0.019 A 
+DOCKED: ATOM      3  A3  PTB     1      -2.097  16.022  17.876 -0.48 -0.00    +0.001 A 
+DOCKED: ATOM      4  A4  PTB     1      -1.629  15.299  18.984 -0.48 -0.00    +0.000 A 
+DOCKED: ATOM      5  A5  PTB     1      -1.351  13.937  18.840 -0.56 -0.00    +0.001 A 
+DOCKED: ATOM      6  A6  PTB     1      -1.547  13.326  17.606 -0.56 -0.01    +0.019 A 
+DOCKED: ATOM      7  C7  PTB     1      -2.212  13.411  15.299 -0.15 -0.60    +0.582 C 
+DOCKED: ATOM      8  N1  PTB     1      -2.694  14.061  14.255 -0.39 +0.34    -0.254 N 
+DOCKED: ATOM      9  N2  PTB     1      -1.758  12.183  15.114 -0.34 +0.36    -0.254 N 
+DOCKED: ATOM     10  H6  PTB     1      -2.836  13.607  13.378 -0.23 -0.42    +0.172 HD
+DOCKED: ATOM     11  H7  PTB     1      -3.092  14.970  14.357 -0.34 -0.20    +0.172 HD
+DOCKED: ATOM     12  H8  PTB     1      -1.960  11.681  14.269 -0.23 -0.47    +0.172 HD
+DOCKED: ATOM     13  H9  PTB     1      -1.455  11.609  15.875 -0.25 -0.21    +0.172 HD
+DOCKED: ENDROOT
+DOCKED: TORSDOF 0
+DOCKED: TER
+DOCKED: ENDMDL
+________________________________________________________________________________
+
+
+
+	BEGINNING LAMARCKIAN GENETIC ALGORITHM DOCKING
+
+Run:	8 / 10
+Date:	Wed Mar 21 19:51:10 2007
+Output level is set to 0.
+
+
+Creating an initial population of 150 individuals.
+
+Assigning a random translation and a random orientation to each of the 150 individuals.
+
+Beginning Lamarckian Genetic Algorithm (LGA), with a maximum of 25000000
+energy evaluations.
+
+Final-Value: -6.285
+
+Run completed;  time taken for this run:
+Real= 3m 11.96s,  CPU= 3m 11.89s,  System= 0.08s
+
+7:54 22" p.m., 03/21/2007
+Total number of Energy Evaluations: 25001086
+Total number of Generations:        19578
+
+
+	FINAL LAMARCKIAN GENETIC ALGORITHM DOCKED STATE
+	_______________________________________________
+
+
+State:	-2.025 13.820 16.068  -0.285 -0.855 -0.434 -5.807  
+
+DOCKED: MODEL        8
+DOCKED: USER    Run = 8
+DOCKED: USER    DPF = 3ptb_3ptb.dpf
+DOCKED: USER  
+DOCKED: USER    Estimated Free Energy of Binding    =   -6.28 kcal/mol  [=(1)+(2)+(3)-(4)]
+DOCKED: USER    Estimated Inhibition Constant, Ki   =   24.73 uM (micromolar)  [Temperature = 298.15 K]
+DOCKED: USER    
+DOCKED: USER    (1) Final Intermolecular Energy     =   -6.28 kcal/mol
+DOCKED: USER        vdW + Hbond + desolv Energy     =   -4.98 kcal/mol
+DOCKED: USER        Electrostatic Energy            =   -1.31 kcal/mol
+DOCKED: USER    (2) Final Total Internal Energy     =   +0.00 kcal/mol
+DOCKED: USER    (3) Torsional Free Energy           =   +0.00 kcal/mol
+DOCKED: USER    (4) Unbound System's Energy         =   +0.00 kcal/mol
+DOCKED: USER    
+DOCKED: USER    
+DOCKED: USER    NEWDPF move 3ptb_lig.pdbqt
+DOCKED: USER    NEWDPF about -1.858200 13.802200 16.138800
+DOCKED: USER    NEWDPF tran0 -2.024769 13.819978 16.067782
+DOCKED: USER    NEWDPF quaternion0 -0.014424 -0.043305 -0.021974 -0.998716
+DOCKED: USER    NEWDPF axisangle0 -0.284727 -0.854853 -0.433771 -5.807492
+DOCKED: USER    NEWDPF quat0 -0.284727 -0.854853 -0.433771 -5.807492 # deprecated
+DOCKED: USER  
+DOCKED: REMARK  0 active torsions:
+DOCKED: REMARK  status: ('A' for Active; 'I' for Inactive)
+DOCKED: REMARK       I    between atoms: A1_3221  and  C7_3227 
+DOCKED: REMARK       I    between atoms: C7_3227  and  N1_3228 
+DOCKED: REMARK RMS_REF  0.3200
+DOCKED: USER                              x       y       z     vdW  Elec       q    Type
+DOCKED: USER                           _______ _______ _______ _____ _____    ______ ____
+DOCKED: ROOT
+DOCKED: ATOM      1  A1  PTB     1      -1.958  14.060  16.506 -0.41 -0.09    +0.198 A 
+DOCKED: ATOM      2  A2  PTB     1      -2.221  15.399  16.625 -0.53 -0.01    +0.019 A 
+DOCKED: ATOM      3  A3  PTB     1      -2.003  16.047  17.847 -0.48 -0.00    +0.001 A 
+DOCKED: ATOM      4  A4  PTB     1      -1.511  15.332  18.950 -0.49 -0.00    +0.000 A 
+DOCKED: ATOM      5  A5  PTB     1      -1.240  13.968  18.811 -0.57 -0.00    +0.001 A 
+DOCKED: ATOM      6  A6  PTB     1      -1.466  13.347  17.587 -0.56 -0.01    +0.019 A 
+DOCKED: ATOM      7  C7  PTB     1      -2.184  13.415  15.296 -0.15 -0.59    +0.582 C 
+DOCKED: ATOM      8  N1  PTB     1      -2.689  14.056  14.257 -0.40 +0.34    -0.254 N 
+DOCKED: ATOM      9  N2  PTB     1      -1.738  12.184  15.111 -0.34 +0.35    -0.254 N 
+DOCKED: ATOM     10  H6  PTB     1      -2.853  13.596  13.388 -0.23 -0.42    +0.172 HD
+DOCKED: ATOM     11  H7  PTB     1      -3.082  14.967  14.361 -0.34 -0.20    +0.172 HD
+DOCKED: ATOM     12  H8  PTB     1      -1.961  11.675  14.275 -0.23 -0.47    +0.172 HD
+DOCKED: ATOM     13  H9  PTB     1      -1.418  11.615  15.869 -0.24 -0.21    +0.172 HD
+DOCKED: ENDROOT
+DOCKED: TORSDOF 0
+DOCKED: TER
+DOCKED: ENDMDL
+________________________________________________________________________________
+
+
+
+	BEGINNING LAMARCKIAN GENETIC ALGORITHM DOCKING
+
+Run:	9 / 10
+Date:	Wed Mar 21 19:54:22 2007
+Output level is set to 0.
+
+
+Creating an initial population of 150 individuals.
+
+Assigning a random translation and a random orientation to each of the 150 individuals.
+
+Beginning Lamarckian Genetic Algorithm (LGA), with a maximum of 25000000
+energy evaluations.
+
+Final-Value: -6.284
+
+Run completed;  time taken for this run:
+Real= 3m 11.76s,  CPU= 3m 11.66s,  System= 0.08s
+
+7:57 34" p.m., 03/21/2007
+Total number of Energy Evaluations: 25000433
+Total number of Generations:        19575
+
+
+	FINAL LAMARCKIAN GENETIC ALGORITHM DOCKED STATE
+	_______________________________________________
+
+
+State:	-2.029 13.813 16.075  0.227 0.869 0.439 5.985  
+
+DOCKED: MODEL        9
+DOCKED: USER    Run = 9
+DOCKED: USER    DPF = 3ptb_3ptb.dpf
+DOCKED: USER  
+DOCKED: USER    Estimated Free Energy of Binding    =   -6.28 kcal/mol  [=(1)+(2)+(3)-(4)]
+DOCKED: USER    Estimated Inhibition Constant, Ki   =   24.75 uM (micromolar)  [Temperature = 298.15 K]
+DOCKED: USER    
+DOCKED: USER    (1) Final Intermolecular Energy     =   -6.28 kcal/mol
+DOCKED: USER        vdW + Hbond + desolv Energy     =   -4.98 kcal/mol
+DOCKED: USER        Electrostatic Energy            =   -1.31 kcal/mol
+DOCKED: USER    (2) Final Total Internal Energy     =   +0.00 kcal/mol
+DOCKED: USER    (3) Torsional Free Energy           =   +0.00 kcal/mol
+DOCKED: USER    (4) Unbound System's Energy         =   +0.00 kcal/mol
+DOCKED: USER    
+DOCKED: USER    
+DOCKED: USER    NEWDPF move 3ptb_lig.pdbqt
+DOCKED: USER    NEWDPF about -1.858200 13.802200 16.138800
+DOCKED: USER    NEWDPF tran0 -2.029010 13.813284 16.074896
+DOCKED: USER    NEWDPF quaternion0 0.011871 0.045366 0.022943 0.998636
+DOCKED: USER    NEWDPF axisangle0 0.227393 0.868991 0.439486 5.984977
+DOCKED: USER    NEWDPF quat0 0.227393 0.868991 0.439486 5.984977 # deprecated
+DOCKED: USER  
+DOCKED: REMARK  0 active torsions:
+DOCKED: REMARK  status: ('A' for Active; 'I' for Inactive)
+DOCKED: REMARK       I    between atoms: A1_3221  and  C7_3227 
+DOCKED: REMARK       I    between atoms: C7_3227  and  N1_3228 
+DOCKED: REMARK RMS_REF  0.3200
+DOCKED: USER                              x       y       z     vdW  Elec       q    Type
+DOCKED: USER                           _______ _______ _______ _____ _____    ______ ____
+DOCKED: ROOT
+DOCKED: ATOM      1  A1  PTB     1      -1.964  14.051  16.515 -0.41 -0.09    +0.198 A 
+DOCKED: ATOM      2  A2  PTB     1      -2.225  15.390  16.639 -0.53 -0.01    +0.019 A 
+DOCKED: ATOM      3  A3  PTB     1      -2.011  16.031  17.865 -0.48 -0.00    +0.001 A 
+DOCKED: ATOM      4  A4  PTB     1      -1.525  15.310  18.967 -0.49 -0.00    +0.000 A 
+DOCKED: ATOM      5  A5  PTB     1      -1.255  13.946  18.822 -0.57 -0.00    +0.001 A 
+DOCKED: ATOM      6  A6  PTB     1      -1.478  13.331  17.594 -0.56 -0.01    +0.019 A 
+DOCKED: ATOM      7  C7  PTB     1      -2.186  13.412  15.300 -0.15 -0.59    +0.582 C 
+DOCKED: ATOM      8  N1  PTB     1      -2.685  14.060  14.263 -0.40 +0.34    -0.254 N 
+DOCKED: ATOM      9  N2  PTB     1      -1.740  12.182  15.111 -0.34 +0.36    -0.254 N 
+DOCKED: ATOM     10  H6  PTB     1      -2.846  13.604  13.390 -0.23 -0.42    +0.172 HD
+DOCKED: ATOM     11  H7  PTB     1      -3.077  14.971  14.369 -0.34 -0.20    +0.172 HD
+DOCKED: ATOM     12  H8  PTB     1      -1.961  11.677  14.271 -0.23 -0.47    +0.172 HD
+DOCKED: ATOM     13  H9  PTB     1      -1.425  11.608  15.867 -0.24 -0.21    +0.172 HD
+DOCKED: ENDROOT
+DOCKED: TORSDOF 0
+DOCKED: TER
+DOCKED: ENDMDL
+________________________________________________________________________________
+
+
+
+	BEGINNING LAMARCKIAN GENETIC ALGORITHM DOCKING
+
+Run:	10 / 10
+Date:	Wed Mar 21 19:57:34 2007
+Output level is set to 0.
+
+
+Creating an initial population of 150 individuals.
+
+Assigning a random translation and a random orientation to each of the 150 individuals.
+
+Beginning Lamarckian Genetic Algorithm (LGA), with a maximum of 25000000
+energy evaluations.
+
+Final-Value: -6.285
+
+Run completed;  time taken for this run:
+Real= 3m 11.46s,  CPU= 3m 11.41s,  System= 0.06s
+
+8:00 45" p.m., 03/21/2007
+Total number of Energy Evaluations: 25000679
+Total number of Generations:        19459
+
+
+	FINAL LAMARCKIAN GENETIC ALGORITHM DOCKED STATE
+	_______________________________________________
+
+
+State:	-2.043 13.821 16.075  0.260 0.880 0.398 6.282  
+
+DOCKED: MODEL       10
+DOCKED: USER    Run = 10
+DOCKED: USER    DPF = 3ptb_3ptb.dpf
+DOCKED: USER  
+DOCKED: USER    Estimated Free Energy of Binding    =   -6.28 kcal/mol  [=(1)+(2)+(3)-(4)]
+DOCKED: USER    Estimated Inhibition Constant, Ki   =   24.74 uM (micromolar)  [Temperature = 298.15 K]
+DOCKED: USER    
+DOCKED: USER    (1) Final Intermolecular Energy     =   -6.28 kcal/mol
+DOCKED: USER        vdW + Hbond + desolv Energy     =   -4.98 kcal/mol
+DOCKED: USER        Electrostatic Energy            =   -1.31 kcal/mol
+DOCKED: USER    (2) Final Total Internal Energy     =   +0.00 kcal/mol
+DOCKED: USER    (3) Torsional Free Energy           =   +0.00 kcal/mol
+DOCKED: USER    (4) Unbound System's Energy         =   +0.00 kcal/mol
+DOCKED: USER    
+DOCKED: USER    
+DOCKED: USER    NEWDPF move 3ptb_lig.pdbqt
+DOCKED: USER    NEWDPF about -1.858200 13.802200 16.138800
+DOCKED: USER    NEWDPF tran0 -2.042695 13.820882 16.075141
+DOCKED: USER    NEWDPF quaternion0 0.014245 0.048214 0.021785 0.998498
+DOCKED: USER    NEWDPF axisangle0 0.259995 0.879957 0.397591 6.281781
+DOCKED: USER    NEWDPF quat0 0.259995 0.879957 0.397591 6.281781 # deprecated
+DOCKED: USER  
+DOCKED: REMARK  0 active torsions:
+DOCKED: REMARK  status: ('A' for Active; 'I' for Inactive)
+DOCKED: REMARK       I    between atoms: A1_3221  and  C7_3227 
+DOCKED: REMARK       I    between atoms: C7_3227  and  N1_3228 
+DOCKED: REMARK RMS_REF  0.3200
+DOCKED: USER                              x       y       z     vdW  Elec       q    Type
+DOCKED: USER                           _______ _______ _______ _____ _____    ______ ____
+DOCKED: ROOT
+DOCKED: ATOM      1  A1  PTB     1      -1.981  14.061  16.514 -0.41 -0.09    +0.198 A 
+DOCKED: ATOM      2  A2  PTB     1      -2.245  15.400  16.631 -0.53 -0.01    +0.019 A 
+DOCKED: ATOM      3  A3  PTB     1      -2.039  16.047  17.855 -0.48 -0.00    +0.001 A 
+DOCKED: ATOM      4  A4  PTB     1      -1.558  15.333  18.962 -0.49 -0.00    +0.000 A 
+DOCKED: ATOM      5  A5  PTB     1      -1.285  13.969  18.826 -0.57 -0.00    +0.001 A 
+DOCKED: ATOM      6  A6  PTB     1      -1.499  13.348  17.600 -0.56 -0.01    +0.019 A 
+DOCKED: ATOM      7  C7  PTB     1      -2.194  13.416  15.301 -0.15 -0.59    +0.582 C 
+DOCKED: ATOM      8  N1  PTB     1      -2.689  14.057  14.258 -0.40 +0.34    -0.254 N 
+DOCKED: ATOM      9  N2  PTB     1      -1.745  12.185  15.121 -0.34 +0.35    -0.254 N 
+DOCKED: ATOM     10  H6  PTB     1      -2.844  13.597  13.387 -0.23 -0.42    +0.172 HD
+DOCKED: ATOM     11  H7  PTB     1      -3.084  14.968  14.358 -0.34 -0.20    +0.172 HD
+DOCKED: ATOM     12  H8  PTB     1      -1.960  11.676  14.283 -0.24 -0.47    +0.172 HD
+DOCKED: ATOM     13  H9  PTB     1      -1.433  11.616  15.882 -0.25 -0.21    +0.172 HD
+DOCKED: ENDROOT
+DOCKED: TORSDOF 0
+DOCKED: TER
+DOCKED: ENDMDL
+________________________________________________________________________________
+
+
+
+DPF> analysis                             # perform a ranked cluster analysis
+
+
+		CLUSTER ANALYSIS OF CONFORMATIONS
+		_________________________________
+
+Number of conformations = 10
+
+RMSD cluster analysis will be performed using the ligand atoms only (13 / 13 total atoms).
+
+STATE VARIABLES:
+________________
+
+Translation x,y,z         = -2.013 13.822 16.067
+Quaternion x,y,z,w        = 0.015 0.041 0.023 0.999
+Axis-Angle nx,ny,nz,angle = 0.311 0.832 0.460 5.689
+Number of Torsions        = 0
+
+
+
+STATE VARIABLES:
+________________
+
+Translation x,y,z         = -2.033 13.861 15.991
+Quaternion x,y,z,w        = -0.033 -0.073 -0.044 -0.996
+Axis-Angle nx,ny,nz,angle = -0.365 -0.800 -0.477 -10.522
+Number of Torsions        = 0
+
+
+
+STATE VARIABLES:
+________________
+
+Translation x,y,z         = -2.034 13.823 16.062
+Quaternion x,y,z,w        = 0.016 0.046 0.022 0.999
+Axis-Angle nx,ny,nz,angle = 0.294 0.861 0.415 6.186
+Number of Torsions        = 0
+
+
+
+STATE VARIABLES:
+________________
+
+Translation x,y,z         = -2.049 13.820 16.071
+Quaternion x,y,z,w        = -0.014 -0.049 -0.021 -0.998
+Axis-Angle nx,ny,nz,angle = -0.256 -0.889 -0.381 -6.306
+Number of Torsions        = 0
+
+
+
+STATE VARIABLES:
+________________
+
+Translation x,y,z         = -2.062 13.812 16.071
+Quaternion x,y,z,w        = -0.012 -0.053 -0.022 -0.998
+Axis-Angle nx,ny,nz,angle = -0.203 -0.907 -0.369 -6.725
+Number of Torsions        = 0
+
+
+
+STATE VARIABLES:
+________________
+
+Translation x,y,z         = -2.029 13.855 16.003
+Quaternion x,y,z,w        = -0.030 -0.069 -0.041 -0.996
+Axis-Angle nx,ny,nz,angle = -0.354 -0.803 -0.479 -9.811
+Number of Torsions        = 0
+
+
+
+STATE VARIABLES:
+________________
+
+Translation x,y,z         = -2.071 13.810 16.078
+Quaternion x,y,z,w        = -0.010 -0.055 -0.021 -0.998
+Axis-Angle nx,ny,nz,angle = -0.165 -0.921 -0.353 -6.827
+Number of Torsions        = 0
+
+
+
+STATE VARIABLES:
+________________
+
+Translation x,y,z         = -2.025 13.820 16.068
+Quaternion x,y,z,w        = -0.014 -0.043 -0.022 -0.999
+Axis-Angle nx,ny,nz,angle = -0.285 -0.855 -0.434 -5.807
+Number of Torsions        = 0
+
+
+
+STATE VARIABLES:
+________________
+
+Translation x,y,z         = -2.029 13.813 16.075
+Quaternion x,y,z,w        = 0.012 0.045 0.023 0.999
+Axis-Angle nx,ny,nz,angle = 0.227 0.869 0.439 5.985
+Number of Torsions        = 0
+
+
+
+STATE VARIABLES:
+________________
+
+Translation x,y,z         = -2.043 13.821 16.075
+Quaternion x,y,z,w        = 0.014 0.048 0.022 0.998
+Axis-Angle nx,ny,nz,angle = 0.260 0.880 0.398 6.282
+Number of Torsions        = 0
+
+
+
+Outputting structurally similar clusters, ranked in order of increasing energy.
+
+
+________________________________________________________________________________
+
+Number of distinct conformational clusters found = 1,  out of 10 runs,
+Using an rmsd-tolerance of 0.5 A
+
+
+	CLUSTERING HISTOGRAM
+	____________________
+
+________________________________________________________________________________
+     |           |     |           |     |                                    
+Clus | Lowest    | Run | Mean      | Num | Histogram                          
+-ter | Binding   |     | Binding   | in  |                                    
+Rank | Energy    |     | Energy    | Clus|    5    10   15   20   25   30   35
+_____|___________|_____|___________|_____|____:____|____:____|____:____|____:___
+   1 |     -6.28 |   8 |     -6.28 |  10 |##########
+_____|___________|_____|___________|_____|______________________________________
+
+
+Number of multi-member conformational clusters found = 1, out of 10 runs.
+
+	RMSD TABLE
+	__________
+
+_____________________________________________________________________
+     |      |      |           |         |                 |
+Rank | Sub- | Run  | Binding   | Cluster | Reference       | Grep
+     | Rank |      | Energy    | RMSD    | RMSD            | Pattern
+_____|______|______|___________|_________|_________________|___________
+   1      1      8       -6.28      0.00      0.24           RANKING
+   1      2     10       -6.28      0.03      0.26           RANKING
+   1      3      5       -6.28      0.05      0.29           RANKING
+   1      4      4       -6.28      0.03      0.27           RANKING
+   1      5      9       -6.28      0.02      0.24           RANKING
+   1      6      3       -6.28      0.02      0.26           RANKING
+   1      7      1       -6.28      0.01      0.23           RANKING
+   1      8      7       -6.28      0.07      0.29           RANKING
+   1      9      6       -6.28      0.13      0.34           RANKING
+   1     10      2       -6.28      0.15      0.37           RANKING
+_______________________________________________________________________
+
+
+
+	INFORMATION ENTROPY ANALYSIS FOR THIS CLUSTERING
+	________________________________________________
+
+
+Information entropy for this clustering = 0.00  (rmstol = 0.50 Angstrom)
+
+_______________________________________________________________________
+
+
+	STATISTICAL MECHANICAL ANALYSIS
+	_______________________________
+
+
+Partition function, Q =    10.11            at Temperature, T = 298.15 K
+Free energy,        A ~ -1370.52 kcal/mol   at Temperature, T = 298.15 K
+Internal energy,    U =    -6.28 kcal/mol   at Temperature, T = 298.15 K
+Entropy,            S =     4.58 kcal/mol/K at Temperature, T = 298.15 K
+
+_______________________________________________________________________
+
+
+	LOWEST ENERGY DOCKED CONFORMATION from EACH CLUSTER
+	___________________________________________________
+
+
+
+Keeping original residue number (specified in the input PDBQ file) for outputting.
+
+MODEL        8
+USER    Run = 8
+USER    Cluster Rank = 1
+USER    Number of conformations in this cluster = 10
+USER  
+USER    RMSD from reference structure       = 0.241 A
+USER  
+USER    Estimated Free Energy of Binding    =   -6.28 kcal/mol  [=(1)+(2)+(3)-(4)]
+USER    Estimated Inhibition Constant, Ki   =   24.73 uM (micromolar)  [Temperature = 298.15 K]
+USER    
+USER    (1) Final Intermolecular Energy     =   -6.28 kcal/mol
+USER        vdW + Hbond + desolv Energy     =   -4.98 kcal/mol
+USER        Electrostatic Energy            =   -1.31 kcal/mol
+USER    (2) Final Total Internal Energy     =   +0.00 kcal/mol
+USER    (3) Torsional Free Energy           =   +0.00 kcal/mol
+USER    (4) Unbound System's Energy         =   +0.00 kcal/mol
+USER    
+USER    
+USER  
+USER    DPF = 3ptb_3ptb.dpf
+USER    NEWDPF move	3ptb_lig.pdbqt
+USER    NEWDPF about	-1.858200 13.802200 16.138800
+USER    NEWDPF tran0	-2.024769 13.819978 16.067782
+USER    NEWDPF axisangle0	-0.284727 -0.854853 -0.433771 -5.807492
+USER    NEWDPF quaternion0	-0.014424 -0.043305 -0.021974 -0.998716
+USER  
+USER                              x       y       z    vdW   Elec        q     RMS 
+ATOM      1  A1  PTB     1      -1.958  14.060  16.506 -0.41 -0.09    +0.198  0.241
+ATOM      2  A2  PTB     1      -2.221  15.399  16.625 -0.53 -0.01    +0.019  0.241
+ATOM      3  A3  PTB     1      -2.003  16.047  17.847 -0.48 -0.00    +0.001  0.241
+ATOM      4  A4  PTB     1      -1.511  15.332  18.950 -0.49 -0.00    +0.000  0.241
+ATOM      5  A5  PTB     1      -1.240  13.968  18.811 -0.57 -0.00    +0.001  0.241
+ATOM      6  A6  PTB     1      -1.466  13.347  17.587 -0.56 -0.01    +0.019  0.241
+ATOM      7  C7  PTB     1      -2.184  13.415  15.296 -0.15 -0.59    +0.582  0.241
+ATOM      8  N1  PTB     1      -2.689  14.056  14.257 -0.40 +0.34    -0.254  0.241
+ATOM      9  N2  PTB     1      -1.738  12.184  15.111 -0.34 +0.35    -0.254  0.241
+ATOM     10  H6  PTB     1      -2.853  13.596  13.388 -0.23 -0.42    +0.172  0.241
+ATOM     11  H7  PTB     1      -3.082  14.967  14.361 -0.34 -0.20    +0.172  0.241
+ATOM     12  H8  PTB     1      -1.961  11.675  14.275 -0.23 -0.47    +0.172  0.241
+ATOM     13  H9  PTB     1      -1.418  11.615  15.869 -0.24 -0.21    +0.172  0.241
+TER
+ENDMDL
+
+
+AVSFLD: # AVS field file
+AVSFLD: #
+AVSFLD: # Created by AutoDock
+AVSFLD: #
+AVSFLD: ndim=2           # number of dimensions in the field
+AVSFLD: nspace=1         # number of physical coordinates
+AVSFLD: veclen=7         # vector size
+AVSFLD: dim1=13          # atoms
+AVSFLD: dim2=1           # conformations
+AVSFLD: data=Real       # data type (byte,integer,Real,double)
+AVSFLD: field=uniform    # field coordinate layout
+AVSFLD: label= x y z vdW Elec q RMS
+AVSFLD: variable 1 file = 3ptb_3ptb.dlg.pdb filetype = ascii offset = 5 stride = 12
+AVSFLD: variable 2 file = 3ptb_3ptb.dlg.pdb filetype = ascii offset = 6 stride = 12
+AVSFLD: variable 3 file = 3ptb_3ptb.dlg.pdb filetype = ascii offset = 7 stride = 12
+AVSFLD: variable 4 file = 3ptb_3ptb.dlg.pdb filetype = ascii offset = 8 stride = 12
+AVSFLD: variable 5 file = 3ptb_3ptb.dlg.pdb filetype = ascii offset = 9 stride = 12
+AVSFLD: variable 6 file = 3ptb_3ptb.dlg.pdb filetype = ascii offset = 10 stride = 12
+AVSFLD: variable 7 file = 3ptb_3ptb.dlg.pdb filetype = ascii offset = 11 stride = 12
+AVSFLD: # end of file
+
+>>> Closing the docking parameter file (DPF)...
+
+This docking finished at:			8:00 45" p.m., 03/21/2007
+
+
+
+
+________________________________________________________________________________
+
+/bluefish/people-a/rhuey/bin/autodock4_3_21: Successful Completion on "bluefish0193"
+
+Real= 31m 57.82s,  CPU= 31m 57.10s,  System= 0.68s
+________________________________________________________________________________
+

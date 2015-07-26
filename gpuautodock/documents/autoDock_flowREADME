@@ -1,0 +1,91 @@
+Flow of Autodock
+
+main.cc
+|
+-> call_glss.cc
+    |CUDA: get GPU and CPU memory
+    |
+    -> gs.cc [search (genetic algorithm)]
+        |
+        ->mapping.cc
+            |
+            ->support.h (evaluate)
+                |
+                ->support.cc(evaluate)
+                    |
+                    ->eval.cc (operator())
+                        |                        
+                        ->eval()
+                            |
+                            ->preparation functions
+                            ->energy calculations trilinterp
+                            ->eintcal
+        ->selection
+        ->crossover
+        ->mutation
+        ->elitism
+    ->CUDA: Free GPU and CPU memory
+->call_gs.cc
+    |CUDA: get GPU and CPU memory
+    |
+    ->gs.cc [search (genetic algorithm)]  ... SEE ABOVE
+    ->CUDA: Free GPU and CPU memory
+
+Cuda implementation:
+    For our implementation, we focused on parallelizing the energy calculations
+of each individual in a population. So essentially each individual of a
+population is given a graphics processing unit in which it calculates the
+energy for that partciular individual.  The two main functions that we
+identified for energy calculations are "trilinterp" used in eval.cc, found
+in trilinterp.cc , and "eintcal", also used in eval.cc, and found in eintcal.cc
+
+    There are two locations that we have parallelized to do the energy
+calculations for a population.
+
+Diagram of the flow of how we do the energy calculations for the first location
+Entry location: gs.cc (search function)
+
+gs.cc (search)
+|
+->eMapPrepCuda.cc (eMapPrepCuda)
+    |
+    ->eMapPrepCuda.cc (e_prep)
+    ->eval_wrapper.cu (eval_wrapper)
+        |
+        ->eval_wrapper.cu (eval_tril_kernel)
+        ->eval_wrapper.cu (eintcal_kernel)
+    ->eMapPrepCuda.cc (e_complete_eval)
+
+Diagram of the flow of how we do the energy calculations for the second location
+Entry location: call_glss.cc (call_glss)
+
+call_glss.cc (call_glss)
+|
+->eMapPrepCuda.cc (eEqualPrepCuda)
+    |
+    ->eMapPrepCuda.cc (e_prep)
+    ->eval_wrapper.cu (eval_wrapper)
+        |
+        ->eval_wrapper.cu (eval_tril_kernel)
+        ->eval_wrapper.cu (eintcal_kernel)
+    ->eMapPrepCuda.cc (e_complete_evalEqual)
+
+
+
+    The reason we created separate entry locations is due to the differences
+in the functionality of the two. For example, the mapping energy calculations 
+does some extra preparation of the data by writing the phenotypes and returns 
+void.  The equal energies check returns whether the energies have been equal or
+not as well as some extra comparrisons between energies. There may be ways to 
+combine them, but no time was taken to discover those ways. Also there may be a
+way to add support to doing the checks for equal energies in parrell, such as
+bitwise oring or anding a memory location on the graphics card and check it
+later, but again, that has not been looked into...
+
+
+    Hope this guide helps you map out the primary locations to start analyzing
+the code. If you have any questions feel free to post on the source forge
+page found at http://sourceforge.net/projects/gpuautodock/
+
+
+

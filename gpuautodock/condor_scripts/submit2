@@ -1,0 +1,12 @@
+# This is a comment
+Universe = vanilla
+Executable = condortest2.sh
+output = out/condortest2.sh.$(Process).out
+error = err/condortest2.sh.$(Process).err
+Log   = condortest2.log
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+Requirements = (Arch == "INTEL" || Arch == "X86_64") && (Hasautodock == TRUE)
+Arguments = $(Process)
+transfer_input_files = input2.tar
+Queue 10
