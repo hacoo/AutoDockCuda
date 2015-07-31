@@ -191,11 +191,11 @@ CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 CXXLD = $(CXX)
 CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
-	-o $@
+	-o $@ $(CUDA_ARGS)
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
-LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@ $(CUDA_ARGS)
 SOURCES = $(libad_a_SOURCES) $(autodock4_SOURCES)
 DIST_SOURCES = $(am__libad_a_SOURCES_DIST) $(autodock4_SOURCES)
 ETAGS = etags
@@ -226,6 +226,7 @@ CPPFLAGS = @CPPFLAGS@
 CUDASDK = @CUDASDK@
 CUDA_CFLAGS = @CUDA_CFLAGS@
 CUDA_LIBS = @CUDA_LIBS@
+CUDA_ARGS = @CUDA_ARGS@
 CXX = @CXX@
 CXXDEPMODE = @CXXDEPMODE@
 CXXFLAGS = @CXXFLAGS@
@@ -589,7 +590,7 @@ clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
 autodock4$(EXEEXT): $(autodock4_OBJECTS) $(autodock4_DEPENDENCIES) 
 	@rm -f autodock4$(EXEEXT)
-	$(autodock4_LINK) $(autodock4_OBJECTS) $(autodock4_LDADD) $(LIBS)
+	$(autodock4_LINK) $(autodock4_OBJECTS) $(autodock4_LDADD) $(LIBS) $(CUDA_ARGS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)

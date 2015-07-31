@@ -70,11 +70,13 @@ if test "x$cuda" = "xyes" ; then
         [  --with-cuda=PATH        prefix where cuda is installed [default=auto]])
     if test "x$with_cuda" = x; then
       CUDA_CFLAGS="-I/usr/local/cuda/include -I$CUDASDK/common/inc"
-      CUDA_LIBS=" -L/usr/local/cuda/bin -L/usr/local/cuda/lib -L$CUDASDK/lib -L$CUDASDK/common/lib/linux -lcuda -lcudart"
+      CUDA_LIBS=" -L/usr/local/cuda/bin -L/usr/local/cuda/lib64 -L$CUDASDK/lib -L$CUDASDK/common/lib/linux"
+      CUDA_ARGS=" -lcuda -lcudart"
       NVCC="nvcc"
     else
       CUDA_CFLAGS="-I$with_cuda/include -I$CUDASDK/common/inc"
-      CUDA_LIBS=" -L$with_cuda/bin -L$with_cuda/lib -L$CUDASDK/lib -L$CUDASDK/common/lib/linux -lcuda -lcudart"
+      CUDA_LIBS=" -L$with_cuda/bin -L$with_cuda/lib64 -L$CUDASDK/lib -L$CUDASDK/common/lib/linux"
+      CUDA_ARGS=" -lcuda -lcudart"
       NVCC="$with_cuda/bin/nvcc"
     fi
 

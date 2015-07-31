@@ -191,11 +191,11 @@ CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 CXXLD = $(CXX)
 CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
-	-o $@
+	-o $@ $(CUDA_ARGS)
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
-LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@ $(CUDA_ARGS)
 SOURCES = $(libad_a_SOURCES) $(autodock4_SOURCES)
 DIST_SOURCES = $(am__libad_a_SOURCES_DIST) $(autodock4_SOURCES)
 ETAGS = etags
@@ -212,25 +212,26 @@ GZIP_ENV = --best
 distuninstallcheck_listfiles = find . -type f -print
 distcleancheck_listfiles = find . -type f -print
 
-ACLOCAL = ${SHELL} /users/majors/tblattne/cudaautodock/src/autodock-4.0.1/missing --run aclocal-1.10
-AMTAR = ${SHELL} /users/majors/tblattne/cudaautodock/src/autodock-4.0.1/missing --run tar
-AUTOCONF = ${SHELL} /users/majors/tblattne/cudaautodock/src/autodock-4.0.1/missing --run autoconf
-AUTOHEADER = ${SHELL} /users/majors/tblattne/cudaautodock/src/autodock-4.0.1/missing --run autoheader
-AUTOMAKE = ${SHELL} /users/majors/tblattne/cudaautodock/src/autodock-4.0.1/missing --run automake-1.10
+ACLOCAL = ${SHELL} /u/reb/Documents/CS410/TermProject/AutoDockCuda/gpuautodock/src/autodock-4.0.1/missing --run aclocal-1.10
+AMTAR = ${SHELL} /u/reb/Documents/CS410/TermProject/AutoDockCuda/gpuautodock/src/autodock-4.0.1/missing --run tar
+AUTOCONF = ${SHELL} /u/reb/Documents/CS410/TermProject/AutoDockCuda/gpuautodock/src/autodock-4.0.1/missing --run autoconf
+AUTOHEADER = ${SHELL} /u/reb/Documents/CS410/TermProject/AutoDockCuda/gpuautodock/src/autodock-4.0.1/missing --run autoheader
+AUTOMAKE = ${SHELL} /u/reb/Documents/CS410/TermProject/AutoDockCuda/gpuautodock/src/autodock-4.0.1/missing --run automake-1.10
 AWK = gawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
 CPP = gcc -E
-CPPFLAGS =  -I/usr/local/cuda/include -I/common/inc  -L/usr/local/cuda/bin -L/usr/local/cuda/lib -L/lib -L/common/lib/linux -lcuda -lcudart
+CPPFLAGS =  -I/pkgs/nvidia-cuda/5.5/include -I/common/inc  -L/pkgs/nvidia-cuda/5.5/bin -L/pkgs/nvidia-cuda/5.5/lib64 -L/lib -L/common/lib/linux
 CUDASDK = 
-CUDA_CFLAGS = -I/usr/local/cuda/include -I/common/inc
-CUDA_LIBS =  -L/usr/local/cuda/bin -L/usr/local/cuda/lib -L/lib -L/common/lib/linux -lcuda -lcudart
+CUDA_CFLAGS = -I/pkgs/nvidia-cuda/5.5/include -I/common/inc
+CUDA_LIBS =  -L/pkgs/nvidia-cuda/5.5/bin -L/pkgs/nvidia-cuda/5.5/lib64 -L/lib -L/common/lib/linux
+CUDA_ARGS =  -lcuda -lcudart
 CXX = g++
 CXXDEPMODE = depmode=gcc3
-CXXFLAGS =  -I/usr/local/cuda/include -I/common/inc  -L/usr/local/cuda/bin -L/usr/local/cuda/lib -L/lib -L/common/lib/linux -lcuda -lcudart 
+CXXFLAGS =  -I/pkgs/nvidia-cuda/5.5/include -I/common/inc  -L/pkgs/nvidia-cuda/5.5/bin -L/pkgs/nvidia-cuda/5.5/lib64 -L/lib -L/common/lib/linux 
 CYGPATH_W = echo
-DEFS = -DPACKAGE_NAME=\"autodock\" -DPACKAGE_TARNAME=\"autodock\" -DPACKAGE_VERSION=\"4.0.1\" -DPACKAGE_STRING=\"autodock\ 4.0.1\" -DPACKAGE_BUGREPORT=\"autodock@scripps.edu\" -DPACKAGE=\"autodock\" -DVERSION=\"4.0.1\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE__BOOL=1 -DHAVE_STDBOOL_H=1 -DHAVE_STDLIB_H=1 -DHAVE_MALLOC=1 -DHAVE_GETHOSTNAME=1 -DHAVE_STRNCASECMP=1 -DCUDA_READY=1 -DHAVE_CUDA_RUNTIME_H=1 -DHAVE_CUDA_H=1
+DEFS = -DPACKAGE_NAME=\"autodock\" -DPACKAGE_TARNAME=\"autodock\" -DPACKAGE_VERSION=\"4.0.1\" -DPACKAGE_STRING=\"autodock\ 4.0.1\" -DPACKAGE_BUGREPORT=\"autodock@scripps.edu\" -DPACKAGE_URL=\"\" -DPACKAGE=\"autodock\" -DVERSION=\"4.0.1\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE__BOOL=1 -DHAVE_STDBOOL_H=1 -DHAVE_STDLIB_H=1 -DHAVE_MALLOC=1 -DHAVE_GETHOSTNAME=1 -DHAVE_STRNCASECMP=1 -DCUDA_READY=1 -DHAVE_CUDA_RUNTIME_H=1 -DHAVE_CUDA_H=1
 DEPDIR = .deps
 ECHO_C = 
 ECHO_N = -n
@@ -247,9 +248,9 @@ LDFLAGS =
 LIBOBJS = 
 LIBS = 
 LTLIBOBJS = 
-MAKEINFO = ${SHELL} /users/majors/tblattne/cudaautodock/src/autodock-4.0.1/missing --run makeinfo
+MAKEINFO = ${SHELL} /u/reb/Documents/CS410/TermProject/AutoDockCuda/gpuautodock/src/autodock-4.0.1/missing --run makeinfo
 MKDIR_P = /bin/mkdir -p
-NVCC = nvcc
+NVCC = /pkgs/nvidia-cuda/5.5/bin/nvcc
 NVCCFLAGS = -D_DEBUG -g -use_fast_math -I. -I/common/inc -DCUDA_READY
 OBJEXT = o
 PACKAGE = autodock
@@ -261,13 +262,13 @@ PACKAGE_VERSION = 4.0.1
 PATH_SEPARATOR = :
 RANLIB = ranlib
 SET_MAKE = 
-SHELL = /bin/sh
+SHELL = /bin/bash
 STRIP = 
 VERSION = 4.0.1
-abs_builddir = /users/majors/tblattne/cudaautodock/src/autodock-4.0.1
-abs_srcdir = /users/majors/tblattne/cudaautodock/src/autodock-4.0.1
-abs_top_builddir = /users/majors/tblattne/cudaautodock/src/autodock-4.0.1
-abs_top_srcdir = /users/majors/tblattne/cudaautodock/src/autodock-4.0.1
+abs_builddir = /u/reb/Documents/CS410/TermProject/AutoDockCuda/gpuautodock/src/autodock-4.0.1
+abs_srcdir = /u/reb/Documents/CS410/TermProject/AutoDockCuda/gpuautodock/src/autodock-4.0.1
+abs_top_builddir = /u/reb/Documents/CS410/TermProject/AutoDockCuda/gpuautodock/src/autodock-4.0.1
+abs_top_srcdir = /u/reb/Documents/CS410/TermProject/AutoDockCuda/gpuautodock/src/autodock-4.0.1
 ac_ct_CC = gcc
 ac_ct_CXX = g++
 am__include = include
@@ -295,7 +296,7 @@ host_vendor = unknown
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = $(SHELL) /users/majors/tblattne/cudaautodock/src/autodock-4.0.1/install-sh
+install_sh = $(SHELL) /u/reb/Documents/CS410/TermProject/AutoDockCuda/gpuautodock/src/autodock-4.0.1/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -304,7 +305,7 @@ mandir = ${datarootdir}/man
 mkdir_p = /bin/mkdir -p
 oldincludedir = /usr/include
 pdfdir = ${docdir}
-prefix = /users/majors/tblattne/
+prefix = /usr/local
 program_transform_name = s,x,x,
 psdir = ${docdir}
 sbindir = ${exec_prefix}/sbin
@@ -589,7 +590,7 @@ clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
 autodock4$(EXEEXT): $(autodock4_OBJECTS) $(autodock4_DEPENDENCIES) 
 	@rm -f autodock4$(EXEEXT)
-	$(autodock4_LINK) $(autodock4_OBJECTS) $(autodock4_LDADD) $(LIBS)
+	$(autodock4_LINK) $(autodock4_OBJECTS) $(autodock4_LDADD) $(LIBS) $(CUDA_ARGS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
