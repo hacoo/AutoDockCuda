@@ -1,4 +1,4 @@
-#                                               -*- Autoconf -*-
+#                 m                              -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
 AC_INIT([autodock], [4.0.1], [autodock@scripps.edu])
@@ -16,6 +16,9 @@ AC_PROG_AWK
 saved_CXXFLAGS=${CXXFLAGS}
 AC_PROG_CXX
 CXXFLAGS=${saved_CXXFLAGS}
+
+# fixes issue with configure script not finding cuda args
+CUDA_ARGS="-lcudart -lcuda"	
 
 AC_PROG_INSTALL
 AC_PROG_RANLIB
@@ -71,12 +74,10 @@ if test "x$cuda" = "xyes" ; then
     if test "x$with_cuda" = x; then
       CUDA_CFLAGS="-I/usr/local/cuda/include -I$CUDASDK/common/inc"
       CUDA_LIBS=" -L/usr/local/cuda/bin -L/usr/local/cuda/lib64 -L$CUDASDK/lib -L$CUDASDK/common/lib/linux"
-      CUDA_ARGS=" -lcuda -lcudart"
       NVCC="nvcc"
-    else
+    else	
       CUDA_CFLAGS="-I$with_cuda/include -I$CUDASDK/common/inc"
       CUDA_LIBS=" -L$with_cuda/bin -L$with_cuda/lib64 -L$CUDASDK/lib -L$CUDASDK/common/lib/linux"
-      CUDA_ARGS=" -lcuda -lcudart"
       NVCC="$with_cuda/bin/nvcc"
     fi
 
@@ -101,7 +102,7 @@ if test "x$cuda" = "xyes" ; then
 
     # Check for CUDA headers usability
     cuda_save_CPPFLAGS=$CPPFLAGS
-    CPPFLAGS="$CPPFLAGS $CUDA_CFLAGS $CUDA_LIBS"
+    CPPFLAGS="-g $CPPFLAGS $CUDA_CFLAGS $CUDA_LIBS"
 #    CXXFLAGS+="$CXXFLAGS $CUDA_CFLAGS"
 
     AC_CHECK_HEADERS([cuda_runtime.h], [],
