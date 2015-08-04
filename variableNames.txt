@@ -1,0 +1,6 @@
+array of individuals = __global__ float individuals[]
+array of individual successors = __global__ float nextIndividuals[]
+array of energies = __global__ float energies[]
+
+energy lookup table = __global__ float atomeEnergyLookupTable[] 
+trilinear precomputed energy lookup table = __global__ float trilinearEnergyLookupTable[] 
