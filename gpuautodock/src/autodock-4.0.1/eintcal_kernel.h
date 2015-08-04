@@ -29,20 +29,6 @@
 
 
 // Need #include guards?
-#include <cuda.h>
-#include <cuda_runtime.h>
-#include <stdio.h>
-#include "typedefs.h"
-
-#include "autocomm.h"
-#include "grid.h"
-#include "eval.h"
-#include "constants.h"
-#include "trilinterp.h"
-#include "eintcal.h"
-#include "distdepdiel.h"
-#include "cuda_wrapper.h"
-
 
 __global__ void eintcal_kernel_per_block(
                         unsigned int num_individualsgpu,
@@ -50,15 +36,16 @@ __global__ void eintcal_kernel_per_block(
                         float *penergiesgpu, 
                         float *nonbondlist, 
                         float *tcoord, 
-                        Boole B_include_1_4_interactions, 
-                        Boole B_have_flexible_residues, 
+                        int B_include_1_4_interactions, 
+                        int B_have_flexible_residues, 
                         int *nnb_array, 
+			int total_nonbond_number,
                         float *Nb_group_energy, 
                         float *stre_vdW_Hb, 
                         float *strsol_fn, 
                         float *strepsilon_fn, 
                         float *strr_epsilon_fn,
-                        Boole b_comp_intermolgpu,
+                        int b_comp_intermolgpu,
                         float *pfloat_arraygpu,
                         int *pint_arraygpu);
 

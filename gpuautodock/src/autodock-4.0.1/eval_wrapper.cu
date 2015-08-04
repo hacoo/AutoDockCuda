@@ -20,8 +20,8 @@
 #include "cuda_wrapper.h"
 
 
-#include "eintcal_kernel.cu.temp"
-
+//#include "eintcal_kernel.cu"
+#include "eintcal_kernel.h"
 
 
 texture<float, 1> tex;
@@ -29,6 +29,7 @@ texture<float, 1> tex;
 // Variables required for energy calculations
 int *B_outsidesgpu;
 float *energiesgpu;
+float *energiesgpu_per_block;
 unsigned int *evalflagsgpu;
 int cpunatoms;
 int nBlocks;
@@ -261,6 +262,275 @@ __global__ void eval_tril_kernel(unsigned int num_individualsgpu,
     }
 }
 
+/**
+ * eintcal GPU kernel, does eintcal energy calculations for each 
+ * individual in the population.
+ * @param num_individualsgpu number of individuals in population
+ * @param natomsgpu number of atoms
+ * @param penergiesgpu array of energies used to store individual's energy
+ * @param nonbondlist (used in cpu eintcal)
+ * @param tcoord (used in cpu eintcal)
+ * @param B_include_1_4_interactions (used in cpu eintcal)
+ * @param B_have_flexible_residues (used in cpu eintcal)
+ * @param nnb_array (used in cpu eintcal)
+ * @param Nb_group_energy (used in cpu eintcal)
+ * @param stre_vdW_Hb (used in cpu eintcal)
+ * @param strsol_fn (used in cpu eintcal)
+ * @param strepsilon_fn (used in cpu eintcal)
+ * @param strr_epsilon_fn (used in cpu eintcal)
+ * @param b_comp_intermolgpu (used in cpu eintcal)
+ * @param pfloat_arraygpu array of float variables used in cpu trilinterp
+ * @param pint_arraygpu array of integer varibales used in cpu trilinterp
+ */
+__global__ void eintcal_kernel(
+                        unsigned int num_individualsgpu,
+                        int natomsgpu, 
+                        float *penergiesgpu, 
+                        float *nonbondlist, 
+                        float *tcoord, 
+                        Boole B_include_1_4_interactions, 
+                        Boole B_have_flexible_residues, 
+                        int *nnb_array, 
+                        float *Nb_group_energy, 
+                        float *stre_vdW_Hb, 
+                        float *strsol_fn, 
+                        float *strepsilon_fn, 
+                        float *strr_epsilon_fn,
+                        Boole b_comp_intermolgpu,
+                        float *pfloat_arraygpu,
+                        int *pint_arraygpu)
+{
+
+    int idx = blockIdx.x  * blockDim.x + threadIdx.x;
+    
+
+    if (idx < num_individualsgpu)
+    {
+    
+        if (!pint_arraygpu[INTEVALFLAG * num_individualsgpu + idx])//!evalflagsgpu[idx])
+        {
+    
+    #ifndef EINTCALPRINT
+    #   ifndef NOSQRT
+            float r = 0.0f;
+//            float nbc = B_use_non_bond_cutoff[idx] ? NBC : 999;
+              float nbc = (Boole)pint_arraygpu[INTNONBONDCUT * num_individualsgpu + idx] ? NBC : 999;
+    #   else
+//            float nbc2 = B_use_non_bond_cutoff[idx] ? NBC2 : 999 * 999;
+            float nbc2 = (Boole)pint_arraygpu[INTNONBONDCUT * num_individualsgpu + idx] ? NBC2 : 999 * 999;
+    #   endif
+
+    #else
+    #   ifndef NOSQRT
+            float d = 0.0f;
+//            float nbc = B_use_non_bond_cutoff[idx] ? NBC : 999;
+            float nbc = (Boole)pint_arraygpu[INTNONBONDCUT * num_individualsgpu + idx] ? NBC : 999;
+    #   else
+//            float nbc2 = B_use_non_bond_cutoff[idx] ? NBC2 : 999 * 999;
+            float nbc2 = (Boole)pint_arraygpu[INTNONBONDCUT * num_individualsgpu + idx] ? NBC2 : 999 * 999;
+    #   endif
+    #endif
+
+            float dx = 0.0f, dy = 0.0f, dz = 0.0f;
+            float r2 = 0.0f;
+
+            float total_e_internal = 0.0f;
+
+            float e_elec = 0.0f;
+
+    #ifdef EINTCALPRINT
+            float total_e_elec = 0.0f;
+            float total_e_vdW_Hb = 0.0f;
+            float e_vdW_Hb = 0.0f;
+            float total_e_desolv = 0.0f;
+    #endif
+
+            int inb = 0;
+            int a1 = 0, a2 = 0;
+            int t1 = 0, t2 = 0;
+            int nonbond_type = 0;
+
+            int index_1t_NEINT = 0;
+            int index_1t_NDIEL = 0;
+            int nb_group = 0;
+            int inb_from = 0;
+            int inb_to = 0;
+	    // By default, we have one nonbond group, (1) intramolecular in the ligand
+	    // If we have flexible residues, we need to consider three groups of nonbonds:
+	    // (1) intramolecular in the ligand, (2) intermolecular and (3) intramolecular in the receptor
+            int nb_group_max = B_have_flexible_residues? 3 : 1 ;
+
+            for (nb_group = 0; nb_group < nb_group_max; nb_group++)
+            {
+    #ifdef EINTCALPRINT
+                if (nb_group ==0)
+                {
+                    //prints stuff
+                }
+                if (nb_group == 1)
+                {
+                    //prints stuff
+                }
+                if (nb_group == 2)
+                {
+                    //prints stuff
+                }
+                if ((Boole)pint_arraygpu[INTINCELEC * num_individualsgpu + idx])//B_calcIntElec[idx])
+                {
+                    //prints stuff
+                } else {
+                    //prints stuff
+                }
+    #endif
+                
+
+                if (nb_group == 0)
+                {
+                    inb_from = 0;
+                } else {
+                    inb_from = nnb_array[nb_group-1];
+                }
+                inb_to = nnb_array[nb_group];
+
+                for (inb = inb_from; inb < inb_to; inb++)
+                {
+
+                    float e_internal = 0.0f;
+                    float e_desolv = 0.0f;
+
+                    a1 = (int)nonbondlist[inb * 7 + 0];
+                    a2 = (int)nonbondlist[inb * 7 + 1];
+                    t1 = (int)nonbondlist[inb * 7 + 2];
+                    t2 = (int)nonbondlist[inb * 7 + 3];
+
+                    nonbond_type = (int)nonbondlist[inb * 7 + 4];
+                    float nb_desolv = nonbondlist[inb * 7  + 5];
+                    float q1q2 = nonbondlist[inb * 7 + 6];
+
+
+                    dx = tcoord[idx * natomsgpu * SPACE + a1 * SPACE + X] - tcoord[idx * natomsgpu * SPACE + a2 * SPACE + X];
+                    dy = tcoord[idx * natomsgpu * SPACE + a1 * SPACE + Y] - tcoord[idx * natomsgpu * SPACE + a2 * SPACE + Y];
+                    dz = tcoord[idx * natomsgpu * SPACE + a1 * SPACE + Z] - tcoord[idx * natomsgpu * SPACE + a2 * SPACE + Z];
+
+    #ifndef NOSQRT
+                    r = clamp(hypotenuse(dx,dy,dz), RMIN_ELEC);
+                    r2 = r*r;
+                    int index = Ang_to_index(r);
+
+    #else
+                    r2 = sqhypotenuse(dx,dy,dz);
+                    r2 = clamp(r2, RMIN_ELEC2);
+                    int index = SqAng_to_index(r2);
+    #endif
+
+                    index_1t_NEINT = BoundedNeint(index);
+                    index_1t_NDIEL = BoundedNdiel(index);
+
+                    if ((Boole)pint_arraygpu[INTINCELEC * num_individualsgpu + idx])//B_calcIntElec[idx])
+                    {
+                        float r_dielectric = strr_epsilon_fn[index_1t_NDIEL];
+                        e_elec = q1q2 * r_dielectric;
+                        e_internal = e_elec;
+
+                    }
+                   
+                    if (r2 < nbc2)
+                    {
+                        e_desolv = strsol_fn[index_1t_NEINT] * nb_desolv;
+                        int myidx;
+                        if (B_include_1_4_interactions != 0 && nonbond_type == 4)
+                        {
+                            myidx = index_1t_NEINT * ATOM_MAPS * ATOM_MAPS + t2 * ATOM_MAPS + t1;
+                            if (myidx == NEINT * ATOM_MAPS * ATOM_MAPS)
+                            {
+//                                e_internal += scale_1_4[idx] * (stre_vdW_Hb[myidx-1] + e_desolv);
+                                e_internal += pfloat_arraygpu[FLOATSCALE14 * num_individualsgpu + idx] * (stre_vdW_Hb[myidx-1] + e_desolv);
+                            }
+                            else
+                            {
+//                                e_internal += scale_1_4[idx] * (stre_vdW_Hb[myidx] + e_desolv);
+                                e_internal += pfloat_arraygpu[FLOATSCALE14 * num_individualsgpu + idx] * (stre_vdW_Hb[myidx] + e_desolv);
+                            }
+                        } else {
+//                            fprintf(stderr," stre_vdW_Hb[%d][%d][%d] = %f\n", index_1t_NEINT, t2, t1, stre_vdW_Hb[index_1t_NEINT * ATOM_MAPS * ATOM_MAPS + t2 * ATOM_MAPS + t1]);
+//i                            e_internal += stre_vdW_Hb[index_1t_NEINT * ATOM_MAPS * ATOM_MAPS + t2 * ATOM_MAPS + t1] + e_desolv;
+                            myidx = index_1t_NEINT * ATOM_MAPS * ATOM_MAPS + t2 * ATOM_MAPS + t1;
+                            if (myidx == NEINT * ATOM_MAPS * ATOM_MAPS)
+                            {
+                                e_internal += stre_vdW_Hb[myidx-1] + e_desolv;
+//                                fprintf(stderr,"NEINT = %d, index = %d, t2 = %d, t1 = %d\n", NEINT, index_1t_NEINT, t2, t1);
+
+                            }
+                            else
+                            {
+                                e_internal += stre_vdW_Hb[myidx] + e_desolv;
+                            }
+
+                        }
+
+
+
+                    }
+                    total_e_internal += e_internal;
+
+    #ifdef EINTCALPRINT
+            total_e_desolv  += e_desolv;
+            total_e_elec    += e_elec;
+            float dielectric = strepsilon_fn[index_1t_NDIEL];
+
+            if ((Boole)pint_arraygpu[INTINCELEC * num_individualsgpu + idx])//B_calcIntElec[idx])
+            {
+                e_vdW_Hb = e_internal - e_desolv - e_elec;
+                // print stuff
+            } else {
+                e_vdW_Hb = e_internal - e_desolv;
+                // print stuff
+            }
+
+            total_e_vdW_Hb += e_vdW_Hb;
+
+    #endif
+                    
+                }
+
+                if (nb_group == INTRA_LIGAND) 
+                {
+                    Nb_group_energy[INTRA_LIGAND] = total_e_internal;
+                } else if (nb_group == INTER) {
+                    Nb_group_energy[INTER] = total_e_internal - Nb_group_energy[INTRA_LIGAND];
+                } else if (nb_group == INTRA_RECEPTOR) {
+                    Nb_group_energy[INTRA_RECEPTOR] = total_e_internal - Nb_group_energy[INTRA_LIGAND] - Nb_group_energy[INTER];
+                }
+
+            }
+
+    #ifdef EINTCALPRINT
+            if((Boole)pint_arraygpu[INTINCELEC * num_individualsgpu + idx])//B_calcIntElec[idx])
+            {
+                //print stuff
+            } else {
+                //print stuff
+            }    
+            //print stuff
+    #endif
+            if(b_comp_intermolgpu)
+            {
+                //energiesgpu[idx] += ((float)total_e_internal - (float)unboundinternalFEs[idx]);
+                penergiesgpu[idx] += ((float)total_e_internal - pfloat_arraygpu[FLOATUNBOUNDINTERNAL * num_individualsgpu + idx]);//(float)unboundinternalFEs[idx]);
+            }
+            else
+            {
+                //energiesgpu[idx] = ((float)total_e_internal - (float)unboundinternalFEs[idx]);
+                penergiesgpu[idx] = ((float)total_e_internal - pfloat_arraygpu[FLOATUNBOUNDINTERNAL * num_individualsgpu + idx]);//(float)unboundinternalFEs[idx]);
+            }
+         
+        }
+        
+    }
+
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////
 //! Entry point for Cuda function
 //! @param b_comp_intermol
@@ -278,6 +548,15 @@ extern "C" void eval_wrapper(
                         )
 
 {
+
+  // Test parameter -- CPU energies of per block kernel. For testing
+  // against original kernel 
+  int i;
+
+  float energiescpu_per_block[num_individuals];
+  for (i=0; i<num_individuals; ++i)
+    energiescpu_per_block[i] = 0.0;
+  //
     cudaMemcpy(crdsgpu, crds, sizeof(float) * cpunatoms * SPACE * num_individuals, cudaMemcpyHostToDevice);
     CHECK_ERROR(19);
 
@@ -304,8 +583,26 @@ extern "C" void eval_wrapper(
     cudaThreadSynchronize();
     CHECK_ERROR(888);
 
+    eval_tril_kernel<<< nBlocks, blocksize >>>(num_individuals, 
+                energiesgpu_per_block, 
+                b_comp_intermol, cpunatoms, 
+                crdsgpu, chargesgpu, ABSchargesgpu, typesgpu, 
+                ignore_intersgpu, 
+                (float *)NULL_ELEC_TOTAL, 
+                (float *)NULL_EVDW_TOTAL, 
+                ElecMap, 
+                DesolvMap, SOME_ATOMS_OUTSIDE_GRID, 
+                ALL_ATOMS_INSIDE_GRID,
+                float_arraygpu,
+                int_arraygpu);
+
+    CHECK_ERROR(666);
+    cudaThreadSynchronize();
+    CHECK_ERROR(888);
+    
+
     // execute eintcal kernel
-    eintcal_kernel_per_block<<< nBlocks, blocksize >>>(
+    eintcal_kernel<<< nBlocks, blocksize >>>(
         num_individuals,
         cpunatoms, 
         energiesgpu, 
@@ -327,8 +624,73 @@ extern "C" void eval_wrapper(
     cudaThreadSynchronize();
     CHECK_ERROR(23);
 
+    // Per block kernel -- check against original kernel
+    
+
+    // Calculate total number of nonbonds:
+    int num_nonbond_groups = haveflexresiduesgpu ? 3 : 1;
+    int nonbondnumber = 0; // The total number of nonbonds, in all groups
+    for (i = 0; i<num_nonbond_groups; ++i) {
+      nonbondnumber += Nnb_array[i];
+    }
+
+    // eintcal_kernel is per block. So, each block should 
+    // be the size of one individual.
+    dim3 dimBlock(nonbondnumber, 1, 1);
+    dim3 dimGrid(num_individuals, 1, 1);
+
+    eintcal_kernel_per_block<<< dimGrid, dimBlock, nonbondnumber >>>(
+        num_individuals,
+        cpunatoms, 
+        energiesgpu_per_block, 
+        nonbondlistsgpu, 
+        crdsgpu, 
+        inc14interactgpu, 
+        haveflexresiduesgpu, 
+        nnb_arraygpu, 
+	nonbondnumber,
+        nb_group_energygpu, 
+        evdWHbgpu, 
+        solfngpu, 
+        epsilonfngpu, 
+        repsilonfngpu,
+        b_comp_intermol,
+        float_arraygpu,
+        int_arraygpu);
+
+    CHECK_ERROR(888);
+    cudaThreadSynchronize();
+    CHECK_ERROR(23);
+
+
     cudaMemcpy(energiescpu, energiesgpu, sizeof(float) * num_individuals, cudaMemcpyDeviceToHost);
     CHECK_ERROR(33);
+
+    cudaMemcpy(energiescpu_per_block, energiesgpu_per_block, sizeof(float) * num_individuals, cudaMemcpyDeviceToHost);
+    CHECK_ERROR(33);
+
+    // Check for correctness between per_block and original kernels:
+    
+    /*
+    for(i=0; i<num_individuals; ++i) {
+      if(energiescpu[i] != energiescpu_per_block[i]){
+	printf("############## ERROR ##############\n");
+	printf("Per_block and original results do not agree at index %d\n", i);
+	printf("energiescpu: %f \n", energiescpu[i]);
+	printf("energiescpu_per_block: %f \n", energiescpu_per_block[i]);
+	printf("###################################\n");
+      }
+
+      
+
+
+      else {
+	printf("OK: index %d\n", i);
+	printf("energiescpu: %f \n", energiescpu[i]);
+	printf("energiescpu_per_block: %f \n", energiescpu_per_block[i]);
+	}
+    }
+    */
 
 }
 
@@ -414,6 +776,7 @@ extern "C" void cuda_alloc_wrapper(int natom, int nnum_individuals, maptype map,
     cudaMalloc((void**)&evalflagsgpu,sizeof(unsigned int) * num_individuals);
     CHECK_ERROR(0);
     cudaMalloc((void**)&energiesgpu, sizeof(float) * num_individuals);
+    cudaMalloc((void**)&energiesgpu_per_block, sizeof(float) * num_individuals);
     CHECK_ERROR(1);
 
 //    float *energiescpus = (float *)malloc(num_individuals * sizeof(float));
@@ -655,6 +1018,7 @@ extern "C" void cuda_free_wrapper(void)
     cudaFree(evalflagsgpu);
     CHECK_ERROR(80);
     cudaFree(energiesgpu);
+    cudaFree(energiesgpu_per_block);
     CHECK_ERROR(81);
 }
 
