@@ -1,0 +1,32 @@
+#fyi Real is #DEFINE and can either be set to float or double
+
+array representation of atom (all floats):
+
+#i dont know all of these variables are used we should figure that out eventually and cut some if we can
+#there may be additional variables we need to include that i mistakenly thought were irrelevent
+
+x,y,z, x',y',z', torsions
+
+total size = (6 + max_torsions) * 3 * sizeof(Real)
+
+
+
+array representation of individual:
+
+#same goes as for the atom
+
+x,y,z (of center)  w,x,y,z (quat)    torsion angles
+
+total size = (7 + max_torsions) * sizeof(Real) + max_atoms * sizeof(atom)
+
+
+
+total global memory buffer size:
+
+population_size * ((7 + max_torsions) * sizeof(Real) + max_atoms * ((6 + max_torsions) * 3 * sizeof(Real)))
+
+
+
+
+
+
