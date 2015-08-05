@@ -1,0 +1,123 @@
+Henry Cooney <hacoo36@gmail.com> <github: hacoo>
+
+AutoDockCuda <https://github.com/hacoo/AutoDockCuda>
+
+Notes on the structure of Autodock 4.2.6, as pertains
+to CUDA implementation.
+
+
+* General structure
+
+  Autodock 4.2.6 attempts to find the optimal docking position of the LIGAND
+  to a RECEPTOR. This is accomplished via a LAMARCKIAN GENETIC ALGORITHM (LGA).
+
+  The LGA attempts to find the lowest energy CONFIGURATION of the ligand in the 
+  receptor BOUNDING BOX (this box is predefined by the user). The ligand's configuration
+  is an array of values with the following structure:
+
+  [x y z qw qx qy qz TORSIONS ] 
+
+  x, y, and z describe the ligand's position. qw, qx, qy and qz are quaternion components
+  describing the ligand's overal rotation. TORSIONS is a list of torsion values which 
+  describe the rotation of each rotatable bond in the ligand. The number of torsions 
+  depends on the number of ATOMS in the ligand.
+
+* Genetic Algorithm
+
+  Details of the LGA are not yet known, but its overall structure is as follows:
+
+  - Each GENERATION is a set (size configurable) of INDIVIDUALS.
+  - Each INDIVIDUAL is a possible configuration of the ligand.
+  - Each GENE is a value of the ligand's configuration array (e.g., the qx component,
+    or a torsion, any element of the ligand array)
+  - Between generations, the energy of each individual is evaluated.
+    Lower energy is better.
+  - Each generation, some individuals (configurable, typ. 80%) experience
+    crossover, meaning they exchange genes (details not known). Some 
+    individuals experience mutation (configurable, typ. 2%), meaining
+    a random gene is changed randomly.
+  - Each generation, individuals with the highest energy are eliminated. 
+    Details of this are not yet known, but this is referred to as ELITISM
+    and is also configurable.
+
+* Evaluation
+
+  Each ligand configuation (individual) is evaluated to determine its energy. 
+  This involves several steps:
+
+  - The ligand's atoms are each TRANSLATE, according to xyz position
+  - The ligand's atoms are each ROTATED, according to quaternion
+  - Ligand atom's at the end fo rotatable bonds are rotated, according to
+    corresponding TORSIONS. 
+  - The INTERNAL ENERGY of the atom is computed, my examining the position
+    and type of ligand atoms. If the receptor is flexible, it will deform, and
+    its energy must be computed as well.
+  - The intramolecular energy is computed via TRILINEAR INTERPOLATION, estimating
+    the energy by interpolating from a precomputed grid.
+
+  Most of these operations are fully parallelizable, with the exception of 
+  torsion
+
+
+
+    
+  
+  
+* Code Structure
+  
+  Notes on the structure of Autodock and our insertion of CUDA code.
+
+** call_glss.cc
+   
+   The file call_glss.cc is a wrapper for the genetic algorithm.
+   It is quite complex, in large part because of the enormous number of 
+   available options.
+
+   call_glss() is the central function and represents the core of AutoDock.
+   It appears to iterate through generations, passing of evaluations to an
+   included Eval object. Search work (IE, the LGA) is done by a passed-in
+   Global_Search object.
+
+   call_glss does not perform the GA's heavy lifting -- it is intended
+   to be a wrapper, and different genetic algorithm methods can
+   be passed in by pointer. 
+
+   Autodock refers to search algorithms as GLOBAL or LOCAL SEARCH 
+   objects. We are concerned mostly with the GLOBAL SEARCH class. 
+   The genetic algorithm is a subclass of global search (an alternative
+   is particle search, which we probably won't mess with).
+
+   See gs.cc for more information on the global search and the genetic algorithm.
+
+** gs.cc
+
+   This file includes the abstract base class Global_Search, and its subclass,
+   Genetic_Algorithm. There are other Global_Search types, but we won't worry about
+   them for now.
+
+   This file looks super complicated, and I don't think we will be able to parallelize it.
+   However, we should try to figure out how to inject our cuda stuff into it 
+   in a parallel way.
+
+** eval.cc
+
+   This file describes the eval.cc file, which contains the Eval class.
+   The Eval class contains functions for evaluating the energy of an
+   individual once it has been positioned and torsions / rotations applied.
+
+   It contains functions related to INTERNAL ENERGY CALCULATION (eintcal)
+   and TRILINEAR INTERPOLATION (trilinterp)
+
+
+
+
+** Current goals
+
+   I beleive I know how call_glss evaluates individual energies -- we will need to parallelize
+   this somewhat, even if we don't completely CUDAfy call_glss. call_glss at least needs
+   to be able to operate on a set (array?) of ligands, collectively making up a generation.
+
+   If it requires that ligands be evaluated one at a time, we would have submit a separate 
+   kernel for each individual in a generation!
+
+
