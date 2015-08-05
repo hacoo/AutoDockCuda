@@ -69,6 +69,72 @@ AC_OPENMP  # requires autoconf 2.62 or newer, sets OPENMP_CXXFLAGS if successful
 
 AM_CONDITIONAL([WANT_OMP], [test "x$OPENMP_CXXFLAGS" != "x"])
 
+# initialize array index
+N="0"
+
+#=================================================
+
+# Setup default CUDA paths
+CUDA_INSTALL_PATH="/usr/local/cuda"
+CUDA_SDK_INSTALL_PATH="/usr/local/NVIDIA_GPU_Computing_SDK"
+
+# Check: enable CUDA?
+AC_MSG_CHECKING([whether to use CUDA library])
+AC_ARG_ENABLE(cuda,
+            [AS_HELP_STRING(--enable-cuda,enable CUDA support)],
+            cudaval="yes",
+            cudaval="no")
+AC_MSG_RESULT([$cudaval])
+
+# check to see if CUDA been selected
+if test "$cudaval" == "no"; then
+        AC_MSG_WARN([Not using CUDA!])
+fi
+
+        # Setup custom CUDA paths
+        AC_ARG_WITH([cuda],
+                    [AS_HELP_STRING(
+                    [--with-cuda=PATH],
+                    [prefix where CUDA is installed @<:@default=auto@:>@])],
+                    [CUDA_INSTALL_PATH=$withval],
+                    [with_cuda=auto])
+        AC_ARG_WITH([cuda-sdk],
+                    [AS_HELP_STRING(
+                    [--with-cuda-sdk=PATH],
+                    [prefix where CUDA SDK is installed @<:@default=auto@:>@])],
+                    [CUDA_SDK_INSTALL_PATH=$withval],
+                    [with_cuda_sdk=auto])
+
+        # Setup nvcc flags
+        if test  "$cudaval" = "yes"; then
+                NVCCFLAGS="$NVCCFLAGS"
+                CUDA_CFLAGS="$CUDA_CFLAGS"
+                CUDA_CFLAGS="$CUDA_CFLAGS -I$CUDA_SDK_INSTALL_PATH/C/common/inc/"
+                CUDA_CFLAGS="$CUDA_CFLAGS -I$CUDA_INSTALL_PATH/include"
+                CUDA_LDFLAGS="-L$CUDA_INSTALL_PATH/lib64"
+                CUDA_LIBS="-lcuda -lcudart -lcufft"
+                NVCCFLAGS="$NVCCFLAGS $CUDA_CFLAGS $CUDA_LDFLAGS $CUDA_LIBS"
+                NVCC="nvcc"
+                AC_SUBST(NVCC)
+                AC_SUBST(NVCCFLAGS)
+                AC_DEFINE([_CUDA],[1],[Defined if CUDA should be used])
+                eval "ARRAY${N}='-D_CUDA'"
+                N=`expr $N + 1`
+        fi
+
+                                                            #=================================================
+
+# construct compiler flags
+N=`expr $N - 1`
+TMP0=
+eval TMP0="\$ARRAY0"
+for i in $(seq 1 $N)
+do
+    eval TMP0="\$TMP0' '\$ARRAY${i}"
+done
+
+# set C compiler flags
+AC_SUBST(CDFLAGS, $TMP0)
 
 # See "automake" manual, version 1.10, section 10.5 (Python)
 #AM_PATH_PYTHON([2.1],, [:])
