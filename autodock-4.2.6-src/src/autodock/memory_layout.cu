@@ -19,10 +19,9 @@ enum ATTRIBUTE {
 	wxyz = 3
 };
 
-
-
 /////////////////////***********************************************/////////////////////
 ///****   THESE ARE THE UTILITY FUNCTIONS TO USE TO ACCESS DATA ON THE GPU    *****/////
+
 __device__ Real * getIndvAttribute(int idx, ATTRIBUTE a) {
 	//all data is packed into array in x,y,z,qw,qx,qy,qz, [torsion data], ......
 	//returns the start address, move to next item by adding sizeof(Real)
@@ -56,13 +55,15 @@ bool allocate_pop_to_gpu(Population & pop_in) {
 	char * atoms; // this contains the atom data
 	bool succ;
 
+	cudaError succ;
+
 	int pop_size = pop_in.num_individuals();
 
 	succ = cudaMalloc((void **) &out, pop_size * MOL_INDV_SIZE);
-	if (!succ)
+	if (cudaSuccess != succ)
 		return false;
 	succ = cudaMalloc((void **) &atoms, pop_size * MAX_ATOMS * MAX_CHARS);
-	if (!succ)
+	if (cudaSuccess != succ)
 		return false;
 
 	for (int i = 0; i < pop_size; ++i) {
@@ -76,7 +77,6 @@ bool allocate_pop_to_gpu(Population & pop_in) {
 		int j = MOL_INDV_SIZE * i; //output idx
 		
 		//xyz of center of mol
-
 		out[j++] = (Real) (curr->S.T.x);
 		out[j++] = (Real) (curr->S.T.y);
 		out[j++] = (Real) (curr->S.T.z);
@@ -110,19 +110,30 @@ bool allocate_pop_to_gpu(Population & pop_in) {
 
 	//allocate global mem
 	succ = cudaMalloc ((void **) &globalReals, pop_size * MOL_INDV_SIZE);
-	if (!succ)
+	if (cudaSuccess != succ)
 		return false;
 
 	succ = cudaMalloc ((void **) &globalChars, pop_size * MAX_ATOMS * MAX_CHARS);
-	if (!succ)
+	if (cudaSuccess != succ)
 		return false;
 
 	//transfer to GPU
 	succ = cudaMemcpy(globalReals, out, pop_size * MOL_INDV_SIZE, cudaMemcpyHostToDevice);
-	if (!succ)
+	if (cudaSuccess != succ)
 		return false;
 	succ = cudaMemcpy(globalChars, atoms, pop_size * MAX_ATOMS * MAX_CHARS, cudaMemcpyHostToDevice);
-	if (!succ)
+	if (cudaSuccess != succ)
 		return false;
+
+	succ = cudaFree(out);
+	if (cudaSuccess != succ)
+		return false;
+	
+	succ = cudaFree(atoms);
+	if (cudaSuccess != succ)
+		return false;
+	
+	
+	
 	return true;
 }
