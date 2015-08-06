@@ -1,5 +1,12 @@
-const int ATOM_SIZE = (6 + MAX_TORSIONS) * 3 * sizeof(Real);
-const int MOL_INDV_SIZE = (7 + MAX_TORSIONS) * sizeof(Real) + MAX_ATOMS * ATOM_SIZE;
+#include "constants.h"
+#include "typedefs.h"
+#include <cuda.h>
+#include <cuda_runtime.h>
+#include <stdio.h>
+
+
+const int ATOM_SIZE = (6 + MAX_TORS) * 3 * sizeof(Real);
+const int MOL_INDV_SIZE = (7 + MAX_TORS) * sizeof(Real) + MAX_ATOMS * ATOM_SIZE;
 
 __global__ Real * globalReals;
 __global__ char * globalChars;
@@ -71,6 +78,7 @@ bool allocate_pop_to_gpu(Population & pop_in) {
 		int j = MOL_INDV_SIZE * i; //output idx
 		
 		//xyz of center of mol
+
 		out[j++] = (Real) (curr->S.T.x);
 		out[j++] = (Real) (curr->S.T.y);
 		out[j++] = (Real) (curr->S.T.z);
@@ -107,7 +115,7 @@ bool allocate_pop_to_gpu(Population & pop_in) {
 	if (!succ)
 		return false;
 
-	succ = cudaMalloc ((void **) &globalReals, pop_size * MAX_ATOMS * MAX_CHARS);
+	succ = cudaMalloc ((void **) &globalChars, pop_size * MAX_ATOMS * MAX_CHARS);
 	if (!succ)
 		return false;
 
