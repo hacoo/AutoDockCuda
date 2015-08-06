@@ -1,30 +1,17 @@
 #include "constants.h"
 #include "typedefs.h"
-#include <cuda.h>
-#include <cuda_runtime.h>
+#include "/pkgs/nvidia-cuda/5.5/include/cuda.h"
+#include "/pkgs/nvidia-cuda/5.5/include/cuda_runtime.h"
 #include <stdio.h>
+#ifndef MEMORY_LAYOUT_H
+#include "memory_layout.h"
+#endif
 
-
-const int ATOM_SIZE = (6 + MAX_TORS) * 3 * sizeof(Real);
-const int MOL_INDV_SIZE = (7 + MAX_TORS) * sizeof(Real) + MAX_ATOMS * ATOM_SIZE;
-
-__global__ Real * globalReals;
-__global__ char * globalChars;
-
-
-
-
-
-
-__constant__ enum ATTRIBUTE = {
-	xyz = 0,
-	wxyz = 3
-}
 
 
 /////////////////////***********************************************/////////////////////
 ///****   THESE ARE THE UTILITY FUNCTIONS TO USE TO ACCESS DATA ON THE GPU    *****/////
-
+/*
 __global__ Real * getIndvAttribute(int idx, ATTRIBUTE a) {
 	//all data is packed into array in x,y,z,qw,qx,qy,qz, [torsion data], ......
 	//returns the start address, move to next item by adding sizeof(Real)
@@ -42,7 +29,7 @@ __global__ char * getAtom(int indvIdx, int atom) {
 	//returns the start address, move to next item by adding sizeof(char)
 	return globalReals[idx * MAX_TORSIONS * MAX_CHARS + atom * MAX_CHARS];
 }
-
+*/
 
 /////////////////////// ^^^^^utility ^^^^^^^ //////////////////////////////
 /////////////////////////////////////////////////////////////////////////
@@ -57,6 +44,7 @@ bool allocate_pop_to_gpu(Population & pop_in) {
 
 	Real * out; // this contains most of the data
 	char * atoms; // this contains the atom data
+	bool succ;
 
 	int pop_size = pop_in.num_individuals();
 
@@ -91,20 +79,20 @@ bool allocate_pop_to_gpu(Population & pop_in) {
 		
 		for (int ii = 0; ii < MAX_ATOMS; ++ii) {
 			//xyz of the atom
-			out[j++] = (Real) curr->crd[3*ii];
-			out[j++] = (Real) curr->crd[3*ii +1];
-			out[j++] = (Real) curr->crd[3*ii +2];
+		  out[j++] = (Real) *(curr->crd[3*ii]);
+			out[j++] = (Real) *(curr->crd[3*ii +1]);
+			out[j++] = (Real) *(curr->crd[3*ii +2]);
 			
 			//atom torsion vector xyz
-			out[j++] = (Real) curr->vt[3*ii];
-			out[j++] = (Real) curr->vt[3*ii +1];
-			out[j++] = (Real) curr->vt[3*ii +2];
+			out[j++] = (Real) *(curr->vt[3*ii]);
+			out[j++] = (Real) *(curr->vt[3*ii +1]);
+			out[j++] = (Real) *(curr->vt[3*ii +2]);
 
 			//atom torsion angle
 			out[j++] = (Real) curr->S.tor[ii];
 
 			//atom string
-			for (int cidx = 0; cidx < MAX_CHARS; ++cidx)
+			for (unsigned int cidx = 0; cidx < MAX_CHARS; ++cidx)
 				atoms[MAX_CHARS * ii + cidx] = curr->atomstr[ii][cidx];
 		}
 
@@ -120,10 +108,10 @@ bool allocate_pop_to_gpu(Population & pop_in) {
 		return false;
 
 	//transfer to GPU
-	succ = cudaMemCpy(globalReals, out, pop_size * MOL_INDV_SIZE, cudaMemcpyHostToDevice);
+	succ = cudaMemcpy(globalReals, out, pop_size * MOL_INDV_SIZE, cudaMemcpyHostToDevice);
 	if (!succ)
 		return false;
-	succ = cudaMemCpy(globalChars, atoms, pop_size * MAX_ATOMS * MAX_CHARS, cudaMemcpyHostToDevice);
+	succ = cudaMemcpy(globalChars, atoms, pop_size * MAX_ATOMS * MAX_CHARS, cudaMemcpyHostToDevice);
 	if (!succ)
 		return false;
 	return true;
