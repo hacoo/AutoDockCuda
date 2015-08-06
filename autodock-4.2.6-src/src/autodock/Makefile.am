@@ -143,6 +143,8 @@ autodock4_SOURCES += \
     eintcalPrint.cc \
     intnbtable.cc \
     nbe.cc \
+    start_CUDA_on_population.cc \ 
+    memory_layout.cu \
 		PDBQT_tokens.h \
 		analysis.h \
 		atom_parameter_manager.h \
@@ -249,7 +251,8 @@ autodock4_SOURCES += \
 		version.h \
 		warn_bad_file.h \
 		weedbonds.h \
-		writePDBQT.h
+		writePDBQT.h \
+	        memory_layout.h
 if WANT_OMP
 autodock4_omp_SOURCES = \
      main.cc 
@@ -346,6 +349,7 @@ autodock4_omp_SOURCES += \
     eintcalPrint.cc \
     intnbtable.cc \
     nbe.cc \
+    start_CUDA_on_population.cc \
 		PDBQT_tokens.h \
 		analysis.h \
 		atom_parameter_manager.h \
@@ -459,12 +463,14 @@ endif
 
 BUILT_SOURCES = $(autodock4_SOURCES) default_parameters.h
 
-AM_CXXFLAGS = -O3 # Agressive optimization
-#AM_CXXFLAGS = -g # debug
+#AM_CXXFLAGS = -O3 # Agressive optimization
+AM_CXXFLAGS = -g # debug
 
     # if gnu c++ compiler
 AM_CXXFLAGS += -Wall # All warnings
 AM_CXXFLAGS += -Wno-write-strings # increase compatibility with pre 4.x compilers for string handling
+AM_CXXFLAGS += -L/pkgs/nvidia-cuda/5.5/lib64
+#AM_CXXFLAGS += -lcudart # link in cuda runtime -- only if using cuda...
 
 if WANT_OMP  
 # M Pique - I'm not sure which of these are really necessary
@@ -500,7 +506,7 @@ autodock4_CPPFLAGS = $(AM_CPPFLAGS)
 autodock4_LDFLAGS = $(AM_LDFLAGS)
 
 
-autodock4_LDADD = $(COLINY_LDFLAGS) -lm
+autodock4_LDADD = $(COLINY_LDFLAGS) memory_layout.o -lcudart -lcuda -lm
 
 if WANT_BIGSTACK
     autodock4_LDFLAGS += -Wl,--stack,8388608 # Cygwin, big stacksize
@@ -671,6 +677,10 @@ endif
 
 gs.o : gs.cc gs.h ranlib.h eval.h rep.h support.h writePDBQT.h
 	$(CXXCOMPILE) -DCHECK_ISNAN -c $(srcdir)/gs.cc
+
+.cu.o:
+	$(NVCC) -c *.cu 
+
 
 # 2007-04-30 MP & GMM: this line is necessary to be able to compile read_parameter_library.o
 read_parameter_library.o : default_parameters.h
