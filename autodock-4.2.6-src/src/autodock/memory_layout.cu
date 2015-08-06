@@ -14,19 +14,19 @@
 __device__ Real * getIndvAttribute(int idx, ATTRIBUTE a) {
 	//all data is packed into array in x,y,z,qw,qx,qy,qz, [torsion data], ......
 	//returns the start address, move to next item by adding sizeof(Real)
-	return globalReals[idx * MOL_INDV_SIZE + a];
+	return globalReals + (idx * MOL_INDV_SIZE + a) * sizeof(Real);
 }
 
 __device__ Real * getTorsion(int indvIdx, int torsionIdx) {
 	//all data is packed into array in x1,y1,z1,theta1, x2,y2, .....
 	//returns the start address, move to next item by adding sizeof(Real)
-	return globalReals[indvIdx * MOL_INDV_SIZE + 7 + 4 * torsionIdx];
+	return globalReals + (indvIdx * MOL_INDV_SIZE + 7 + 4 * torsionIdx) * sizeof(Real);
 }
 
 __device__ char * getAtom(int indvIdx, int atom) {
 	//all data is packed into array in c11,c12,...c1MAX_CHARS, c21, c22, c23, ...
 	//returns the start address, move to next item by adding sizeof(char)
-	return globalReals[idx * MAX_TORSIONS * MAX_CHARS + atom * MAX_CHARS];
+	return globalReals + (idx * MAX_TORSIONS * MAX_CHARS + atom * MAX_CHARS) * sizeof(char);
 }
 
 /////////////////////// ^^^^^utility ^^^^^^^ //////////////////////////////
