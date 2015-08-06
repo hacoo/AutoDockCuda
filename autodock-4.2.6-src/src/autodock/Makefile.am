@@ -680,7 +680,6 @@ gs.o : gs.cc gs.h ranlib.h eval.h rep.h support.h writePDBQT.h
 
 .cu.o:
 	$(NVCC) -c *.cu 
-#$(NVCC) -c *.cu $(NVCCFLAGS) $(AM_CPPFLAGS)
 
 
 # 2007-04-30 MP & GMM: this line is necessary to be able to compile read_parameter_library.o
