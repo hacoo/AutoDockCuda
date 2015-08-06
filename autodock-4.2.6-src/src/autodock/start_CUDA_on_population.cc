@@ -15,7 +15,9 @@
 #include "support.h"
 #endif
 #include <assert.h>
-#include "memory_layout.cu"
+#ifndef MEMORY_LAYOUT_H
+#include "memory_layout.h"
+#endif
 
 double* Population::evaluate_on_GPU() {
   // Evalueates each individual of the population 

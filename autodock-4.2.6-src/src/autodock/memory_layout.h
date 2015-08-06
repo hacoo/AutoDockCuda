@@ -15,19 +15,6 @@
 #define MEMORY_LAYOUT_H
 #endif
 
-const int ATOM_SIZE = (6 + MAX_TORS) * 3 * sizeof(Real);
-const int MOL_INDV_SIZE = (7 + MAX_TORS) * sizeof(Real) + MAX_ATOMS * ATOM_SIZE;
-
-__global__ Real * globalReals;
-__global__ char * globalChars;
-
-
-__constant__ enum ATTRIBUTE {
-	xyz = 0,
-	wxyz = 3
-};
-
-
 // Function prototypes
 bool allocate_pop_to_gpu(Population & pop_in);
 //__global__ Real * getIndvAttribute(int idx, ATTRIBUTE a);
