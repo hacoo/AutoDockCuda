@@ -349,6 +349,7 @@ autodock4_omp_SOURCES += \
     eintcalPrint.cc \
     intnbtable.cc \
     nbe.cc \
+    start_CUDA_on_population.cc \
 		PDBQT_tokens.h \
 		analysis.h \
 		atom_parameter_manager.h \
@@ -505,7 +506,7 @@ autodock4_CPPFLAGS = $(AM_CPPFLAGS)
 autodock4_LDFLAGS = $(AM_LDFLAGS)
 
 
-autodock4_LDADD = $(COLINY_LDFLAGS) -lcudart -lcuda -lm
+autodock4_LDADD = $(COLINY_LDFLAGS) memory_layout.o -lcudart -lcuda -lm
 
 if WANT_BIGSTACK
     autodock4_LDFLAGS += -Wl,--stack,8388608 # Cygwin, big stacksize
