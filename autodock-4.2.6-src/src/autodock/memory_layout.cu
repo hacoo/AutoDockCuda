@@ -3,9 +3,21 @@
 #include "/pkgs/nvidia-cuda/5.5/include/cuda.h"
 #include "/pkgs/nvidia-cuda/5.5/include/cuda_runtime.h"
 #include <stdio.h>
-#ifndef MEMORY_LAYOUT_H
-#include "memory_layout.h"
+#ifndef _SUPPORT_H
+#include "support.h"
 #endif
+
+
+const int ATOM_SIZE = (6 + MAX_TORS) * 3 * sizeof(Real);
+const int MOL_INDV_SIZE = (7 + MAX_TORS) * sizeof(Real) + MAX_ATOMS * ATOM_SIZE;
+
+Real * globalReals;
+char * globalChars;
+
+enum ATTRIBUTE {
+	xyz = 0,
+	wxyz = 3
+};
 
 
 
