@@ -55,16 +55,10 @@ bool allocate_pop_to_gpu(Population & pop_in) {
 	Real * out; // this contains most of the data
 	char * atoms; // this contains the atom data
 
-	cudaError succ;
-
 	int pop_size = pop_in.num_individuals();
 
-	succ = cudaMalloc((void **) &out, pop_size * MOL_INDV_SIZE);
-	if (cudaSuccess != succ)
-		return false;
-	succ = cudaMalloc((void **) &atoms, pop_size * MAX_ATOMS * MAX_CHARS);
-	if (cudaSuccess != succ)
-		return false;
+	gpuErrchk(cudaMalloc((void **) &out, pop_size * MOL_INDV_SIZE));
+	gpuErrchk(cudaMalloc((void **) &atoms, pop_size * MAX_ATOMS * MAX_CHARS));
 
 	for (int i = 0; i < pop_size; ++i) {
 		if (pop_in[i].mol == NULL) {
@@ -121,6 +115,6 @@ bool allocate_pop_to_gpu(Population & pop_in) {
 	free(out);
 	
 	free(atoms);
-	
+
 	return true;
 }
