@@ -122,6 +122,7 @@ fi
                 N=`expr $N + 1`
         fi
 
+AM_CONDITIONAL([WANT_CUDA], [test "$cudaval" = "yes"])
                                                             #=================================================
 
 # construct compiler flags

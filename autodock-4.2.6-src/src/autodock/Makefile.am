@@ -47,6 +47,9 @@ noinst_LIBRARIES =
 
 # Define the AutoDock 4 source code files:
 
+CU_SOURCES=$(wildcard *.cu)
+CU_OBJS=$(patsubst %.cu, %.o, $(CU_SOURCES))
+
 autodock4_SOURCES = \
     main.cc
 
@@ -143,8 +146,6 @@ autodock4_SOURCES += \
     eintcalPrint.cc \
     intnbtable.cc \
     nbe.cc \
-    start_CUDA_on_population.cc \ 
-    memory_layout.cu \
 		PDBQT_tokens.h \
 		analysis.h \
 		atom_parameter_manager.h \
@@ -251,8 +252,7 @@ autodock4_SOURCES += \
 		version.h \
 		warn_bad_file.h \
 		weedbonds.h \
-		writePDBQT.h \
-	        memory_layout.h
+		writePDBQT.h 
 if WANT_OMP
 autodock4_omp_SOURCES = \
      main.cc 
@@ -349,7 +349,6 @@ autodock4_omp_SOURCES += \
     eintcalPrint.cc \
     intnbtable.cc \
     nbe.cc \
-    start_CUDA_on_population.cc \
 		PDBQT_tokens.h \
 		analysis.h \
 		atom_parameter_manager.h \
@@ -460,6 +459,9 @@ autodock4_omp_SOURCES += \
 
 endif
 
+if WANT_CUDA
+autodock4_SOURCES += start_CUDA_on_population.cc
+endif
 
 BUILT_SOURCES = $(autodock4_SOURCES) default_parameters.h
 
@@ -483,8 +485,6 @@ autodock4_omp_CXXFLAGS = $(AM_CXXFLAGS) $(autodock4_CXXFLAGS) -fopenmp  $(OPENMP
 autodock4_omp_LDADD = $(autodock4_LDADD)
 endif
 
-
-
 #  M Pique - add ASSERTQUATOK if you want error checking in qmultiply.cc
 #  M Pique - add USE_DOUBLE to define Real as double instead of float, see typedefs.h
 #  M Pique - USE_INT_AS_FOURBYTELONG is for random number seeds only and is appropriate for
@@ -498,7 +498,6 @@ AM_CPPFLAGS = -DNOSQRT \
 	      -O3
 # AM_LDFLAGS = -g # -g is MP debug
 
-
 #autodock4_CXXFLAGS = -Wall -O3 # All warnings, Agressive optimization
 #autodock4_CXXFLAGS = -Wall -O3 -ftree-vectorize # All warnings, Agressive optimization + GCC vectorization # MacOSX only?
 
@@ -506,7 +505,13 @@ autodock4_CPPFLAGS = $(AM_CPPFLAGS)
 autodock4_LDFLAGS = $(AM_LDFLAGS)
 
 
-autodock4_LDADD = $(COLINY_LDFLAGS) memory_layout.o -lcudart -lcuda -lm
+autodock4_LDADD = $(COLINY_LDFLAGS) $(CUDA_ARGS)
+#-lcudart -lcuda -lm
+
+if WANT_CUDA
+#autodock4_LDADD += start_CUDA_on_population.o
+autodock4_LDADD += $(CU_OBJS)
+endif
 
 if WANT_BIGSTACK
     autodock4_LDFLAGS += -Wl,--stack,8388608 # Cygwin, big stacksize
@@ -678,9 +683,10 @@ endif
 gs.o : gs.cc gs.h ranlib.h eval.h rep.h support.h writePDBQT.h
 	$(CXXCOMPILE) -DCHECK_ISNAN -c $(srcdir)/gs.cc
 
+if WANT_CUDA
 .cu.o:
-	$(NVCC) -c *.cu 
-
+	$(NVCC) -c *.cu $(NVCCFLAGS)
+endif
 
 # 2007-04-30 MP & GMM: this line is necessary to be able to compile read_parameter_library.o
 read_parameter_library.o : default_parameters.h

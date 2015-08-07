@@ -110,7 +110,12 @@ host_triplet = x86_64-unknown-linux-gnu
 #bin_PROGRAMS = autodock4$(EXEEXT)
 bin_PROGRAMS = autodock4$(EXEEXT) \
 	autodock4.omp$(EXEEXT)
-#am__append_1 = -Wl,--stack,8388608 # Cygwin, big stacksize
+am__append_1 = start_CUDA_on_population.cc
+#-lcudart -lcuda -lm
+
+#autodock4_LDADD += start_CUDA_on_population.o
+am__append_2 = $(CU_OBJS)
+#am__append_3 = -Wl,--stack,8388608 # Cygwin, big stacksize
 subdir = .
 DIST_COMMON = INSTALL NEWS README AUTHORS ChangeLog \
 	$(srcdir)/Makefile.in $(srcdir)/Makefile.am \
@@ -128,6 +133,57 @@ CONFIG_CLEAN_VPATH_FILES =
 LIBRARIES = $(noinst_LIBRARIES)
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
+am__autodock4_SOURCES_DIST = main.cc alea.cc analysis.cc \
+	atom_parameter_manager.cc banner.cc bestpdb.cc \
+	calculateEnergies.cc call_glss.cc call_ls.cc center_ligand.cc \
+	changeState.cc check_header_float.cc check_header_int.cc \
+	check_header_line.cc cluster_analysis.cc clmode.cc \
+	cnv_state_to_coords.cc com.cc conformation_sampler.cc \
+	dimLibrary.cc distdepdiel.cc stateLibrary.cc readfield.cc \
+	readmap.cc readPDBQT.cc read_parameter_library.cc eval.cc \
+	gencau.cc getrms.cc get_atom_type.cc getInitialState.cc \
+	getpdbcrds.cc gs.cc initautodock.cc input_state.cc \
+	investigate.cc linpack.cc ls.cc mapping.cc mingw_getrusage.cc \
+	minmeanmax.cc mkNewState.cc mkTorTree.cc mkRandomState.cc \
+	nonbonds.cc openfile.cc output_state.cc parse_dpf_line.cc \
+	parse_param_line.cc parse_PDBQT_line.cc parse_trj_line.cc \
+	parsetypes.cc print_2x.cc print_atomic_energies.cc \
+	print_avsfld.cc writePDBQT.cc print_rem.cc printdate.cc \
+	printEnergies.cc printhms.cc prClusterHist.cc \
+	prInitialState.cc prTorConList.cc pso.cc qmultiply.cc \
+	qtransform.cc quicksort.cc ranlib.cc rep.cc scauchy.cc \
+	setflags.cc simanneal.cc sort_enrg.cc stack.cc stop.cc \
+	strindex.cc success.cc support.cc swap.cc threadlog.cc \
+	timesys.cc timesyshms.cc torNorVec.cc torsion.cc trilinterp.cc \
+	usage.cc weedbonds.cc warn_bad_file.cc coliny.cc eintcal.cc \
+	eintcalPrint.cc intnbtable.cc nbe.cc PDBQT_tokens.h analysis.h \
+	atom_parameter_manager.h alea.h autocomm.h autoglobal.h \
+	banner.h bestpdb.h calculateEnergies.h call_glss.h call_ls.h \
+	center_ligand.h changeState.h check_header_float.h \
+	check_header_int.h check_header_line.h clmode.h \
+	cluster_analysis.h cnv_state_to_coords.h coliny.h \
+	conformation_sampler.h constants.h default_parameters.h \
+	dimLibrary.h distdepdiel.h dpftoken.h eintcal.h eintcalPrint.h \
+	energy.h eval.h gencau.h getInitialState.h get_atom_type.h \
+	getpdbcrds.h getrms.h globals.h grid.h gs.h hybrids.h \
+	initautodock.h input_state.h intnbtable.h investigate.h ls.h \
+	main.h mdist.h mingw_sysconf.h mingw_sys_times.h mkNewState.h \
+	mkRandomState.h mkTorTree.h nbe.h nonbonds.h openfile.h \
+	output_state.h parameters.h parse_PDBQT_line.h \
+	parse_dpf_line.h parse_param_line.h parse_trj_line.h \
+	parsetypes.h partokens.h prClusterHist.h prInitialState.h \
+	prTorConList.h printEnergies.h print_2x.h \
+	print_atomic_energies.h print_avsfld.h print_rem.h printdate.h \
+	printhms.h pso.h qmultiply.h qtransform.h quicksort.h ranlib.h \
+	readPDBQT.h read_parameter_library.h readfield.h readmap.h \
+	rep.h rep_constants.h setflags.h simanneal.h sort_enrg.h \
+	stateLibrary.h stack.h stop.h strindex.h structs.h success.h \
+	support.h swap.h threadlog.h timesys.h timesyshms.h \
+	torNorVec.h torsion.h trilinterp.h trjtokens.h typedefs.h \
+	usage.h version.h warn_bad_file.h weedbonds.h writePDBQT.h \
+	start_CUDA_on_population.cc
+am__objects_1 =  \
+	autodock4-start_CUDA_on_population.$(OBJEXT)
 am_autodock4_OBJECTS = autodock4-main.$(OBJEXT) \
 	autodock4-alea.$(OBJEXT) autodock4-analysis.$(OBJEXT) \
 	autodock4-atom_parameter_manager.$(OBJEXT) \
@@ -188,9 +244,10 @@ am_autodock4_OBJECTS = autodock4-main.$(OBJEXT) \
 	autodock4-weedbonds.$(OBJEXT) \
 	autodock4-warn_bad_file.$(OBJEXT) autodock4-coliny.$(OBJEXT) \
 	autodock4-eintcal.$(OBJEXT) autodock4-eintcalPrint.$(OBJEXT) \
-	autodock4-intnbtable.$(OBJEXT) autodock4-nbe.$(OBJEXT)
+	autodock4-intnbtable.$(OBJEXT) autodock4-nbe.$(OBJEXT) \
+	$(am__objects_1)
 autodock4_OBJECTS = $(am_autodock4_OBJECTS)
-autodock4_DEPENDENCIES =
+autodock4_DEPENDENCIES = $(am__append_2)
 autodock4_LINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
 	$(autodock4_LDFLAGS) $(LDFLAGS) -o $@
 am__autodock4_omp_SOURCES_DIST = main.cc alea.cc analysis.cc \
@@ -336,7 +393,7 @@ am_autodock4_omp_OBJECTS =  \
 	autodock4_omp-intnbtable.$(OBJEXT) \
 	autodock4_omp-nbe.$(OBJEXT)
 autodock4_omp_OBJECTS = $(am_autodock4_omp_OBJECTS)
-am__DEPENDENCIES_1 =
+am__DEPENDENCIES_1 = $(am__append_2)
 autodock4_omp_DEPENDENCIES = $(am__DEPENDENCIES_1)
 autodock4_omp_LINK = $(CXXLD) $(autodock4_omp_CXXFLAGS) $(CXXFLAGS) \
 	$(autodock4_omp_LDFLAGS) $(LDFLAGS) -o $@
@@ -386,7 +443,8 @@ am__v_CCLD_ = $(am__v_CCLD_$(AM_DEFAULT_VERBOSITY))
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
 SOURCES = $(autodock4_SOURCES) $(autodock4_omp_SOURCES)
-DIST_SOURCES = $(autodock4_SOURCES) $(am__autodock4_omp_SOURCES_DIST)
+DIST_SOURCES = $(am__autodock4_SOURCES_DIST) \
+	$(am__autodock4_omp_SOURCES_DIST)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -546,6 +604,8 @@ CLEANFILES = default_parameters.h
 noinst_LIBRARIES = 
 
 # Define the AutoDock 4 source code files:
+CU_SOURCES = $(wildcard *.cu)
+CU_OBJS = $(patsubst %.cu, %.o, $(CU_SOURCES))
 autodock4_SOURCES = main.cc alea.cc analysis.cc \
 	atom_parameter_manager.cc banner.cc bestpdb.cc \
 	calculateEnergies.cc call_glss.cc call_ls.cc center_ligand.cc \
@@ -593,7 +653,8 @@ autodock4_SOURCES = main.cc alea.cc analysis.cc \
 	stateLibrary.h stack.h stop.h strindex.h structs.h success.h \
 	support.h swap.h threadlog.h timesys.h timesyshms.h \
 	torNorVec.h torsion.h trilinterp.h trjtokens.h typedefs.h \
-	usage.h version.h warn_bad_file.h weedbonds.h writePDBQT.h
+	usage.h version.h warn_bad_file.h weedbonds.h writePDBQT.h \
+	$(am__append_1)
 autodock4_omp_SOURCES = main.cc alea.cc analysis.cc \
 	atom_parameter_manager.cc banner.cc bestpdb.cc \
 	calculateEnergies.cc call_glss.cc call_ls.cc \
@@ -662,8 +723,11 @@ autodock4_omp_SOURCES = main.cc alea.cc analysis.cc \
 	usage.h version.h warn_bad_file.h weedbonds.h \
 	writePDBQT.h
 BUILT_SOURCES = $(autodock4_SOURCES) default_parameters.h
-AM_CXXFLAGS = -O3 -Wall -Wno-write-strings # increase compatibility \
-	with pre 4.x compilers for string handling
+
+#AM_CXXFLAGS = -O3 # Agressive optimization
+AM_CXXFLAGS = -g -Wall -Wno-write-strings \
+	-L/pkgs/nvidia-cuda/5.5/lib64
+#AM_CXXFLAGS += -lcudart # link in cuda runtime -- only if using cuda...
 
 # M Pique - I'm not sure which of these are really necessary
 # could this be replaced by :  AC_SUBST(AM_CXXFLAGS,"$OPENMP_CXXFLAGS")
@@ -690,13 +754,13 @@ AM_CPPFLAGS = -DNOSQRT \
 #autodock4_CXXFLAGS = -Wall -O3 # All warnings, Agressive optimization
 #autodock4_CXXFLAGS = -Wall -O3 -ftree-vectorize # All warnings, Agressive optimization + GCC vectorization # MacOSX only?
 autodock4_CPPFLAGS = $(AM_CPPFLAGS)
-autodock4_LDFLAGS = $(AM_LDFLAGS) $(am__append_1)
-autodock4_LDADD = $(COLINY_LDFLAGS) -lm
+autodock4_LDFLAGS = $(AM_LDFLAGS) $(am__append_3)
+autodock4_LDADD = $(COLINY_LDFLAGS) $(CUDA_ARGS) $(am__append_2)
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
 .SUFFIXES:
-.SUFFIXES: .cc .o .obj
+.SUFFIXES: .cc .cu .o .obj
 am--refresh: Makefile
 	@:
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
@@ -868,6 +932,7 @@ include ./$(DEPDIR)/autodock4-setflags.Po
 include ./$(DEPDIR)/autodock4-simanneal.Po
 include ./$(DEPDIR)/autodock4-sort_enrg.Po
 include ./$(DEPDIR)/autodock4-stack.Po
+include ./$(DEPDIR)/autodock4-start_CUDA_on_population.Po
 include ./$(DEPDIR)/autodock4-stateLibrary.Po
 include ./$(DEPDIR)/autodock4-stop.Po
 include ./$(DEPDIR)/autodock4-strindex.Po
@@ -2293,6 +2358,20 @@ autodock4-nbe.obj: nbe.cc
 #	$(AM_V_CXX)source='nbe.cc' object='autodock4-nbe.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o autodock4-nbe.obj `if test -f 'nbe.cc'; then $(CYGPATH_W) 'nbe.cc'; else $(CYGPATH_W) '$(srcdir)/nbe.cc'; fi`
+
+autodock4-start_CUDA_on_population.o: start_CUDA_on_population.cc
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT autodock4-start_CUDA_on_population.o -MD -MP -MF $(DEPDIR)/autodock4-start_CUDA_on_population.Tpo -c -o autodock4-start_CUDA_on_population.o `test -f 'start_CUDA_on_population.cc' || echo '$(srcdir)/'`start_CUDA_on_population.cc
+	$(AM_V_at)$(am__mv) $(DEPDIR)/autodock4-start_CUDA_on_population.Tpo $(DEPDIR)/autodock4-start_CUDA_on_population.Po
+#	$(AM_V_CXX)source='start_CUDA_on_population.cc' object='autodock4-start_CUDA_on_population.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o autodock4-start_CUDA_on_population.o `test -f 'start_CUDA_on_population.cc' || echo '$(srcdir)/'`start_CUDA_on_population.cc
+
+autodock4-start_CUDA_on_population.obj: start_CUDA_on_population.cc
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT autodock4-start_CUDA_on_population.obj -MD -MP -MF $(DEPDIR)/autodock4-start_CUDA_on_population.Tpo -c -o autodock4-start_CUDA_on_population.obj `if test -f 'start_CUDA_on_population.cc'; then $(CYGPATH_W) 'start_CUDA_on_population.cc'; else $(CYGPATH_W) '$(srcdir)/start_CUDA_on_population.cc'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/autodock4-start_CUDA_on_population.Tpo $(DEPDIR)/autodock4-start_CUDA_on_population.Po
+#	$(AM_V_CXX)source='start_CUDA_on_population.cc' object='autodock4-start_CUDA_on_population.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o autodock4-start_CUDA_on_population.obj `if test -f 'start_CUDA_on_population.cc'; then $(CYGPATH_W) 'start_CUDA_on_population.cc'; else $(CYGPATH_W) '$(srcdir)/start_CUDA_on_population.cc'; fi`
 
 autodock4_omp-main.o: main.cc
 	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_omp_CPPFLAGS) $(CPPFLAGS) $(autodock4_omp_CXXFLAGS) $(CXXFLAGS) -MT autodock4_omp-main.o -MD -MP -MF $(DEPDIR)/autodock4_omp-main.Tpo -c -o autodock4_omp-main.o `test -f 'main.cc' || echo '$(srcdir)/'`main.cc
@@ -3957,7 +4036,6 @@ uninstall-am: uninstall-binPROGRAMS
 
 dist-hook:
 	rm -rf `find $(distdir)/Tests -name CVS -o -name '*.dlg'` 
-#AM_CXXFLAGS = -g # debug
 
     # if gnu c++ compiler
 
@@ -4117,6 +4195,9 @@ test : autodock4 autodock4.omp $(srcdir)/Tests/test_autodock4.py
 
 gs.o : gs.cc gs.h ranlib.h eval.h rep.h support.h writePDBQT.h
 	$(CXXCOMPILE) -DCHECK_ISNAN -c $(srcdir)/gs.cc
+
+.cu.o:
+	$(NVCC) -c *.cu $(NVCCFLAGS)
 
 # 2007-04-30 MP & GMM: this line is necessary to be able to compile read_parameter_library.o
 read_parameter_library.o : default_parameters.h
