@@ -15,12 +15,16 @@
 #define MEMORY_LAYOUT_H
 #endif
 
+#ifndef CUDA_HEADERS
+#include "/pkgs/nvidia-cuda/5.5/include/cuda.h"
+#include "/pkgs/nvidia-cuda/5.5/include/cuda_runtime.h"
+#endif
+
+
 // Function prototypes
 bool allocate_pop_to_gpu(Population & pop_in);
-//__global__ Real * getIndvAttribute(int idx, ATTRIBUTE a);
-//__global__ Real * getTorsion(int indvIdx, int torsionIdx);
-//__global__ Real * getTorsion(int indvIdx, int torsionIdx);
-
-
+__device__ Real * getIndvAttribute(int idx);
+__device__ Real * getTorsion(int indvIdx, int torsionIdx);
+__device__ char*  getAtom(int indvIdx, int atom);
 
 

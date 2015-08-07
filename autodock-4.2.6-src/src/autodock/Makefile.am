@@ -146,6 +146,10 @@ autodock4_SOURCES += \
     eintcalPrint.cc \
     intnbtable.cc \
     nbe.cc \
+<<<<<<< HEAD
+=======
+    start_CUDA_on_population.cc \ 
+>>>>>>> master
 		PDBQT_tokens.h \
 		analysis.h \
 		atom_parameter_manager.h \

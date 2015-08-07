@@ -17,15 +17,15 @@ move 1dwd_0.pdbqt                    # small molecule
 
 ## SEARCH-SPECIFIC SECTION
 ga_pop_size 150                      # number of individuals in population
-ga_num_evals 2500000                 # maximum number of energy evaluations  
-ga_num_generations 27000             # maximum number of generations
+ga_num_evals 1000000                 # maximum number of energy evaluations  
+ga_num_generations 75             # maximum number of generations
 set_ga                               # set the above parameters for GA or LGA
 
 ## LOCAL SEARCH PARAMETERS SECTION
 set_psw1                             # set the above pseudo Solis & Wets parameters
 
 ## PERFORM SEARCH SECTION
-ga_run 10                            # do this many hybrid GA-LS runs
+ga_run 10                           # do this many hybrid GA-LS runs
 
 ## ANALYSIS SECTION
 rmstol 0.5                           # cluster_tolerance/A
