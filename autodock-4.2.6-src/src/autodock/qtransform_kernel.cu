@@ -13,5 +13,26 @@
 
 */
 
+#include "constants.h"
+#include "typedefs.h"
+#ifndef CUDA_HEADERS
+#include "/pkgs/nvidia-cuda/5.5/include/cuda.h"
+#include "/pkgs/nvidia-cuda/5.5/include/cuda_runtime.h"
+#endif
 
-// Initial kernel will handle just one atom for testing...
+
+__global__
+void qtransform_kernel(Real* globalReals) {
+  // Does translation and rotation of each atom coordinate in
+  // globalReals. Each thread should handle one atom, and 
+  // each block should handle one individual.
+
+  int individual_num = blockIdx.x;
+  int atom_num = threadIdx.x;
+
+  
+  
+
+}
+
+

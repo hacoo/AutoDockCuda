@@ -55,18 +55,30 @@ bool allocate_pop_to_gpu(Population & pop_in) {
 	Real * out; // this contains most of the data
 	char * atoms; // this contains the atom data
 
-	int pop_size = pop_in.num_individuals();
+	int pop_size = pop_in->num_individuals();
+	if (!pop_in[0].mol) {
+	  printf("ERROR: no molecule for individual 0. \n");
+	  return false;
+	}
+	  
+	int atom_size = pop_in[0].mol->natom; // Should be the same for all
+	// atoms in the population
 
 	gpuErrchk(cudaMalloc((void **) &out, pop_size * MOL_INDV_SIZE));
 	gpuErrchk(cudaMalloc((void **) &atoms, pop_size * MAX_ATOMS * MAX_CHARS));
 
 	for (int i = 0; i < pop_size; ++i) {
 		if (pop_in[i].mol == NULL) {
-			printf("no molecule for individual %d", i);
+			printf("ERROR: no molecule for individual %d \n", i);
 			return false;
 		}
-
+		
 		Molecule * curr = pop_in[i].mol;
+		if (curr->natom != atom_size) {
+		  printf("ERROR: natoms for individual %d does not match individual 0 \n",
+			 i);
+		  return false;
+		}
 	
 		int j = MOL_INDV_SIZE * i; //output idx
 		

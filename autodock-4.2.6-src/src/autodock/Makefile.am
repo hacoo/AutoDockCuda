@@ -349,6 +349,7 @@ autodock4_omp_SOURCES += \
     eintcalPrint.cc \
     intnbtable.cc \
     nbe.cc \
+    start_CUDA_on_population.cc \
 		PDBQT_tokens.h \
 		analysis.h \
 		atom_parameter_manager.h \
