@@ -43,34 +43,34 @@ PATH: /pkgs/nvidia-cuda/5.5/bin
 ## Core tests. ##
 ## ----------- ##
 
-configure:2378: checking for a BSD-compatible install
-configure:2446: result: /usr/bin/install -c
-configure:2457: checking whether build environment is sane
-configure:2512: result: yes
-configure:2550: WARNING: 'missing' script is too old or missing
-configure:2663: checking for a thread-safe mkdir -p
-configure:2702: result: /bin/mkdir -p
-configure:2709: checking for gawk
-configure:2725: found /usr/bin/gawk
-configure:2736: result: gawk
-configure:2747: checking whether make sets $(MAKE)
-configure:2769: result: yes
-configure:2798: checking whether make supports nested variables
-configure:2815: result: yes
-configure:2949: checking for gawk
-configure:2976: result: gawk
-configure:3048: checking for g++
-configure:3064: found /usr/bin/g++
-configure:3075: result: g++
-configure:3102: checking for C++ compiler version
-configure:3111: g++ --version >&5
+configure:2379: checking for a BSD-compatible install
+configure:2447: result: /usr/bin/install -c
+configure:2458: checking whether build environment is sane
+configure:2513: result: yes
+configure:2551: WARNING: 'missing' script is too old or missing
+configure:2664: checking for a thread-safe mkdir -p
+configure:2703: result: /bin/mkdir -p
+configure:2710: checking for gawk
+configure:2726: found /usr/bin/gawk
+configure:2737: result: gawk
+configure:2748: checking whether make sets $(MAKE)
+configure:2770: result: yes
+configure:2799: checking whether make supports nested variables
+configure:2816: result: yes
+configure:2950: checking for gawk
+configure:2977: result: gawk
+configure:3049: checking for g++
+configure:3065: found /usr/bin/g++
+configure:3076: result: g++
+configure:3103: checking for C++ compiler version
+configure:3112: g++ --version >&5
 g++ (Ubuntu 4.8.2-19ubuntu1) 4.8.2
 Copyright (C) 2013 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-configure:3122: $? = 0
-configure:3111: g++ -v >&5
+configure:3123: $? = 0
+configure:3112: g++ -v >&5
 Using built-in specs.
 COLLECT_GCC=g++
 COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/4.8/lto-wrapper
@@ -78,68 +78,68 @@ Target: x86_64-linux-gnu
 Configured with: ../src/configure -v --with-pkgversion='Ubuntu 4.8.2-19ubuntu1' --with-bugurl=file:///usr/share/doc/gcc-4.8/README.Bugs --enable-languages=c,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-4.8 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --with-gxx-include-dir=/usr/include/c++/4.8 --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --enable-gnu-unique-object --disable-libmudflap --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-4.8-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-4.8-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-4.8-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
 Thread model: posix
 gcc version 4.8.2 (Ubuntu 4.8.2-19ubuntu1) 
-configure:3122: $? = 0
-configure:3111: g++ -V >&5
+configure:3123: $? = 0
+configure:3112: g++ -V >&5
 g++: error: unrecognized command line option '-V'
 g++: fatal error: no input files
 compilation terminated.
-configure:3122: $? = 4
-configure:3111: g++ -qversion >&5
+configure:3123: $? = 4
+configure:3112: g++ -qversion >&5
 g++: error: unrecognized command line option '-qversion'
 g++: fatal error: no input files
 compilation terminated.
-configure:3122: $? = 4
-configure:3142: checking whether the C++ compiler works
-configure:3164: g++    conftest.cpp  >&5
-configure:3168: $? = 0
-configure:3216: result: yes
-configure:3219: checking for C++ compiler default output file name
-configure:3221: result: a.out
-configure:3227: checking for suffix of executables
-configure:3234: g++ -o conftest    conftest.cpp  >&5
-configure:3238: $? = 0
-configure:3260: result: 
-configure:3282: checking whether we are cross compiling
-configure:3290: g++ -o conftest    conftest.cpp  >&5
-configure:3294: $? = 0
-configure:3301: ./conftest
-configure:3305: $? = 0
-configure:3320: result: no
-configure:3325: checking for suffix of object files
-configure:3347: g++ -c   conftest.cpp >&5
-configure:3351: $? = 0
-configure:3372: result: o
-configure:3376: checking whether we are using the GNU C++ compiler
-configure:3395: g++ -c   conftest.cpp >&5
-configure:3395: $? = 0
-configure:3404: result: yes
-configure:3413: checking whether g++ accepts -g
-configure:3433: g++ -c -g  conftest.cpp >&5
-configure:3433: $? = 0
-configure:3474: result: yes
-configure:3508: checking for style of include used by make
-configure:3536: result: GNU
-configure:3562: checking dependency style of g++
-configure:3673: result: gcc3
-configure:3734: checking for ranlib
-configure:3750: found /usr/bin/ranlib
-configure:3761: result: ranlib
-configure:3788: checking build system type
-configure:3802: result: x86_64-unknown-linux-gnu
-configure:3822: checking host system type
-configure:3835: result: x86_64-unknown-linux-gnu
-configure:3905: checking for gcc
-configure:3921: found /usr/bin/gcc
-configure:3932: result: gcc
-configure:4161: checking for C compiler version
-configure:4170: gcc --version >&5
+configure:3123: $? = 4
+configure:3143: checking whether the C++ compiler works
+configure:3165: g++    conftest.cpp  >&5
+configure:3169: $? = 0
+configure:3217: result: yes
+configure:3220: checking for C++ compiler default output file name
+configure:3222: result: a.out
+configure:3228: checking for suffix of executables
+configure:3235: g++ -o conftest    conftest.cpp  >&5
+configure:3239: $? = 0
+configure:3261: result: 
+configure:3283: checking whether we are cross compiling
+configure:3291: g++ -o conftest    conftest.cpp  >&5
+configure:3295: $? = 0
+configure:3302: ./conftest
+configure:3306: $? = 0
+configure:3321: result: no
+configure:3326: checking for suffix of object files
+configure:3348: g++ -c   conftest.cpp >&5
+configure:3352: $? = 0
+configure:3373: result: o
+configure:3377: checking whether we are using the GNU C++ compiler
+configure:3396: g++ -c   conftest.cpp >&5
+configure:3396: $? = 0
+configure:3405: result: yes
+configure:3414: checking whether g++ accepts -g
+configure:3434: g++ -c -g  conftest.cpp >&5
+configure:3434: $? = 0
+configure:3475: result: yes
+configure:3509: checking for style of include used by make
+configure:3537: result: GNU
+configure:3563: checking dependency style of g++
+configure:3674: result: gcc3
+configure:3735: checking for ranlib
+configure:3751: found /usr/bin/ranlib
+configure:3762: result: ranlib
+configure:3789: checking build system type
+configure:3803: result: x86_64-unknown-linux-gnu
+configure:3823: checking host system type
+configure:3836: result: x86_64-unknown-linux-gnu
+configure:3906: checking for gcc
+configure:3922: found /usr/bin/gcc
+configure:3933: result: gcc
+configure:4162: checking for C compiler version
+configure:4171: gcc --version >&5
 gcc (Ubuntu 4.8.2-19ubuntu1) 4.8.2
 Copyright (C) 2013 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-configure:4181: $? = 0
-configure:4170: gcc -v >&5
+configure:4182: $? = 0
+configure:4171: gcc -v >&5
 Using built-in specs.
 COLLECT_GCC=gcc
 COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/4.8/lto-wrapper
@@ -147,46 +147,46 @@ Target: x86_64-linux-gnu
 Configured with: ../src/configure -v --with-pkgversion='Ubuntu 4.8.2-19ubuntu1' --with-bugurl=file:///usr/share/doc/gcc-4.8/README.Bugs --enable-languages=c,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-4.8 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --with-gxx-include-dir=/usr/include/c++/4.8 --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --enable-gnu-unique-object --disable-libmudflap --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-4.8-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-4.8-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-4.8-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
 Thread model: posix
 gcc version 4.8.2 (Ubuntu 4.8.2-19ubuntu1) 
-configure:4181: $? = 0
-configure:4170: gcc -V >&5
+configure:4182: $? = 0
+configure:4171: gcc -V >&5
 gcc: error: unrecognized command line option '-V'
 gcc: fatal error: no input files
 compilation terminated.
-configure:4181: $? = 4
-configure:4170: gcc -qversion >&5
+configure:4182: $? = 4
+configure:4171: gcc -qversion >&5
 gcc: error: unrecognized command line option '-qversion'
 gcc: fatal error: no input files
 compilation terminated.
-configure:4181: $? = 4
-configure:4185: checking whether we are using the GNU C compiler
-configure:4204: gcc -c   conftest.c >&5
-configure:4204: $? = 0
-configure:4213: result: yes
-configure:4222: checking whether gcc accepts -g
-configure:4242: gcc -c -g  conftest.c >&5
-configure:4242: $? = 0
-configure:4283: result: yes
-configure:4300: checking for gcc option to accept ISO C89
-configure:4363: gcc  -c -g -O2  conftest.c >&5
-configure:4363: $? = 0
-configure:4376: result: none needed
-configure:4401: checking whether gcc understands -c and -o together
-configure:4423: gcc -c conftest.c -o conftest2.o
-configure:4426: $? = 0
-configure:4423: gcc -c conftest.c -o conftest2.o
-configure:4426: $? = 0
-configure:4438: result: yes
-configure:4457: checking dependency style of gcc
-configure:4568: result: gcc3
-configure:4589: checking how to run the C preprocessor
-configure:4620: gcc -E  conftest.c
-configure:4620: $? = 0
-configure:4634: gcc -E  conftest.c
+configure:4182: $? = 4
+configure:4186: checking whether we are using the GNU C compiler
+configure:4205: gcc -c   conftest.c >&5
+configure:4205: $? = 0
+configure:4214: result: yes
+configure:4223: checking whether gcc accepts -g
+configure:4243: gcc -c -g  conftest.c >&5
+configure:4243: $? = 0
+configure:4284: result: yes
+configure:4301: checking for gcc option to accept ISO C89
+configure:4364: gcc  -c -g -O2  conftest.c >&5
+configure:4364: $? = 0
+configure:4377: result: none needed
+configure:4402: checking whether gcc understands -c and -o together
+configure:4424: gcc -c conftest.c -o conftest2.o
+configure:4427: $? = 0
+configure:4424: gcc -c conftest.c -o conftest2.o
+configure:4427: $? = 0
+configure:4439: result: yes
+configure:4458: checking dependency style of gcc
+configure:4569: result: gcc3
+configure:4590: checking how to run the C preprocessor
+configure:4621: gcc -E  conftest.c
+configure:4621: $? = 0
+configure:4635: gcc -E  conftest.c
 conftest.c:11:28: fatal error: ac_nonexistent.h: No such file or directory
  #include <ac_nonexistent.h>
                             ^
 compilation terminated.
-configure:4634: $? = 1
+configure:4635: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "autodock"
@@ -199,15 +199,15 @@ configure: failed program was:
 | #define VERSION "4.2.6"
 | /* end confdefs.h.  */
 | #include <ac_nonexistent.h>
-configure:4659: result: gcc -E
-configure:4679: gcc -E  conftest.c
-configure:4679: $? = 0
-configure:4693: gcc -E  conftest.c
+configure:4660: result: gcc -E
+configure:4680: gcc -E  conftest.c
+configure:4680: $? = 0
+configure:4694: gcc -E  conftest.c
 conftest.c:11:28: fatal error: ac_nonexistent.h: No such file or directory
  #include <ac_nonexistent.h>
                             ^
 compilation terminated.
-configure:4693: $? = 1
+configure:4694: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "autodock"
@@ -220,67 +220,67 @@ configure: failed program was:
 | #define VERSION "4.2.6"
 | /* end confdefs.h.  */
 | #include <ac_nonexistent.h>
-configure:4722: checking for grep that handles long lines and -e
-configure:4780: result: /bin/grep
-configure:4785: checking for egrep
-configure:4847: result: /bin/grep -E
-configure:4852: checking for ANSI C header files
-configure:4872: gcc -c -g -O2  conftest.c >&5
-configure:4872: $? = 0
-configure:4945: gcc -o conftest -g -O2   conftest.c  >&5
-configure:4945: $? = 0
-configure:4945: ./conftest
-configure:4945: $? = 0
-configure:4956: result: yes
-configure:4972: checking for sys/types.h
-configure:4972: gcc -c -g -O2  conftest.c >&5
-configure:4972: $? = 0
-configure:4972: result: yes
-configure:4972: checking for sys/stat.h
-configure:4972: gcc -c -g -O2  conftest.c >&5
-configure:4972: $? = 0
-configure:4972: result: yes
-configure:4972: checking for stdlib.h
-configure:4972: gcc -c -g -O2  conftest.c >&5
-configure:4972: $? = 0
-configure:4972: result: yes
-configure:4972: checking for string.h
-configure:4972: gcc -c -g -O2  conftest.c >&5
-configure:4972: $? = 0
-configure:4972: result: yes
-configure:4972: checking for memory.h
-configure:4972: gcc -c -g -O2  conftest.c >&5
-configure:4972: $? = 0
-configure:4972: result: yes
-configure:4972: checking for strings.h
-configure:4972: gcc -c -g -O2  conftest.c >&5
-configure:4972: $? = 0
-configure:4972: result: yes
-configure:4972: checking for inttypes.h
-configure:4972: gcc -c -g -O2  conftest.c >&5
-configure:4972: $? = 0
-configure:4972: result: yes
-configure:4972: checking for stdint.h
-configure:4972: gcc -c -g -O2  conftest.c >&5
-configure:4972: $? = 0
-configure:4972: result: yes
-configure:4972: checking for unistd.h
-configure:4972: gcc -c -g -O2  conftest.c >&5
-configure:4972: $? = 0
-configure:4972: result: yes
-configure:4984: checking for stdbool.h that conforms to C99
-configure:5051: gcc -c -g -O2  conftest.c >&5
-configure:5051: $? = 0
-configure:5058: result: yes
-configure:5060: checking for _Bool
-configure:5060: gcc -c -g -O2  conftest.c >&5
-configure:5060: $? = 0
-configure:5060: gcc -c -g -O2  conftest.c >&5
+configure:4723: checking for grep that handles long lines and -e
+configure:4781: result: /bin/grep
+configure:4786: checking for egrep
+configure:4848: result: /bin/grep -E
+configure:4853: checking for ANSI C header files
+configure:4873: gcc -c -g -O2  conftest.c >&5
+configure:4873: $? = 0
+configure:4946: gcc -o conftest -g -O2   conftest.c  >&5
+configure:4946: $? = 0
+configure:4946: ./conftest
+configure:4946: $? = 0
+configure:4957: result: yes
+configure:4973: checking for sys/types.h
+configure:4973: gcc -c -g -O2  conftest.c >&5
+configure:4973: $? = 0
+configure:4973: result: yes
+configure:4973: checking for sys/stat.h
+configure:4973: gcc -c -g -O2  conftest.c >&5
+configure:4973: $? = 0
+configure:4973: result: yes
+configure:4973: checking for stdlib.h
+configure:4973: gcc -c -g -O2  conftest.c >&5
+configure:4973: $? = 0
+configure:4973: result: yes
+configure:4973: checking for string.h
+configure:4973: gcc -c -g -O2  conftest.c >&5
+configure:4973: $? = 0
+configure:4973: result: yes
+configure:4973: checking for memory.h
+configure:4973: gcc -c -g -O2  conftest.c >&5
+configure:4973: $? = 0
+configure:4973: result: yes
+configure:4973: checking for strings.h
+configure:4973: gcc -c -g -O2  conftest.c >&5
+configure:4973: $? = 0
+configure:4973: result: yes
+configure:4973: checking for inttypes.h
+configure:4973: gcc -c -g -O2  conftest.c >&5
+configure:4973: $? = 0
+configure:4973: result: yes
+configure:4973: checking for stdint.h
+configure:4973: gcc -c -g -O2  conftest.c >&5
+configure:4973: $? = 0
+configure:4973: result: yes
+configure:4973: checking for unistd.h
+configure:4973: gcc -c -g -O2  conftest.c >&5
+configure:4973: $? = 0
+configure:4973: result: yes
+configure:4985: checking for stdbool.h that conforms to C99
+configure:5052: gcc -c -g -O2  conftest.c >&5
+configure:5052: $? = 0
+configure:5059: result: yes
+configure:5061: checking for _Bool
+configure:5061: gcc -c -g -O2  conftest.c >&5
+configure:5061: $? = 0
+configure:5061: gcc -c -g -O2  conftest.c >&5
 conftest.c: In function 'main':
 conftest.c:57:20: error: expected expression before ')' token
  if (sizeof ((_Bool)))
                     ^
-configure:5060: $? = 1
+configure:5061: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "autodock"
@@ -343,24 +343,24 @@ configure: failed program was:
 |   ;
 |   return 0;
 | }
-configure:5060: result: yes
-configure:5077: checking for an ANSI C-conforming const
-configure:5143: gcc -c -g -O2  conftest.c >&5
-configure:5143: $? = 0
-configure:5150: result: yes
-configure:5158: checking for inline
-configure:5174: gcc -c -g -O2  conftest.c >&5
-configure:5174: $? = 0
-configure:5182: result: inline
-configure:5200: checking for size_t
-configure:5200: gcc -c -g -O2  conftest.c >&5
-configure:5200: $? = 0
-configure:5200: gcc -c -g -O2  conftest.c >&5
+configure:5061: result: yes
+configure:5078: checking for an ANSI C-conforming const
+configure:5144: gcc -c -g -O2  conftest.c >&5
+configure:5144: $? = 0
+configure:5151: result: yes
+configure:5159: checking for inline
+configure:5175: gcc -c -g -O2  conftest.c >&5
+configure:5175: $? = 0
+configure:5183: result: inline
+configure:5201: checking for size_t
+configure:5201: gcc -c -g -O2  conftest.c >&5
+configure:5201: $? = 0
+configure:5201: gcc -c -g -O2  conftest.c >&5
 conftest.c: In function 'main':
 conftest.c:59:21: error: expected expression before ')' token
  if (sizeof ((size_t)))
                      ^
-configure:5200: $? = 1
+configure:5201: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "autodock"
@@ -425,33 +425,33 @@ configure: failed program was:
 |   ;
 |   return 0;
 | }
-configure:5200: result: yes
-configure:5211: checking whether struct tm is in sys/time.h or time.h
-configure:5231: gcc -c -g -O2  conftest.c >&5
-configure:5231: $? = 0
-configure:5238: result: time.h
-configure:5250: checking for stdlib.h
-configure:5250: result: yes
-configure:5260: checking for GNU libc compatible malloc
-configure:5284: gcc -o conftest -g -O2   conftest.c  >&5
-configure:5284: $? = 0
-configure:5284: ./conftest
-configure:5284: $? = 0
-configure:5294: result: yes
-configure:5325: checking for gethostname
-configure:5325: gcc -o conftest -g -O2   conftest.c  >&5
-configure:5325: $? = 0
-configure:5325: result: yes
-configure:5325: checking for getpid
-configure:5325: gcc -o conftest -g -O2   conftest.c  >&5
-configure:5325: $? = 0
-configure:5325: result: yes
-configure:5325: checking for GetProcessId
-configure:5325: gcc -o conftest -g -O2   conftest.c  >&5
-/tmp/cc5sbB6y.o: In function `main':
+configure:5201: result: yes
+configure:5212: checking whether struct tm is in sys/time.h or time.h
+configure:5232: gcc -c -g -O2  conftest.c >&5
+configure:5232: $? = 0
+configure:5239: result: time.h
+configure:5251: checking for stdlib.h
+configure:5251: result: yes
+configure:5261: checking for GNU libc compatible malloc
+configure:5285: gcc -o conftest -g -O2   conftest.c  >&5
+configure:5285: $? = 0
+configure:5285: ./conftest
+configure:5285: $? = 0
+configure:5295: result: yes
+configure:5326: checking for gethostname
+configure:5326: gcc -o conftest -g -O2   conftest.c  >&5
+configure:5326: $? = 0
+configure:5326: result: yes
+configure:5326: checking for getpid
+configure:5326: gcc -o conftest -g -O2   conftest.c  >&5
+configure:5326: $? = 0
+configure:5326: result: yes
+configure:5326: checking for GetProcessId
+configure:5326: gcc -o conftest -g -O2   conftest.c  >&5
+/tmp/ccYZUwRn.o: In function `main':
 /u/reb/Documents/CS410/TermProject/AutoDockCuda/autodock-4.2.6-src/src/autodock/conftest.c:61: undefined reference to `GetProcessId'
 collect2: error: ld returned 1 exit status
-configure:5325: $? = 1
+configure:5326: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "autodock"
@@ -517,36 +517,36 @@ configure: failed program was:
 |   ;
 |   return 0;
 | }
-configure:5325: result: no
-configure:5325: checking for fchmod
-configure:5325: gcc -o conftest -g -O2   conftest.c  >&5
-configure:5325: $? = 0
-configure:5325: result: yes
-configure:5325: checking for setlinebuf
-configure:5325: gcc -o conftest -g -O2   conftest.c  >&5
-configure:5325: $? = 0
-configure:5325: result: yes
-configure:5325: checking for sysconf
-configure:5325: gcc -o conftest -g -O2   conftest.c  >&5
-configure:5325: $? = 0
-configure:5325: result: yes
-configure:5325: checking for times
-configure:5325: gcc -o conftest -g -O2   conftest.c  >&5
-configure:5325: $? = 0
-configure:5325: result: yes
-configure:5325: checking for getrusage
-configure:5325: gcc -o conftest -g -O2   conftest.c  >&5
-configure:5325: $? = 0
-configure:5325: result: yes
-configure:5325: checking for pow
-configure:5325: gcc -o conftest -g -O2   conftest.c  >&5
+configure:5326: result: no
+configure:5326: checking for fchmod
+configure:5326: gcc -o conftest -g -O2   conftest.c  >&5
+configure:5326: $? = 0
+configure:5326: result: yes
+configure:5326: checking for setlinebuf
+configure:5326: gcc -o conftest -g -O2   conftest.c  >&5
+configure:5326: $? = 0
+configure:5326: result: yes
+configure:5326: checking for sysconf
+configure:5326: gcc -o conftest -g -O2   conftest.c  >&5
+configure:5326: $? = 0
+configure:5326: result: yes
+configure:5326: checking for times
+configure:5326: gcc -o conftest -g -O2   conftest.c  >&5
+configure:5326: $? = 0
+configure:5326: result: yes
+configure:5326: checking for getrusage
+configure:5326: gcc -o conftest -g -O2   conftest.c  >&5
+configure:5326: $? = 0
+configure:5326: result: yes
+configure:5326: checking for pow
+configure:5326: gcc -o conftest -g -O2   conftest.c  >&5
 conftest.c:55:6: warning: conflicting types for built-in function 'pow' [enabled by default]
  char pow ();
       ^
-/tmp/ccu7jKt0.o: In function `main':
+/tmp/cc1zkTk0.o: In function `main':
 /u/reb/Documents/CS410/TermProject/AutoDockCuda/autodock-4.2.6-src/src/autodock/conftest.c:66: undefined reference to `pow'
 collect2: error: ld returned 1 exit status
-configure:5325: $? = 1
+configure:5326: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "autodock"
@@ -617,16 +617,16 @@ configure: failed program was:
 |   ;
 |   return 0;
 | }
-configure:5325: result: no
-configure:5325: checking for sqrt
-configure:5325: gcc -o conftest -g -O2   conftest.c  >&5
+configure:5326: result: no
+configure:5326: checking for sqrt
+configure:5326: gcc -o conftest -g -O2   conftest.c  >&5
 conftest.c:55:6: warning: conflicting types for built-in function 'sqrt' [enabled by default]
  char sqrt ();
       ^
-/tmp/cc6hXLn9.o: In function `main':
+/tmp/ccuZrC49.o: In function `main':
 /u/reb/Documents/CS410/TermProject/AutoDockCuda/autodock-4.2.6-src/src/autodock/conftest.c:66: undefined reference to `sqrt'
 collect2: error: ld returned 1 exit status
-configure:5325: $? = 1
+configure:5326: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "autodock"
@@ -697,23 +697,23 @@ configure: failed program was:
 |   ;
 |   return 0;
 | }
-configure:5325: result: no
-configure:5325: checking for strncasecmp
-configure:5325: gcc -o conftest -g -O2   conftest.c  >&5
+configure:5326: result: no
+configure:5326: checking for strncasecmp
+configure:5326: gcc -o conftest -g -O2   conftest.c  >&5
 conftest.c:55:6: warning: conflicting types for built-in function 'strncasecmp' [enabled by default]
  char strncasecmp ();
       ^
-configure:5325: $? = 0
-configure:5325: result: yes
-configure:5469: checking for C++ compiler version
-configure:5478: g++ --version >&5
+configure:5326: $? = 0
+configure:5326: result: yes
+configure:5470: checking for C++ compiler version
+configure:5479: g++ --version >&5
 g++ (Ubuntu 4.8.2-19ubuntu1) 4.8.2
 Copyright (C) 2013 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-configure:5489: $? = 0
-configure:5478: g++ -v >&5
+configure:5490: $? = 0
+configure:5479: g++ -v >&5
 Using built-in specs.
 COLLECT_GCC=g++
 COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/4.8/lto-wrapper
@@ -721,25 +721,25 @@ Target: x86_64-linux-gnu
 Configured with: ../src/configure -v --with-pkgversion='Ubuntu 4.8.2-19ubuntu1' --with-bugurl=file:///usr/share/doc/gcc-4.8/README.Bugs --enable-languages=c,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-4.8 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --with-gxx-include-dir=/usr/include/c++/4.8 --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --enable-gnu-unique-object --disable-libmudflap --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-4.8-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-4.8-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-4.8-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
 Thread model: posix
 gcc version 4.8.2 (Ubuntu 4.8.2-19ubuntu1) 
-configure:5489: $? = 0
-configure:5478: g++ -V >&5
+configure:5490: $? = 0
+configure:5479: g++ -V >&5
 g++: error: unrecognized command line option '-V'
 g++: fatal error: no input files
 compilation terminated.
-configure:5489: $? = 4
-configure:5478: g++ -qversion >&5
+configure:5490: $? = 4
+configure:5479: g++ -qversion >&5
 g++: error: unrecognized command line option '-qversion'
 g++: fatal error: no input files
 compilation terminated.
-configure:5489: $? = 4
-configure:5493: checking whether we are using the GNU C++ compiler
-configure:5521: result: yes
-configure:5530: checking whether g++ accepts -g
-configure:5591: result: yes
-configure:5616: checking dependency style of g++
-configure:5727: result: gcc3
-configure:5751: checking for g++ option to support OpenMP
-configure:5766: g++ -o conftest    conftest.cpp  >&5
+configure:5490: $? = 4
+configure:5494: checking whether we are using the GNU C++ compiler
+configure:5522: result: yes
+configure:5531: checking whether g++ accepts -g
+configure:5592: result: yes
+configure:5617: checking dependency style of g++
+configure:5728: result: gcc3
+configure:5752: checking for g++ option to support OpenMP
+configure:5767: g++ -o conftest    conftest.cpp  >&5
 conftest.cpp:35:2: error: 'choke' does not name a type
   choke me
   ^
@@ -784,7 +784,7 @@ In file included from conftest.cpp:37:0:
 /usr/lib/gcc/x86_64-linux-gnu/4.8/include/omp.h:80:41: error: expected ',' or ';' before 'throw'
  extern int omp_test_lock (omp_lock_t *) __GOMP_NOTHROW;
                                          ^
-configure:5766: $? = 1
+configure:5767: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "autodock"
@@ -825,14 +825,14 @@ configure: failed program was:
 | #include <omp.h>
 | int main () { return omp_get_num_threads (); }
 | 
-configure:5784: g++ -o conftest  -fopenmp   conftest.cpp  >&5
-configure:5784: $? = 0
-configure:5798: result: -fopenmp
-configure:5829: checking whether to use CUDA library
-configure:5838: result: yes
-configure:6059: checking that generated files are newer than configure
-configure:6065: result: done
-configure:6108: creating ./config.status
+configure:5785: g++ -o conftest  -fopenmp   conftest.cpp  >&5
+configure:5785: $? = 0
+configure:5799: result: -fopenmp
+configure:5830: checking whether to use CUDA library
+configure:5839: result: yes
+configure:6061: checking that generated files are newer than configure
+configure:6067: result: done
+configure:6110: creating ./config.status
 
 ## ---------------------- ##
 ## Running config.status. ##
@@ -849,8 +849,8 @@ generated by GNU Autoconf 2.69.  Invocation command line was
 
 on snares
 
-config.status:803: creating Makefile
-config.status:975: executing depfiles commands
+config.status:804: creating Makefile
+config.status:976: executing depfiles commands
 
 ## ---------------- ##
 ## Cache variables. ##
@@ -955,6 +955,7 @@ CDFLAGS='-D_CUDA'
 CFLAGS='-g -O2'
 CPP='gcc -E'
 CPPFLAGS=''
+CUDA_LIBS='-lcuda -lcudart -lcufft'
 CXX='g++'
 CXXDEPMODE='depmode=gcc3'
 CXXFLAGS=''

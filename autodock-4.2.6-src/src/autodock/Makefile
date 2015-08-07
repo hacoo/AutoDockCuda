@@ -114,7 +114,7 @@ am__append_1 = start_CUDA_on_population.cc
 #-lcudart -lcuda -lm
 
 #autodock4_LDADD += start_CUDA_on_population.o
-am__append_2 = $(CU_OBJS)
+am__append_2 = $(CU_OBJS) $(CUDA_LIBS)
 #am__append_3 = -Wl,--stack,8388608 # Cygwin, big stacksize
 subdir = .
 DIST_COMMON = INSTALL NEWS README AUTHORS ChangeLog \
@@ -247,7 +247,9 @@ am_autodock4_OBJECTS = autodock4-main.$(OBJEXT) \
 	autodock4-intnbtable.$(OBJEXT) autodock4-nbe.$(OBJEXT) \
 	$(am__objects_1)
 autodock4_OBJECTS = $(am_autodock4_OBJECTS)
-autodock4_DEPENDENCIES = $(am__append_2)
+am__DEPENDENCIES_1 =
+am__DEPENDENCIES_2 = $(CU_OBJS) $(am__DEPENDENCIES_1)
+autodock4_DEPENDENCIES = $(am__DEPENDENCIES_2)
 autodock4_LINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
 	$(autodock4_LDFLAGS) $(LDFLAGS) -o $@
 am__autodock4_omp_SOURCES_DIST = main.cc alea.cc analysis.cc \
@@ -393,8 +395,8 @@ am_autodock4_omp_OBJECTS =  \
 	autodock4_omp-intnbtable.$(OBJEXT) \
 	autodock4_omp-nbe.$(OBJEXT)
 autodock4_omp_OBJECTS = $(am_autodock4_omp_OBJECTS)
-am__DEPENDENCIES_1 = $(am__append_2)
-autodock4_omp_DEPENDENCIES = $(am__DEPENDENCIES_1)
+am__DEPENDENCIES_3 = $(am__DEPENDENCIES_2)
+autodock4_omp_DEPENDENCIES = $(am__DEPENDENCIES_3)
 autodock4_omp_LINK = $(CXXLD) $(autodock4_omp_CXXFLAGS) $(CXXFLAGS) \
 	$(autodock4_omp_LDFLAGS) $(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_$(V))
@@ -502,6 +504,7 @@ CDFLAGS = -D_CUDA
 CFLAGS = -g -O2
 CPP = gcc -E
 CPPFLAGS = 
+CUDA_LIBS = -lcuda -lcudart -lcufft
 CXX = g++
 CXXDEPMODE = depmode=gcc3
 CXXFLAGS = 

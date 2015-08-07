@@ -117,6 +117,7 @@ fi
                 NVCC="nvcc"
                 AC_SUBST(NVCC)
                 AC_SUBST(NVCCFLAGS)
+                AC_SUBST(CUDA_LIBS)
                 AC_DEFINE([_CUDA],[1],[Defined if CUDA should be used])
                 eval "ARRAY${N}='-D_CUDA'"
                 N=`expr $N + 1`

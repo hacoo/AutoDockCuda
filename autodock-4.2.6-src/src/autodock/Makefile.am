@@ -146,10 +146,6 @@ autodock4_SOURCES += \
     eintcalPrint.cc \
     intnbtable.cc \
     nbe.cc \
-<<<<<<< HEAD
-=======
-    start_CUDA_on_population.cc \ 
->>>>>>> master
 		PDBQT_tokens.h \
 		analysis.h \
 		atom_parameter_manager.h \
@@ -514,7 +510,7 @@ autodock4_LDADD = $(COLINY_LDFLAGS) $(CUDA_ARGS)
 
 if WANT_CUDA
 #autodock4_LDADD += start_CUDA_on_population.o
-autodock4_LDADD += $(CU_OBJS)
+autodock4_LDADD += $(CU_OBJS) $(CUDA_LIBS)
 endif
 
 if WANT_BIGSTACK
