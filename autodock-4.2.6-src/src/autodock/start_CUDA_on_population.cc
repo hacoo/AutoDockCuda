@@ -16,7 +16,7 @@
 #endif
 #include <assert.h>
 #ifndef MEMORY_LAYOUT_H
-#include "memory_layout.h"
+#include "memory_layout.cuh"
 #endif
 
 double* Population::evaluate_on_GPU() {

@@ -1,7 +1,9 @@
 #include "constants.h"
 #include "typedefs.h"
+#ifndef CUDA_HEADERS
 #include "/pkgs/nvidia-cuda/5.5/include/cuda.h"
 #include "/pkgs/nvidia-cuda/5.5/include/cuda_runtime.h"
+#endif
 #include <stdio.h>
 #ifndef _SUPPORT_H
 #include "support.h"
@@ -11,21 +13,17 @@
 const int ATOM_SIZE = (6 + MAX_TORS) * 3 * sizeof(Real);
 const int MOL_INDV_SIZE = (7 + MAX_TORS) * sizeof(Real) + MAX_ATOMS * ATOM_SIZE;
 
-Real * globalReals;
-char * globalChars;
+__device__ Real * globalReals;
+__device__ char * globalChars;
 
-enum ATTRIBUTE {
-	xyz = 0,
-	wxyz = 3
-};
 
 /////////////////////***********************************************/////////////////////
 ///****   THESE ARE THE UTILITY FUNCTIONS TO USE TO ACCESS DATA ON THE GPU    *****/////
 
-__device__ Real * getIndvAttribute(int idx, ATTRIBUTE a) {
+__device__ Real * getIndvAttribute(int idx) {
 	//all data is packed into array in x,y,z,qw,qx,qy,qz, [torsion data], ......
 	//returns the start address, move to next item by adding sizeof(Real)
-	return globalReals + (idx * MOL_INDV_SIZE + a) * sizeof(Real);
+	return globalReals + (idx * MOL_INDV_SIZE) * sizeof(Real);
 }
 
 __device__ Real * getTorsion(int indvIdx, int torsionIdx) {
@@ -34,10 +32,10 @@ __device__ Real * getTorsion(int indvIdx, int torsionIdx) {
 	return globalReals + (indvIdx * MOL_INDV_SIZE + 7 + 4 * torsionIdx) * sizeof(Real);
 }
 
-__device__ char * getAtom(int indvIdx, int atom) {
+__device__ char*  getAtom(int indvIdx, int atom) {
 	//all data is packed into array in c11,c12,...c1MAX_CHARS, c21, c22, c23, ...
 	//returns the start address, move to next item by adding sizeof(char)
-	return globalReals + (idx * MAX_TORSIONS * MAX_CHARS + atom * MAX_CHARS) * sizeof(char);
+  return (char*) (globalChars + (indvIdx * MAX_TORS * MAX_CHARS + atom * MAX_CHARS) * sizeof(char));
 }
 
 /////////////////////// ^^^^^utility ^^^^^^^ //////////////////////////////
@@ -53,7 +51,6 @@ bool allocate_pop_to_gpu(Population & pop_in) {
 
 	Real * out; // this contains most of the data
 	char * atoms; // this contains the atom data
-	bool succ;
 
 	cudaError succ;
 
