@@ -144,7 +144,6 @@ autodock4_SOURCES += \
     intnbtable.cc \
     nbe.cc \
     start_CUDA_on_population.cc \ 
-    memory_layout.cu \
 		PDBQT_tokens.h \
 		analysis.h \
 		atom_parameter_manager.h \
@@ -251,8 +250,7 @@ autodock4_SOURCES += \
 		version.h \
 		warn_bad_file.h \
 		weedbonds.h \
-		writePDBQT.h \
-	        memory_layout.h
+		writePDBQT.h 
 if WANT_OMP
 autodock4_omp_SOURCES = \
      main.cc 
