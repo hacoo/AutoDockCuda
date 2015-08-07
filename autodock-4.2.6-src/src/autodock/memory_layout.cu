@@ -8,6 +8,9 @@
 #ifndef _SUPPORT_H
 #include "support.h"
 #endif
+#ifndef CUDA_UTILS_HOST_H
+#include "cuda_utils_host.h"
+#endif
 
 
 const int ATOM_SIZE = (6 + MAX_TORS) * 3 * sizeof(Real);
@@ -106,31 +109,18 @@ bool allocate_pop_to_gpu(Population & pop_in) {
 	}
 
 	//allocate global mem
-	succ = cudaMalloc ((void **) &globalReals, pop_size * MOL_INDV_SIZE);
-	if (cudaSuccess != succ)
-		return false;
+	gpuErrchk(cudaMalloc ((void **) &globalReals, pop_size * MOL_INDV_SIZE));
+	
+	gpuErrchk(cudaMalloc ((void **) &globalChars, pop_size * MAX_ATOMS * MAX_CHARS));
 
-	succ = cudaMalloc ((void **) &globalChars, pop_size * MAX_ATOMS * MAX_CHARS);
-	if (cudaSuccess != succ)
-		return false;
 
 	//transfer to GPU
-	succ = cudaMemcpy(globalReals, out, pop_size * MOL_INDV_SIZE, cudaMemcpyHostToDevice);
-	if (cudaSuccess != succ)
-		return false;
-	succ = cudaMemcpy(globalChars, atoms, pop_size * MAX_ATOMS * MAX_CHARS, cudaMemcpyHostToDevice);
-	if (cudaSuccess != succ)
-		return false;
+	gpuErrchk(cudaMemcpy(globalReals, out, pop_size * MOL_INDV_SIZE, cudaMemcpyHostToDevice));
+	gpuErrchk(cudaMemcpy(globalChars, atoms, pop_size * MAX_ATOMS * MAX_CHARS, cudaMemcpyHostToDevice));
 
-	succ = cudaFree(out);
-	if (cudaSuccess != succ)
-		return false;
+	free(out);
 	
-	succ = cudaFree(atoms);
-	if (cudaSuccess != succ)
-		return false;
-	
-	
+	free(atoms);
 	
 	return true;
 }
