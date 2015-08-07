@@ -1,7 +1,7 @@
 /* Henry Cooney <hacoo36@gmail.com> <Github: hacoo>
    AutoDockCuda: <https://github.com/hacoo/AutoDockCuda>
    
-   eintcal_kernel.h
+   eintcal_kernel.cuh
 
    CUDAfied version of eintcal. eintcal does internal energy calculation
    for a ligand.
