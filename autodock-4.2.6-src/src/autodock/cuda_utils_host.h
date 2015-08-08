@@ -38,4 +38,10 @@ void print_energy(Energy e);
 void print_coord(Coord c);
 void print_state(State s);
 void print_molecule(Molecule* m);
-
+int getNumAtoms(Molecule* m);
+char* getAtomString(Molecule* m, int n);
+char** getAtomStringArray(Molecule* m);
+void freeAtomStringArray(char** a, int numatoms);
+double* getTorsions(Molecule* m, int ntors);
+double* getAtomCrds(Molecule* m);
+int* getTorsionRootList(Molecule* m, int ntors);

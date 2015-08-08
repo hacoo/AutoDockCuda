@@ -15,6 +15,9 @@
 #ifndef _STRUCTS_H
 #include "structs.h"
 #endif
+#ifndef _AUTOCOMM
+#include "autocomm.h"
+#endif
 
 
 const int ATOM_SIZE = (6 + MAX_TORS) * 3 * sizeof(Real);
@@ -45,95 +48,125 @@ __device__ char*  getAtom(int indvIdx, int atom) {
   return (char*) (globalChars + (indvIdx * MAX_TORS * MAX_CHARS + atom * MAX_CHARS) * sizeof(char));
 }
 
-/////////////////////// ^^^^^utility ^^^^^^^ //////////////////////////////
-/////////////////////////////////////////////////////////////////////////
-\
-
-// this function allocates memory on the gpu in form of compact arrays
-// called globalReals and globalChars. Then it converts a population to array form
-// and transfers all the data to the gpu at once
 
 bool allocate_pop_to_gpu(Population& pop_in, int ntors) {
-	//allocates several arrays of various types to be moved to the GPU
   
-	char* atoms; // this contains the atom data
-	State curr;
-       
-	int pop_size = pop_in.num_individuals();
-	int individual_size = 10 + ntors; // The total number of items in each individual
-	// - 3 trans coords + 4 quat coords + 3 center coords + ntors torsions
-	double* mol_params = (double*) malloc(pop_size * individual_size * sizeof(double));
+  
+  State curr;
+  int pop_size = pop_in.num_individuals();
+  int state_size = 10 + ntors; // The total number of items in each STATE item
+  // - 3 trans coords + 4 quat coords + 3 center coords + ntors torsions
 
-	Molecule* mol = pop_in[0].mol;
-	print_molecule(mol);
+  
+  // There should be only one ligand molecule - this will be allocated
+  // first (hopfully to constant memory). Then, allocate each
+  // individual's State.
+  int i, ii;
+  Molecule* first_mol = pop_in[0].mol; 
+  Molecule* current_mol;
+  int natoms = getNumAtoms(first_mol);
+  printf("Number of atoms: %d \n", natoms);
+
+  double* atom_crds = getAtomCrds(first_mol);
+  char** atom_strings = getAtomStringArray(first_mol); // ragged array of atom strings
+  double* torsions = getTorsions(first_mol, ntors);
+  int* torsion_root_list = getTorsionRootList(first_mol, ntors); // List of torsion root atoms
+
+  
+  /*
+  printf("Contents of atom_crds: \n");
+  for (i=0; i<natoms; ++i) {
+  printf(" %f %f %f \n", atom_crds[3*i], atom_crds[3*i+1], atom_crds[3*i+2]);
+  }
+
+  printf("Contents of atom string array: \n");
+  for (i=0; i<natoms; ++i) {
+  printf("  %s\n", atom_strings[i]);
+  }
+
+  printf("Torsions: \n");
+  for (i=0; i<ntors; ++i) {
+  printf("  %f %f %f \n", torsions[3*i], torsions[3*i+1], torsions[3*i+2]);
+  }
+  
+  printf("Root List: \n");
+  for (i=0; i<ntors; ++i) {
+    for (ii=0; ii<natoms; ++ii) {
+      printf("%d ", torsion_root_list[i*natoms + ii]);
+    }
+    printf("\n");
+  }
+  */
+
+ 
+  print_molecule(first_mol);
 	  
-	printf("Allocating population of %d individuals to GPU... \n", pop_size);
-	//gpuErrchk(cudaMalloc((void **) &out, pop_size * MOL_INDV_SIZE));
-	//gpuErrchk(cudaMalloc((void **) &atoms, pop_size * MAX_ATOMS * MAX_CHARS));
+  printf("Allocating population of %d individuals to GPU... \n", pop_size);
+  //gpuErrchk(cudaMalloc((void **) &out, pop_size * MOL_INDV_SIZE));
+  //gpuErrchk(cudaMalloc((void **) &atoms, pop_size * MAX_ATOMS * MAX_CHARS));
 
-	//TODO: First allocate molecule (just once). Then
-	// allocate state for each individual.
+  //TODO: First allocate molecule (just once). Then
+  // allocate state for each individual.
 
-	for (int i = 0; i < pop_size; ++i) {
+  for (int i = 0; i < pop_size; ++i) {
 	  
-	  curr = pop_in[i].phenotyp.make_state(ntors);
-	  mol = pop_in[i].mol;
-	  //printf("%d \n", mol);
-	  //	  print_molecule(mol);
-	  //print_state(curr);
+    curr = pop_in[i].phenotyp.make_state(ntors);
+    current_mol = pop_in[i].mol;
+    //printf("%d \n", mol);
+    //	  print_molecule(mol);
+    //print_state(curr);
 	  
 		
 	
-		int j = individual_size * i; //output idx
+   
 		
-		//xyz of center of mol
-		mol_params[j] = curr.T.x;
-		//		printf("OUT: %f \n", mol_params[j]);
+    //xyz of center of mol
+    //		printf("OUT: %f \n", mol_params[j]);
 		
-		/*
-		out[j++] = (Real) (curr->S.T.y);
-		out[j++] = (Real) (curr->S.T.z);
+    /*
+      out[j++] = (Real) (curr->S.T.y);
+      out[j++] = (Real) (curr->S.T.z);
 
-		//quaternion wxyz
-		out[j++] = (Real) (curr->S.Q.w);
-		out[j++] = (Real) (curr->S.Q.x);
-		out[j++] = (Real) (curr->S.Q.y);
-		out[j++] = (Real) (curr->S.Q.z);
+      //quaternion wxyz
+      out[j++] = (Real) (curr->S.Q.w);
+      out[j++] = (Real) (curr->S.Q.x);
+      out[j++] = (Real) (curr->S.Q.y);
+      out[j++] = (Real) (curr->S.Q.z);
 		
-		for (int ii = 0; ii < MAX_ATOMS; ++ii) {
-			//xyz of the atom
-		  out[j++] = (Real) *(curr->crd[3*ii]);
-			out[j++] = (Real) *(curr->crd[3*ii +1]);
-			out[j++] = (Real) *(curr->crd[3*ii +2]);
+      for (int ii = 0; ii < MAX_ATOMS; ++ii) {
+      //xyz of the atom
+      out[j++] = (Real) *(curr->crd[3*ii]);
+      out[j++] = (Real) *(curr->crd[3*ii +1]);
+      out[j++] = (Real) *(curr->crd[3*ii +2]);
 			
-			//atom torsion vector xyz
-			out[j++] = (Real) *(curr->vt[3*ii]);
-			out[j++] = (Real) *(curr->vt[3*ii +1]);
-			out[j++] = (Real) *(curr->vt[3*ii +2]);
+      //atom torsion vector xyz
+      out[j++] = (Real) *(curr->vt[3*ii]);
+      out[j++] = (Real) *(curr->vt[3*ii +1]);
+      out[j++] = (Real) *(curr->vt[3*ii +2]);
 
-			//atom torsion angle
-			out[j++] = (Real) curr->S.tor[ii];
+      //atom torsion angle
+      out[j++] = (Real) curr->S.tor[ii];
 
-			//atom string
-			for (unsigned int cidx = 0; cidx < MAX_CHARS; ++cidx)
-				atoms[MAX_CHARS * ii + cidx] = curr->atomstr[ii][cidx];
-		}
-		*/
-	}
+      //atom string
+      for (unsigned int cidx = 0; cidx < MAX_CHARS; ++cidx)
+      atoms[MAX_CHARS * ii + cidx] = curr->atomstr[ii][cidx];
+      }
+    */
+  }
 
-	//allocate global mem
-	gpuErrchk(cudaMalloc ((void **) &globalReals, pop_size * MOL_INDV_SIZE));
+  //allocate global mem
+  gpuErrchk(cudaMalloc ((void **) &globalReals, pop_size * MOL_INDV_SIZE));
 	
-	gpuErrchk(cudaMalloc ((void **) &globalChars, pop_size * MAX_ATOMS * MAX_CHARS));
+  gpuErrchk(cudaMalloc ((void **) &globalChars, pop_size * MAX_ATOMS * MAX_CHARS));
 
 
-	//transfer to GPU
-	//	gpuErrchk(cudaMemcpy(globalReals, out, pop_size * MOL_INDV_SIZE, cudaMemcpyHostToDevice));
-	//gpuErrchk(cudaMemcpy(globalChars, atoms, pop_size * MAX_ATOMS * MAX_CHARS, cudaMemcpyHostToDevice));
+  //transfer to GPU
+  //	gpuErrchk(cudaMemcpy(globalReals, out, pop_size * MOL_INDV_SIZE, cudaMemcpyHostToDevice));
+  //gpuErrchk(cudaMemcpy(globalChars, atoms, pop_size * MAX_ATOMS * MAX_CHARS, cudaMemcpyHostToDevice));
 
-	//	free(out);
+  //	free(out);
 	
-	// free(atoms);
+  // free(atoms);
 
-	return true;
+  return true;
 }

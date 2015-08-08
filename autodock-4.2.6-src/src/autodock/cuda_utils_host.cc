@@ -13,6 +13,7 @@
 #include "structs.h"
 #endif
 #include "constants.h"
+#include <cstring>
 
 void print_quat(Quat q) {
   printf("Quaternion: x: %f, y: %f, z: %f, w: %f \n", q.x, q.y, q.z, q.w);
@@ -50,6 +51,7 @@ void print_state(State s) {
 
 
 void print_molecule(Molecule* m) {
+
   printf("Num atoms: %d \n", m->natom);
   
   printf("Original coords: \n");
@@ -83,4 +85,77 @@ void print_molecule(Molecule* m) {
   
     printf("\n");
   }
+}
+
+
+int getNumAtoms(Molecule* m){
+  return m->natom;
+}
+
+char* getAtomString(Molecule* m, int n) {
+  char* thisString = new char[strlen(m->atomstr[n])+1];
+  strcpy(thisString, m->atomstr[n]);
+  return thisString;
+}
+
+char** getAtomStringArray(Molecule* m) {
+  // Returns a 'ragged array' of atom strings 
+  // for the molecule m. The number of strings in the array 
+  // is the number of atoms in the molecule, and each string 
+  // has a max length of MAX_CHARS
+  
+  int numatoms = m->natom;
+  char** thisArray = new char*[numatoms];
+  for(int i=0; i<numatoms; ++i){
+    thisArray[i] = getAtomString(m, i);
+  }
+  return thisArray;
+}
+
+
+void freeAtomStringArray(char** a, int numatoms) {
+  // Free the atom string array a contains numatoms
+  // lines.
+  if(!a)
+    return;
+  for (int i=0; i<numatoms; ++i) {
+    if(a[i])
+      delete a[i];
+  }
+}
+
+
+double* getTorsions(Molecule* m, int ntors) {
+  // Returns array of torsion vectors from molecule m.
+  // Each has SPACE components (probably 3)
+  double* torsions = new double[ntors*SPACE];
+  memcpy(torsions, m->vt, sizeof(double)*ntors*SPACE);
+  return torsions;
+}
+
+
+double* getAtomCrds(Molecule* m) {
+  // Returns array of coordinate vectors for each atom in m.
+  // Each vector has SPACE components (probably 3)
+  int natoms = m->natom;
+  double* crds = new double[natoms*SPACE];
+  memcpy(crds, m->crdpdb, sizeof(double)*natoms*SPACE);
+  return crds;
+}
+
+
+int* getTorsionRootList(Molecule* m, int ntors) {
+  // Returns an array of torsion root lists.
+  // Each torsion has a list of root atoms that must be 
+  // evaluated before this torsion is evaulated. The torsion root
+  // list reprents this.
+
+  int natoms = m->natom;
+  int* rootlist = new int[natoms*ntors];
+  for(int i=0; i<ntors; ++i) {
+    for (int ii=0; ii<natoms; ++ii) {
+	rootlist[i*natoms+ii] = m->tlist[i][ii];
+      }
+  }
+  return rootlist;
 }
