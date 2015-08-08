@@ -12,12 +12,19 @@
 #ifndef CUDA_UTILS_HOST_H
 #include "cuda_utils_host.h"
 #endif
+#ifndef CUDA_UTILS_GPU_H
+#include "cuda_utils_gpu.cuh"
+#endif
 #ifndef _STRUCTS_H
 #include "structs.h"
 #endif
 #ifndef _AUTOCOMM
 #include "autocomm.h"
 #endif
+#ifndef CUDA_GPU_VARIABLES_H
+#include "cuda_gpu_variables.cuh"
+#endif
+
 
 const int ATOM_SIZE = (6 + MAX_TORS) * 3 * sizeof(Real);
 const int MOL_INDV_SIZE = (7 + MAX_TORS) * sizeof(Real) + MAX_ATOMS * ATOM_SIZE;
@@ -25,12 +32,6 @@ const int MOL_INDV_SIZE = (7 + MAX_TORS) * sizeof(Real) + MAX_ATOMS * ATOM_SIZE;
 __device__ Real * globalReals;
 __device__ char * globalChars;
 
-// GPU pointers:
-__constant__ double atom_crds_dev[MAX_ATOMS*SPACE];
-__constant__ int* natoms_dev;
-__constant__ double torsions_dev[MAX_TORS*SPACE]; 
-int torsion_root_list_dev[MAX_ATOMS*MAX_TORS];
-char* atom_strings_dev[MAX_ATOMS];
 
 
 /////////////////////***********************************************/////////////////////
@@ -86,10 +87,12 @@ bool allocate_pop_to_gpu(Population& pop_in, int ntors) {
   gpuErrchk(cudaMemcpyToSymbol(natoms_dev, &natoms, sizeof(int)));
   
 
-  dim3 dimBlock(natoms,1,1);
-  dim3 dimGrid(pop_size,1,1);
-  //
-  
+  dim3 dimBlock(1,1,1);
+  dim3 dimGrid(1,1,1);
+  printAutoDockMemoryKernel<<<dimGrid, dimBlock>>>(natoms_dev);
+  cudaError_t err = cudaGetLastError();
+  if (err != cudaSuccess) 
+    printf("Error: %s\n", cudaGetErrorString(err));
   
   /*
   printf("Contents of atom_crds: \n");
@@ -115,7 +118,7 @@ bool allocate_pop_to_gpu(Population& pop_in, int ntors) {
     printf("\n");
   }
   */ 
-  print_molecule(first_mol);
+  //print_molecule(first_mol);
 
   
 	  

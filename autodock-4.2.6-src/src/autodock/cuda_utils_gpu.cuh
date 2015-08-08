@@ -9,3 +9,11 @@
 
 */
 
+
+
+#ifndef CUDA_UTILS_GPU_H
+#define CUDA_UTILS_GPU_H
+#endif
+
+__global__
+void printAutoDockMemoryKernel(int* natoms_dev) ;

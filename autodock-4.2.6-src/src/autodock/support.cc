@@ -35,6 +35,14 @@ Copyright (C) 2009 The Scripps Research Institute. All rights reserved.
 #include "support.h"
 #include "stateLibrary.h"
 #include "structs.h"
+#ifndef START_CUDA_H
+#include "start_CUDA.h"
+#endif
+#ifndef MEMORY_LAYOUT_H
+#include "memory_layout.cuh"
+#endif
+
+
 
 //#define DEBUG 
 extern FILE *logFile;  // DEBUG only
@@ -447,6 +455,21 @@ int Population::get_eob(const int init_tor) const
 	return(0); // dummy to keep lint happy NOTREACHED
     }
 }
+
+double* Population::evaluate_on_GPU(int ntors) {
+  // Evalueates each individual of the population 
+  // in parallel on the GPU. Will return an array of 'values',
+  // each value is the fitness value of the corresponding 
+  // individual. The number of values returned is equal to the 
+  // number of individuals in the population (i.e. Population.size)
+
+  bool GPU_pop_allocate_success = allocate_pop_to_gpu(*this, ntors);
+  assert(GPU_pop_allocate_success == true);
+
+
+  return NULL;
+}
+
 
 Genotype::Genotype(unsigned int init_number_of_vectors, Representation **
 const init_rep_vector)
@@ -990,3 +1013,5 @@ Population &Population::operator=(const Population &original)
 
    return(*this);
 }
+
+
