@@ -19,10 +19,14 @@
 #include "/pkgs/nvidia-cuda/5.5/include/cuda.h"
 #include "/pkgs/nvidia-cuda/5.5/include/cuda_runtime.h"
 #endif
+#ifndef _STRUCTS_H
+#include "structs.h"
+#endif
+
 
 
 // Function prototypes
-bool allocate_pop_to_gpu(Population & pop_in);
+bool allocate_pop_to_gpu(Population& pop_in, int ntors);
 __device__ Real * getIndvAttribute(int idx);
 __device__ Real * getTorsion(int indvIdx, int torsionIdx);
 __device__ char*  getAtom(int indvIdx, int atom);

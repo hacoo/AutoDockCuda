@@ -392,7 +392,7 @@ class Population
       void printPopulationAsCoordsEnergies(FILE *const, const int, const int) const; /*prints energies,states of top energies */
       void set_eob(int init_end_of_branch[MAX_TORS]); // For Branch Crossover Mode
       int get_eob(int init_tor) const; // For Branch Crossover Mode
-      double* evaluate_on_GPU(); // Starts fitness eval of whole population on GPU.
+      double* evaluate_on_GPU(int ntors); // Starts fitness eval of whole population on GPU.
 };
 
 /**************************************************************************

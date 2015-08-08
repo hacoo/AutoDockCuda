@@ -5,7 +5,8 @@
    cudat_utils_host.h
    
    Includes utility functions for dealing with CUDA, on the host side.
-   
+   Also includes print functions for debugging and examining data.
+
 */
 
 #ifndef CUDA_UTILS_HOST_H
@@ -15,6 +16,10 @@
 #include "/pkgs/nvidia-cuda/5.5/include/cuda.h"
 #include "/pkgs/nvidia-cuda/5.5/include/cuda_runtime.h"
 #endif
+#ifndef _STRUCTS_H
+#include "structs.h"
+#endif
+
 
 
 #define gpuErrchk(ans) { gpuAssert((ans), __FILE__, __LINE__); }
@@ -26,3 +31,11 @@ inline void gpuAssert(cudaError_t code, const char *file, int line, bool abort=t
       if (abort) exit(code);
     }
 }
+
+
+void print_quat(Quat q);
+void print_energy(Energy e);
+void print_coord(Coord c);
+void print_state(State s);
+void print_molecule(Molecule* m);
+

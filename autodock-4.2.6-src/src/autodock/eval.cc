@@ -74,7 +74,6 @@ void make_state_from_rep(const Representation *const *const rep, /* not const */
 #ifdef DEBUG
    (void)fprintf(logFile, "eval.cc/make_state_from_rep(Representation **rep, State *stateNow)\n");
 #endif /* DEBUG */
-
    //  Do the translations
    assert( !ISNAN( rep[0]->gene(0).real ) );
    stateNow->T.x = rep[0]->gene(0).real;

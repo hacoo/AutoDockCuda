@@ -18,15 +18,18 @@
 #ifndef MEMORY_LAYOUT_H
 #include "memory_layout.cuh"
 #endif
+#ifndef _STRUCTS_H
+#include "structs.h"
+#endif
 
-double* Population::evaluate_on_GPU() {
+double* Population::evaluate_on_GPU(int ntors) {
   // Evalueates each individual of the population 
   // in parallel on the GPU. Will return an array of 'values',
   // each value is the fitness value of the corresponding 
   // individual. The number of values returned is equal to the 
   // number of individuals in the population (i.e. Population.size)
 
-  bool GPU_pop_allocate_success = allocate_pop_to_gpu(*this);
+  bool GPU_pop_allocate_success = allocate_pop_to_gpu(*this, ntors);
   assert(GPU_pop_allocate_success == true);
 
 

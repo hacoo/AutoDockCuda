@@ -69,7 +69,7 @@ class Eval
       Real (*crd)[SPACE], (*vt)[SPACE];
       EnergyTables *ptr_ad_energy_tables;
       Boole *B_isTorConstrained;
-      Molecule mol;
+
       int *ignore_inter;  // [MAX_ATOMS] gmm 2002-05-21, for CA, CB in flexible sidechains
       Boole         B_include_1_4_interactions; // gmm 2005-01-8, for scaling 1-4 nonbonds
       Real scale_1_4;                  // gmm 2005-01-8, for scaling 1-4 nonbonds
@@ -83,14 +83,17 @@ class Eval
       int outlev;
 	// the following are not constant for a particular ligand docking
 	//  and so must be allocated in cases of concurrent evaluations:
-      State stateNow;
+
       Real (*crdpdb)[SPACE];
       EnergyComponent	*peratomE;        // output if not NULL - intermolecular energies
       GroupEnergy  *group_energy;
       FILE *logFile;
+      State stateNow;
 
    public:
+
       Eval(void);
+      Molecule mol;
       void setup( /* not const */ Real init_crd[MAX_ATOMS][SPACE], // not const since pointers are copied, not contents
                   /* not const */ Real  init_charge[MAX_ATOMS],
                   /* not const */ Real  init_abs_charge[MAX_ATOMS],

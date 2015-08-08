@@ -5,11 +5,15 @@
 #include "/pkgs/nvidia-cuda/5.5/include/cuda_runtime.h"
 #endif
 #include <stdio.h>
+#include <stdlib.h>
 #ifndef _SUPPORT_H
 #include "support.h"
 #endif
 #ifndef CUDA_UTILS_HOST_H
 #include "cuda_utils_host.h"
+#endif
+#ifndef _STRUCTS_H
+#include "structs.h"
 #endif
 
 
@@ -43,47 +47,50 @@ __device__ char*  getAtom(int indvIdx, int atom) {
 
 /////////////////////// ^^^^^utility ^^^^^^^ //////////////////////////////
 /////////////////////////////////////////////////////////////////////////
-
+\
 
 // this function allocates memory on the gpu in form of compact arrays
 // called globalReals and globalChars. Then it converts a population to array form
 // and transfers all the data to the gpu at once
 
-bool allocate_pop_to_gpu(Population & pop_in) {
+bool allocate_pop_to_gpu(Population& pop_in, int ntors) {
 	//allocates several arrays of various types to be moved to the GPU
+  
+	char* atoms; // this contains the atom data
+	State curr;
+       
+	int pop_size = pop_in.num_individuals();
+	int individual_size = 10 + ntors; // The total number of items in each individual
+	// - 3 trans coords + 4 quat coords + 3 center coords + ntors torsions
+	double* mol_params = (double*) malloc(pop_size * individual_size * sizeof(double));
 
-	Real * out; // this contains most of the data
-	char * atoms; // this contains the atom data
-
-	int pop_size = pop_in->num_individuals();
-	if (!pop_in[0].mol) {
-	  printf("ERROR: no molecule for individual 0. \n");
-	  return false;
-	}
+	Molecule* mol = pop_in[0].mol;
+	print_molecule(mol);
 	  
-	int atom_size = pop_in[0].mol->natom; // Should be the same for all
-	// atoms in the population
+	printf("Allocating population of %d individuals to GPU... \n", pop_size);
+	//gpuErrchk(cudaMalloc((void **) &out, pop_size * MOL_INDV_SIZE));
+	//gpuErrchk(cudaMalloc((void **) &atoms, pop_size * MAX_ATOMS * MAX_CHARS));
 
-	gpuErrchk(cudaMalloc((void **) &out, pop_size * MOL_INDV_SIZE));
-	gpuErrchk(cudaMalloc((void **) &atoms, pop_size * MAX_ATOMS * MAX_CHARS));
+	//TODO: First allocate molecule (just once). Then
+	// allocate state for each individual.
 
 	for (int i = 0; i < pop_size; ++i) {
-		if (pop_in[i].mol == NULL) {
-			printf("ERROR: no molecule for individual %d \n", i);
-			return false;
-		}
+	  
+	  curr = pop_in[i].phenotyp.make_state(ntors);
+	  mol = pop_in[i].mol;
+	  //printf("%d \n", mol);
+	  //	  print_molecule(mol);
+	  //print_state(curr);
+	  
 		
-		Molecule * curr = pop_in[i].mol;
-		if (curr->natom != atom_size) {
-		  printf("ERROR: natoms for individual %d does not match individual 0 \n",
-			 i);
-		  return false;
-		}
 	
-		int j = MOL_INDV_SIZE * i; //output idx
+		int j = individual_size * i; //output idx
 		
 		//xyz of center of mol
-		out[j++] = (Real) (curr->S.T.x);
+		mol_params[j] = curr.T.x;
+		//		printf("OUT: %f \n", mol_params[j]);
+		
+		/*
 		out[j++] = (Real) (curr->S.T.y);
 		out[j++] = (Real) (curr->S.T.z);
 
@@ -111,7 +118,7 @@ bool allocate_pop_to_gpu(Population & pop_in) {
 			for (unsigned int cidx = 0; cidx < MAX_CHARS; ++cidx)
 				atoms[MAX_CHARS * ii + cidx] = curr->atomstr[ii][cidx];
 		}
-
+		*/
 	}
 
 	//allocate global mem
@@ -121,12 +128,12 @@ bool allocate_pop_to_gpu(Population & pop_in) {
 
 
 	//transfer to GPU
-	gpuErrchk(cudaMemcpy(globalReals, out, pop_size * MOL_INDV_SIZE, cudaMemcpyHostToDevice));
-	gpuErrchk(cudaMemcpy(globalChars, atoms, pop_size * MAX_ATOMS * MAX_CHARS, cudaMemcpyHostToDevice));
+	//	gpuErrchk(cudaMemcpy(globalReals, out, pop_size * MOL_INDV_SIZE, cudaMemcpyHostToDevice));
+	//gpuErrchk(cudaMemcpy(globalChars, atoms, pop_size * MAX_ATOMS * MAX_CHARS, cudaMemcpyHostToDevice));
 
-	free(out);
+	//	free(out);
 	
-	free(atoms);
+	// free(atoms);
 
 	return true;
 }

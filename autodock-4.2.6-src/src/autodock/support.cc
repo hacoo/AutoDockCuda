@@ -860,6 +860,7 @@ double Phenotype::evaluate(const EvalMode& mode) /* not const */
 // MPique - the pevaluate is an "Eval *" member of the Phenotype object
 //  and this code calls its () operator, see eval.cc,
 //  which calls make_state_from_ind and then its eval() function.
+   
    switch(mode)
    {
       case Always_Eval:
