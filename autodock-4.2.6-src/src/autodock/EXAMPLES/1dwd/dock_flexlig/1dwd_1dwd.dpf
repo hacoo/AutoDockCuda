@@ -14,7 +14,7 @@ desolvmap 1dwd_rec.d.map             # desolvation map
 move 1dwd_lig.pdbqt                  # small molecule
 
 ## SEARCH-SPECIFIC SECTION
-ga_pop_size 150
+ga_pop_size 50
 ga_num_evals 2500000                 # maximum number of energy evaluations  
 ga_num_generations 50             # maximum number of generations
 set_ga                               # set the above parameters for GA or LGA
@@ -23,7 +23,7 @@ set_ga                               # set the above parameters for GA or LGA
 set_psw1                             # set the above pseudo Solis & Wets parameters
 
 ## PERFORM SEARCH SECTION
-ga_run 1                            # do this many hybrid GA-LS runs
+ga_run 1                # do this many hybrid GA-LS runs
 
 ## ANALYSIS SECTION
 rmstol 0.5                           # cluster_tolerance/A
