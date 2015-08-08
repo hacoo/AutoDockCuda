@@ -19,12 +19,18 @@
 #include "autocomm.h"
 #endif
 
-
 const int ATOM_SIZE = (6 + MAX_TORS) * 3 * sizeof(Real);
 const int MOL_INDV_SIZE = (7 + MAX_TORS) * sizeof(Real) + MAX_ATOMS * ATOM_SIZE;
 
 __device__ Real * globalReals;
 __device__ char * globalChars;
+
+// GPU pointers:
+__constant__ double atom_crds_dev[MAX_ATOMS*SPACE];
+__constant__ int* natoms_dev;
+__constant__ double torsions_dev[MAX_TORS*SPACE]; 
+int torsion_root_list_dev[MAX_ATOMS*MAX_TORS];
+char* atom_strings_dev[MAX_ATOMS];
 
 
 /////////////////////***********************************************/////////////////////
@@ -64,14 +70,26 @@ bool allocate_pop_to_gpu(Population& pop_in, int ntors) {
   int i, ii;
   Molecule* first_mol = pop_in[0].mol; 
   Molecule* current_mol;
-  int natoms = getNumAtoms(first_mol);
-  printf("Number of atoms: %d \n", natoms);
 
+  int natoms = getNumAtoms(first_mol);  
   double* atom_crds = getAtomCrds(first_mol);
   char** atom_strings = getAtomStringArray(first_mol); // ragged array of atom strings
   double* torsions = getTorsions(first_mol, ntors);
   int* torsion_root_list = getTorsionRootList(first_mol, ntors); // List of torsion root atoms
+  
+  printf("Allocating molecule with %d atoms and %d torsions to GPU... \n", natoms, ntors);
+  printf("MAX ATOMS: %d \n", MAX_ATOMS);
+  printf("MAX TORSIONS: %d \n", MAX_TORS);
 
+  gpuErrchk(cudaMemcpyToSymbol(atom_crds_dev, atom_crds, sizeof(double)*natoms*SPACE));
+  gpuErrchk(cudaMemcpyToSymbol(torsions_dev, torsions,  sizeof(double)*ntors*SPACE));
+  gpuErrchk(cudaMemcpyToSymbol(natoms_dev, &natoms, sizeof(int)));
+  
+
+  dim3 dimBlock(natoms,1,1);
+  dim3 dimGrid(pop_size,1,1);
+  //
+  
   
   /*
   printf("Contents of atom_crds: \n");
@@ -96,10 +114,10 @@ bool allocate_pop_to_gpu(Population& pop_in, int ntors) {
     }
     printf("\n");
   }
-  */
-
- 
+  */ 
   print_molecule(first_mol);
+
+  
 	  
   printf("Allocating population of %d individuals to GPU... \n", pop_size);
   //gpuErrchk(cudaMalloc((void **) &out, pop_size * MOL_INDV_SIZE));
@@ -164,9 +182,11 @@ bool allocate_pop_to_gpu(Population& pop_in, int ntors) {
   //	gpuErrchk(cudaMemcpy(globalReals, out, pop_size * MOL_INDV_SIZE, cudaMemcpyHostToDevice));
   //gpuErrchk(cudaMemcpy(globalChars, atoms, pop_size * MAX_ATOMS * MAX_CHARS, cudaMemcpyHostToDevice));
 
-  //	free(out);
-	
-  // free(atoms);
 
+  free(atom_crds);
+  free(atom_strings);
+  free(torsions);
+  free(torsion_root_list);
+  
   return true;
 }
