@@ -83,6 +83,12 @@ bool allocate_pop_to_gpu(Population& pop_in, int ntors, CudaPtrs* ptrs) {
   gpuErrchk(cudaMemcpy(ptrs->natoms_dev, &natoms, 
 		       sizeof(int), cudaMemcpyHostToDevice));
 
+  gpuErrchk(cudaMalloc((void**) &(ptrs->ntors_dev),
+		       sizeof(int)));
+  gpuErrchk(cudaMemcpy(ptrs->ntors_dev, &ntors, 
+		       sizeof(int), cudaMemcpyHostToDevice));
+
+
   gpuErrchk(cudaMalloc((void**) &(ptrs->atom_crds_dev),
 		       sizeof(double)*natoms*SPACE));
   gpuErrchk(cudaMemcpy(ptrs->atom_crds_dev, atom_crds, 
@@ -138,8 +144,15 @@ bool allocate_pop_to_gpu(Population& pop_in, int ntors, CudaPtrs* ptrs) {
 		       sizeof(double)*pop_size*state_size));
   gpuErrchk(cudaMemcpy(ptrs->states_dev, states, 
 		       sizeof(double)*state_size*pop_size, cudaMemcpyHostToDevice));
-
-
+  
+  // Allocate array of inidividual atom coordinates -- also a flat array.
+  // This array starts out initialized to 0 and is filled as calculations progress.
+  gpuErrchk(cudaMalloc((void**) &(ptrs->indiv_crds_dev),
+		       sizeof(double)*pop_size*natoms*SPACE));
+  gpuErrchk(cudaMemset(ptrs->indiv_crds_dev, 0x00, 
+		       sizeof(double)*pop_size*natoms*SPACE));
+  
+  
   free(atom_crds);
   free(atom_strings);
   free(torsions);

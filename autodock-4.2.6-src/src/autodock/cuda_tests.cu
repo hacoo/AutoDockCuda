@@ -50,7 +50,7 @@ bool test_memory_transfer(Population& pop_in, int ntors, CudaPtrs* ptrs) {
   // - 3 trans coords + 4 quat coords + 3 center coords + ntors torsions
 
   
-  int* natoms_t;
+  int* natoms_t,* ntors_t;
   double* atom_crds_t = (double*) malloc(sizeof(double)*natoms*SPACE);
   char* atom_strings_t = (char*) malloc(sizeof(char)*natoms*MAX_CHARS);
   double* torsions_t = (double*) malloc(sizeof(double)*ntors*SPACE);
@@ -74,6 +74,9 @@ bool test_memory_transfer(Population& pop_in, int ntors, CudaPtrs* ptrs) {
 
   gpuErrchk(cudaMemcpy(natoms_t, ptrs->natoms_dev,  
 		       sizeof(int), cudaMemcpyDeviceToHost));
+  gpuErrchk(cudaMemcpy(ntors_t, ptrs->ntors_dev,  
+		       sizeof(int), cudaMemcpyDeviceToHost));
+
   
   
   printf("Contents of atom string array: \n");
@@ -100,6 +103,7 @@ bool test_memory_transfer(Population& pop_in, int ntors, CudaPtrs* ptrs) {
   }
 
   printf("There are %d atoms. \n", *natoms_t);
+  printf("There are %d torsions. \n", *ntors_t);
   
   gpuErrchk(cudaMemcpy(states_t, ptrs->states_dev,
 		       sizeof(double)*pop_size*state_size, cudaMemcpyDeviceToHost));
