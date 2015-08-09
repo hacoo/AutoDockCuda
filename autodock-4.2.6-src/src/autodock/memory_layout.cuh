@@ -22,11 +22,12 @@
 #ifndef _STRUCTS_H
 #include "structs.h"
 #endif
+#include "cuda_structs.h"
 
 
 
 // Function prototypes
-bool allocate_pop_to_gpu(Population& pop_in, int ntors);
+bool allocate_pop_to_gpu(Population& pop_in, int ntors, CudaPtrs* ptrs);
 __device__ Real * getIndvAttribute(int idx);
 __device__ Real * getTorsion(int indvIdx, int torsionIdx);
 __device__ char*  getAtom(int indvIdx, int atom);

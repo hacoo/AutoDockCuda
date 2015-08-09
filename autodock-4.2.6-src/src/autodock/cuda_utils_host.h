@@ -40,7 +40,7 @@ void print_state(State s);
 void print_molecule(Molecule* m);
 int getNumAtoms(Molecule* m);
 char* getAtomString(Molecule* m, int n);
-char** getAtomStringArray(Molecule* m);
+char* getAtomStringArray(Molecule* m);
 void freeAtomStringArray(char** a, int numatoms);
 double* getTorsions(Molecule* m, int ntors);
 double* getAtomCrds(Molecule* m);

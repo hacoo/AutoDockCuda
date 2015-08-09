@@ -21,10 +21,18 @@
 #include "/pkgs/nvidia-cuda/5.5/include/cuda_runtime.h"
 #endif
 #include "cuda_utils_host.h"
-
-#include "gpu_variables.h"
 #include "memory_layout.cuh"
 #include "cuda_utils_gpu.cuh"
+#ifndef CUDA_STRUCTS_H
+#include "cuda_structs.h"
+#endif
+#ifndef CUDA_TESTS_H
+#include "cuda_tests.cuh"
+#endif
+//#ifndef GPU_VARIABLES_H
+//#include "gpu_variables.h"
+//#endif
+
 
 
 
@@ -32,20 +40,23 @@ void start_CUDA_on_population(Population* this_pop, int ntors) {
   // Begins evaluation of Population on GPU. For now, this is a 
   // placeholder that will allow kernels to be tested, etc.
   
-
+  CudaPtrs* ptrs = (CudaPtrs*) malloc(sizeof(CudaPtrs)); // This will hold all gpu pointers for this session
   int natoms = getNumAtoms((*this_pop)[0].mol);
   printf("Allocating %d atoms and %d torsions to GPU...\n", natoms, ntors);
-    
-  allocate_pop_to_gpu(*this_pop, ntors);
-  
-  dim3 dimBlock(natoms,1,1);
-  dim3 dimGrid(2,1,1);
 
-  printAutoDockMemoryKernel<<<dimGrid, dimBlock>>>();
+    
+  allocate_pop_to_gpu(*this_pop, ntors, ptrs);
+  
+  dim3 dimBlock(10,1,1);
+  dim3 dimGrid(10,1,1);
+
   cudaError_t err = cudaGetLastError();
   if (err != cudaSuccess) 
     printf("Error: %s\n", cudaGetErrorString(err));
+  
 
+  printf("Now running tests. \n");
+  test_memory_transfer(*this_pop, ntors, ptrs);
   printf("Done! \n");  
 }
 

@@ -98,16 +98,18 @@ char* getAtomString(Molecule* m, int n) {
   return thisString;
 }
 
-char** getAtomStringArray(Molecule* m) {
+char* getAtomStringArray(Molecule* m) {
   // Returns a 'ragged array' of atom strings 
   // for the molecule m. The number of strings in the array 
   // is the number of atoms in the molecule, and each string 
   // has a max length of MAX_CHARS
   
   int numatoms = m->natom;
-  char** thisArray = new char*[numatoms];
+  char* thisArray = new char[numatoms*MAX_CHARS];
+  char* thisString;
   for(int i=0; i<numatoms; ++i){
-    thisArray[i] = getAtomString(m, i);
+    thisString = getAtomString(m, i);
+    memcpy(thisArray+i*MAX_CHARS, thisString, strlen(thisString)+1);
   }
   return thisArray;
 }

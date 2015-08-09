@@ -20,18 +20,18 @@
 
 
 __global__
-void printAutoDockMemoryKernel() {
+void printAutoDockMemoryKernel(int* torsion_root_list) {
   // Testing / diagnostic kernel, prints 
   // contents of GPU memory to confirm they have been successfully
   // allocated.
 
   int idx = threadIdx.x;
-  printf("Hello from thread %d! \n ", idx);
-  if(idx == 0) {
-    int natoms_local = *natoms_dev;
-    // Since its a print function, threadIdx 0 will do all the work, very slowly.
 
-    printf("Num atoms: %d \n ", natoms_local);
+  if(idx == 0) {
+    // Since its a print function, threadIdx 0 will do all the work, very slowly.
+    printf("Hello from thread %d! \n ", idx);
+    printf("%d \n", torsion_root_list[0]);
+ 
   }
 
 }
