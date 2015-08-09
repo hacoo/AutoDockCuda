@@ -146,7 +146,6 @@ autodock4_SOURCES += \
     eintcalPrint.cc \
     intnbtable.cc \
     nbe.cc \
-    cuda_utils_host.cc \
 		PDBQT_tokens.h \
 		analysis.h \
 		atom_parameter_manager.h \
@@ -350,7 +349,6 @@ autodock4_omp_SOURCES += \
     eintcalPrint.cc \
     intnbtable.cc \
     nbe.cc \
-    start_CUDA_on_population.cc \
     cuda_utils_host.cc \
 		PDBQT_tokens.h \
 		analysis.h \
@@ -463,7 +461,7 @@ autodock4_omp_SOURCES += \
 endif
 
 if WANT_CUDA
-autodock4_SOURCES += start_CUDA_on_population.cc
+autodock4_SOURCES += cuda_utils_host.cc
 endif
 
 BUILT_SOURCES = $(autodock4_SOURCES) default_parameters.h
@@ -688,7 +686,7 @@ gs.o : gs.cc gs.h ranlib.h eval.h rep.h support.h writePDBQT.h
 
 if WANT_CUDA
 .cu.o:
-	$(NVCC) -g -c *.cu $(NVCCFLAGS)
+	$(NVCC) -arch=sm_20 -g -c *.cu $(NVCCFLAGS)
 endif
 
 # 2007-04-30 MP & GMM: this line is necessary to be able to compile read_parameter_library.o

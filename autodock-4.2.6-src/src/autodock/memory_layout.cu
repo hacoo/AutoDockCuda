@@ -12,18 +12,14 @@
 #ifndef CUDA_UTILS_HOST_H
 #include "cuda_utils_host.h"
 #endif
-#ifndef CUDA_UTILS_GPU_H
-#include "cuda_utils_gpu.cuh"
-#endif
 #ifndef _STRUCTS_H
 #include "structs.h"
 #endif
 #ifndef _AUTOCOMM
 #include "autocomm.h"
 #endif
-#ifndef CUDA_GPU_VARIABLES_H
-#include "cuda_gpu_variables.cuh"
-#endif
+#include "gpu_variables.h"
+
 
 
 const int ATOM_SIZE = (6 + MAX_TORS) * 3 * sizeof(Real);
@@ -87,12 +83,6 @@ bool allocate_pop_to_gpu(Population& pop_in, int ntors) {
   gpuErrchk(cudaMemcpyToSymbol(natoms_dev, &natoms, sizeof(int)));
   
 
-  dim3 dimBlock(1,1,1);
-  dim3 dimGrid(1,1,1);
-  printAutoDockMemoryKernel<<<dimGrid, dimBlock>>>(natoms_dev);
-  cudaError_t err = cudaGetLastError();
-  if (err != cudaSuccess) 
-    printf("Error: %s\n", cudaGetErrorString(err));
   
   /*
   printf("Contents of atom_crds: \n");
@@ -193,3 +183,4 @@ bool allocate_pop_to_gpu(Population& pop_in, int ntors) {
   
   return true;
 }
+

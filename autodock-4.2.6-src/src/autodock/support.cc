@@ -36,7 +36,7 @@ Copyright (C) 2009 The Scripps Research Institute. All rights reserved.
 #include "stateLibrary.h"
 #include "structs.h"
 #ifndef START_CUDA_H
-#include "start_CUDA.h"
+#include "start_CUDA.cuh"
 #endif
 #ifndef MEMORY_LAYOUT_H
 #include "memory_layout.cuh"
@@ -463,9 +463,7 @@ double* Population::evaluate_on_GPU(int ntors) {
   // individual. The number of values returned is equal to the 
   // number of individuals in the population (i.e. Population.size)
 
-  bool GPU_pop_allocate_success = allocate_pop_to_gpu(*this, ntors);
-  assert(GPU_pop_allocate_success == true);
-
+  start_CUDA_on_population(this, ntors);
 
   return NULL;
 }

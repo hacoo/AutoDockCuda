@@ -16,17 +16,11 @@
 #endif
 #include <stdio.h>
 #include <stdlib.h>
-#ifndef CUDA_HEADERS
-#include "/pkgs/nvidia-cuda/5.5/include/cuda.h"
-#include "/pkgs/nvidia-cuda/5.5/include/cuda_runtime.h"
-#endif
-#ifndef CUDA_GPU_VARIABLES_H
-#include "cuda_gpu_variables.cuh"
-#endif
+#include "gpu_variables.h"
 
 
 __global__
-void printAutoDockMemoryKernel(int* natoms_dev) {
+void printAutoDockMemoryKernel() {
   // Testing / diagnostic kernel, prints 
   // contents of GPU memory to confirm they have been successfully
   // allocated.
