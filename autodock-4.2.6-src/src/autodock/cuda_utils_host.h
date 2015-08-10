@@ -1,4 +1,5 @@
 
+
 /* Henry Cooney <hacoo36@gmail.com> <Github: hacoo>
    AutoDockCuda: <https://github.com/hacoo/AutoDockCuda>
 
@@ -45,3 +46,5 @@ void freeAtomStringArray(char** a, int numatoms);
 double* getTorsions(Molecule* m, int ntors);
 double* getAtomCrds(Molecule* m);
 int* getTorsionRootList(Molecule* m, int ntors);
+void print_double_matrix(double* arr, int width, int height);
+void print_hashes();

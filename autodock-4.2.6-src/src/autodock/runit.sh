@@ -17,8 +17,10 @@ echo "Output: " $OUTPUT
 
 if [ "$1" = "nvprof" ]; then
     echo "Starting autodock with nvidia profiler..."
-
     nvprof $AUTODOCK_PATH -p $INPUT -l $OUTPUT
+elif [ "$1" = "memcheck" ]; then
+    echo "Starting autodock with nvidia profiler..."
+    cuda-memcheck $AUTODOCK_PATH -p $INPUT -l $OUTPUT
 elif [ "$1" = "gdb" ]; then
     echo "Starting autodock with GDB"
     gdb --args $AUTODOCK_PATH -p $INPUT -l $OUTPUT

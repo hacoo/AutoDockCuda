@@ -161,4 +161,5 @@ void reorient( FILE *const logFile,
     pr( logFile, "--------------------------------\n\n" );
     print_PDBQT( logFile, "REORIENTED:  ", true_ligand_atoms, atomstuff, crdpdb, charge, parameterArray, type, "\n" );
 }
+
 /* EOF */

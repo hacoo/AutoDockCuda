@@ -29,9 +29,13 @@
 #ifndef CUDA_TESTS_H
 #include "cuda_tests.cuh"
 #endif
-//#ifndef GPU_VARIABLES_H
-//#include "gpu_variables.h"
-//#endif
+#ifndef CUDA_TESTS_HOST_H
+#include "cuda_tests_host.h"
+#endif
+#ifndef QTRANSFORM_KERNEL_H
+#include "qtransform_kernel.cuh"
+#endif
+
 
 
 
@@ -40,23 +44,52 @@ void start_CUDA_on_population(Population* this_pop, int ntors) {
   // Begins evaluation of Population on GPU. For now, this is a 
   // placeholder that will allow kernels to be tested, etc.
   
-  CudaPtrs* ptrs = (CudaPtrs*) malloc(sizeof(CudaPtrs)); // This will hold all gpu pointers for this session
+  CudaPtrs ptrs;
+  int cudaErrorDetected = 0;
   int natoms = getNumAtoms((*this_pop)[0].mol);
+  int pop_size = this_pop->num_individuals();
+
   printf("Allocating %d atoms and %d torsions to GPU...\n", natoms, ntors);
-
-    
-  allocate_pop_to_gpu(*this_pop, ntors, ptrs);
+  allocate_pop_to_gpu(*this_pop, ntors, &ptrs);
   
-  dim3 dimBlock(10,1,1);
-  dim3 dimGrid(10,1,1);
+  ////// RUN CUDA KERNELS //////
+  printf("Starting kernels. Block size: %d Grid size: %d\n", natoms, pop_size);
+  dim3 dimBlock(natoms);
+  dim3 dimGrid(pop_size);
 
+  qtransform_kernel<<<dimGrid, dimBlock>>>(ptrs);
   cudaError_t err = cudaGetLastError();
-  if (err != cudaSuccess) 
+  if (err != cudaSuccess) {
     printf("Error: %s\n", cudaGetErrorString(err));
+    cudaErrorDetected = 1;
+  }
+
+
+  //////////////////////////////
+
+  ////// TEST SECTION //////
+  printf("Now running tests. \n");
+
+  // Test memory transfer
+  //test_memory_transfer(*this_pop, ntors, &ptrs);
+  
+  // Test qtransform
+  double* quat_results = (double*) malloc(sizeof(double)*natoms*pop_size*SPACE);
+  gpuErrchk(cudaMemcpy(quat_results, ptrs.indiv_crds_dev, 
+		       sizeof(double)*pop_size*natoms*SPACE, cudaMemcpyDeviceToHost));
+
+  if (!test_qtransform_kernel(*this_pop, ntors, ptrs, quat_results))
+    printf("ERROR: test_qtransform_kernel failed \n");
   
 
-  printf("Now running tests. \n");
-  test_memory_transfer(*this_pop, ntors, ptrs);
+  //////////////////////////
+  
+  
   printf("Done! \n");  
+  if(cudaErrorDetected) {
+    printf("!!!!!!!!! WARNING !!!!!!!!!\n");
+    printf("CUDA ERROR DETECTED -- CHECK OUTPUT \n");
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+  }
 }
 
