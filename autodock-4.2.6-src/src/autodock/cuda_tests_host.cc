@@ -139,6 +139,7 @@ bool test_eintcal_kernel (Population& pop_in, int ntors,
   int state_size = 10 + ntors; // The total number of items in each STATE item
   Molecule* first_mol = pop_in[0].mol; 
   pop_in.evaluate->compute_intermol_energy(false);
+  pop_in.evaluate->compute_internal_energy(true);
   Molecule* current_mol;
   int natoms = getNumAtoms(first_mol);  
   Real* cpu_result = new Real[pop_size];
