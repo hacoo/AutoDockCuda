@@ -191,12 +191,13 @@ double Eval::eval(const int term)
 #ifdef DEBUG
 (void)fprintf(logFile,"eval.cc/double Eval::eval(int term=%d) after trilinterp, energy= %.5lf\n", term, energy);
 #endif /* DEBUG */
-    energy += eintcal( nonbondlist, ptr_ad_energy_tables, crd, Nnb,
-		 Nnb_array, NULL, /* group_energy,  perhaps do not need energy breakdown MP TODO 2012 */
-                 B_calcIntElec, B_include_1_4_interactions, 
-                 scale_1_4, qsp_abs_charge,
-                 B_use_non_bond_cutoff, B_have_flexible_residues,
-		 outlev, logFile);
+ if(B_compute_internal_energy)
+   energy += eintcal( nonbondlist, ptr_ad_energy_tables, crd, Nnb,
+		      Nnb_array, NULL, /* group_energy,  perhaps do not need energy breakdown MP TODO 2012 */
+		      B_calcIntElec, B_include_1_4_interactions, 
+		      scale_1_4, qsp_abs_charge,
+		      B_use_non_bond_cutoff, B_have_flexible_residues,
+		      outlev, logFile);
 #ifdef DEBUG
 (void)fprintf(logFile,"eval.cc/double Eval::eval(int term=%d) after eintcal, energy= %.5lf\n", term, energy);
 #endif /* DEBUG */
@@ -246,94 +247,111 @@ double Eval::eval(const int term)
 
 #ifdef DEBUG
     (void)fprintf(logFile,"eval.cc/double Eval::eval(int term=%d) returns retval= %.5lf\n", term, retval);
-#endif /*DEBUG*/
-   return(retval);
+ #endif /*DEBUG*/
+    return(retval);
+ }
+
+ int Eval::write(const Representation *const *const rep,
+  const int true_ligand_atoms, const int outlev, FILE *logFile)
+ {
+     int i=0, retval=0;
+     //char rec14[14];
+
+ #ifdef DEBUG
+     (void)fprintf(logFile,"eval.cc/int Eval::write(FILE *out_file, Representation **rep)\n");
+ #endif /*DEBUG*/
+
+     make_state_from_rep(rep, &stateNow, outlev, logFile);
+     cnv_state_to_coords(stateNow, vt, tlist, stateNow.ntor, crdpdb, crd, natom,
+      true_ligand_atoms, outlev, logFile);
+     for (i=0; i<natom; i++) {
+	     print_PDBQT_atom_resstr( logFile, "", i,   " C   RES     1 ", crd, 
+	      0.0, 0.0, charge[i],"", "\n"); 
+     } // i
+     return retval;
+ }
+
+ #ifdef USING_COLINY // {
+ double Eval::operator()(const double* const vec, const int len, const int outlev, FILE *logFile)
+ {
+    make_state_from_rep(vec, len, &stateNow, outlev, logFile);
+    return eval();
+ }
+
+
+ void make_state_from_rep(const double *const rep, const int n, /* not const */ State *const now, const int outlev, FILE *logFile)
+ {
+ #   ifdef DEBUG
+     (void)fprintf(logFile, "eval.cc/make_state_from_rep(double *rep, int n, State *now)\n");
+ #   endif /* DEBUG */
+
+     //  Do the translations
+     now->T.x = rep[0];
+     now->T.y = rep[1];
+     now->T.z = rep[2];
+
+     //  Set up the quaternion
+     now->Q.x = rep[3];
+     now->Q.y = rep[4];
+     now->Q.z = rep[5];
+     now->Q.w = rep[6];
+
+     //  Copy the angles
+     now->ntor = n - 7;
+     for (int i=0, j=7; j<n; i++, j++) {
+       now->tor[i] = rep[j];
+     }
+
+     //mkUnitQuat(&(now->Q));
+ }
+
+ /* next function is for Coliny only */
+ extern Eval evaluate;
+
+ double ADEvalFn(/* not const */ double *const x, const int n)
+ {
+ //
+ // Normalize the data
+ //
+ //
+ // Quaternion vector
+ /*
+ double sum=0.0;
+ if (x[3] < 0.0) x[3] = 1e-16;
+ if (x[4] < 0.0) x[4] = 1e-16;
+ if (x[5] < 0.0) x[5] = 1e-16;
+ */
+ double sum = sqrt(x[3]*x[3]+x[4]*x[4]+x[5]*x[5]);
+ if (sum < 1e-8)
+    x[3]=x[4]=x[5]=1.0L/sqrt(3.0L);
+    else {
+       x[3] /= sum;
+       x[4] /= sum;
+       x[5] /= sum;
+       }
+
+ // torsion angles
+ for (int i=6; i<n; i++)
+   x[i] = WrpModRad(x[i]);
+
+ return ::evaluate(x,n);
+ }
+ //
+ #endif // USING_COLINY // }
+
+
+ Real Eval::get_eintcal_result() {
+
+
+   cnv_state_to_coords(stateNow, vt, tlist, stateNow.ntor, crdpdb, crd, natom,
+		       true_ligand_atoms, outlev, logFile);
+
+  
+  return eintcal( nonbondlist, ptr_ad_energy_tables, crd, Nnb,
+		 Nnb_array, NULL,
+                 B_calcIntElec, B_include_1_4_interactions, 
+                 scale_1_4, qsp_abs_charge,
+                 B_use_non_bond_cutoff, B_have_flexible_residues,
+		 outlev, logFile);
+
 }
-
-int Eval::write(const Representation *const *const rep,
- const int true_ligand_atoms, const int outlev, FILE *logFile)
-{
-    int i=0, retval=0;
-    //char rec14[14];
-
-#ifdef DEBUG
-    (void)fprintf(logFile,"eval.cc/int Eval::write(FILE *out_file, Representation **rep)\n");
-#endif /*DEBUG*/
-
-    make_state_from_rep(rep, &stateNow, outlev, logFile);
-    cnv_state_to_coords(stateNow, vt, tlist, stateNow.ntor, crdpdb, crd, natom,
-     true_ligand_atoms, outlev, logFile);
-    for (i=0; i<natom; i++) {
-            print_PDBQT_atom_resstr( logFile, "", i,   " C   RES     1 ", crd, 
-             0.0, 0.0, charge[i],"", "\n"); 
-    } // i
-    return retval;
-}
-
-#ifdef USING_COLINY // {
-double Eval::operator()(const double* const vec, const int len, const int outlev, FILE *logFile)
-{
-   make_state_from_rep(vec, len, &stateNow, outlev, logFile);
-   return eval();
-}
-
-
-void make_state_from_rep(const double *const rep, const int n, /* not const */ State *const now, const int outlev, FILE *logFile)
-{
-#   ifdef DEBUG
-    (void)fprintf(logFile, "eval.cc/make_state_from_rep(double *rep, int n, State *now)\n");
-#   endif /* DEBUG */
-
-    //  Do the translations
-    now->T.x = rep[0];
-    now->T.y = rep[1];
-    now->T.z = rep[2];
-
-    //  Set up the quaternion
-    now->Q.x = rep[3];
-    now->Q.y = rep[4];
-    now->Q.z = rep[5];
-    now->Q.w = rep[6];
-
-    //  Copy the angles
-    now->ntor = n - 7;
-    for (int i=0, j=7; j<n; i++, j++) {
-      now->tor[i] = rep[j];
-    }
-
-    //mkUnitQuat(&(now->Q));
-}
-
-/* next function is for Coliny only */
-extern Eval evaluate;
-
-double ADEvalFn(/* not const */ double *const x, const int n)
-{
-//
-// Normalize the data
-//
-//
-// Quaternion vector
-/*
-double sum=0.0;
-if (x[3] < 0.0) x[3] = 1e-16;
-if (x[4] < 0.0) x[4] = 1e-16;
-if (x[5] < 0.0) x[5] = 1e-16;
-*/
-double sum = sqrt(x[3]*x[3]+x[4]*x[4]+x[5]*x[5]);
-if (sum < 1e-8)
-   x[3]=x[4]=x[5]=1.0L/sqrt(3.0L);
-   else {
-      x[3] /= sum;
-      x[4] /= sum;
-      x[5] /= sum;
-      }
-
-// torsion angles
-for (int i=6; i<n; i++)
-  x[i] = WrpModRad(x[i]);
-
-return ::evaluate(x,n);
-}
-//
-#endif // USING_COLINY // }

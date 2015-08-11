@@ -35,6 +35,9 @@
 #ifndef QTRANSFORM
 #include "qtransform.h"
 #endif
+#ifndef EINTCAL
+#include "eintcal.h"
+#endif
 
 
 bool test_qtransform_kernel(Population& pop_in, int ntors,
@@ -122,4 +125,53 @@ bool test_qtransform_kernel(Population& pop_in, int ntors,
   }
   
   return result_ok;
+}
+
+
+
+bool test_eintcal_kernel (Population& pop_in, int ntors,
+			    CudaPtrs ptrs, double* gpu_results) {
+  // Test the gpu eintcal kernel against CPU version
+  
+  int pop_size = pop_in.num_individuals();
+  int num_pops_to_print = pop_size;
+  //int num_pops_to_print = 1;
+  int state_size = 10 + ntors; // The total number of items in each STATE item
+  Molecule* first_mol = pop_in[0].mol; 
+  pop_in.evaluate->compute_intermol_energy(false);
+  Molecule* current_mol;
+  int natoms = getNumAtoms(first_mol);  
+  Real* cpu_result = new Real[pop_size];
+  double* cpu_result2 = new double[pop_size];
+  
+  
+  for (int i=0; i<pop_size; ++i) {
+    
+    cpu_result[i] = pop_in[i].phenotyp.evaluate(Always_Eval);
+  }
+  printf("CPU Result: \n");
+  for (int i=0; i<pop_size; ++i) {
+    printf("  %f \n", cpu_result[i]);
+  }
+  
+
+  
+  for (int i=0; i<pop_size; ++i) {
+    cpu_result2[i] = pop_in[i].phenotyp.pevaluate->get_eintcal_result();
+  }
+  
+  
+
+  printf("CPU Result2: \n");
+  for (int i=0; i<pop_size; ++i) {
+    printf("  %f \n", cpu_result2[i]);
+  }
+  
+  
+
+  
+  delete cpu_result;
+  delete cpu_result2;
+  return false;
+  
 }

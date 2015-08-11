@@ -80,6 +80,14 @@ void start_CUDA_on_population(Population* this_pop, int ntors) {
 
   if (!test_qtransform_kernel(*this_pop, ntors, ptrs, quat_results))
     printf("ERROR: test_qtransform_kernel failed \n");
+  free(quat_results);
+
+  // Test eintcal
+  double* eintcal_results = (double*) malloc(sizeof(double)*pop_size);
+  if (!test_eintcal_kernel(*this_pop, ntors, ptrs, eintcal_results))
+      printf("ERROR: test_eintcal_kernel failed \n");
+  free(eintcal_results);
+      
   
 
   //////////////////////////

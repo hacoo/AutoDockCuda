@@ -21,3 +21,5 @@
 bool test_qtransform_kernel(Population& pop_in, int ntors,
 			      CudaPtrs ptrs, double* gpu_results);
 
+bool test_eintcal_kernel (Population& pop_in, int ntors,
+			  CudaPtrs ptrs, double* gpu_results);

@@ -77,6 +77,7 @@ class Eval
       //ParameterEntry *parameterArray;
       Real  unbound_internal_FE;
       Boole B_compute_intermol_energy; // use for computing unbound state
+      Boole B_compute_internal_energy; // turn off to compute inermol. energ. ONLY
       Boole B_use_non_bond_cutoff;  // set this to FALSE if we are computing unbound extended conformations
       Boole B_have_flexible_residues;
       int true_ligand_atoms;
@@ -145,10 +146,12 @@ class Eval
       void reset(void);
       int write(const Representation *const *const rep, const int true_ligand_atoms, const int outlev, FILE *logFile);
       void compute_intermol_energy(const Boole init_B_compute_intermol_energy); // for computing unbound state
+      void compute_internal_energy(const Boole init_B_compute_internal_energy); // for computing unbound state	    
+      Real get_eintcal_result();
 };
 
 inline Eval::Eval(void)
-: num_evals(0)
+	    : num_evals(0), B_compute_internal_energy(true)
 {
 }
 
@@ -265,6 +268,13 @@ inline void Eval::compute_intermol_energy(const Boole init_B_compute_intermol_en
 {
     B_compute_intermol_energy = init_B_compute_intermol_energy;
 }
+
+inline void Eval::compute_internal_energy(const Boole init_B_compute_internal_energy)
+    // For computing the conformation and the internal energy of the unbound state.
+{
+    B_compute_internal_energy = init_B_compute_internal_energy;
+}
+
 
 
 inline unsigned int Eval::evals(void)
