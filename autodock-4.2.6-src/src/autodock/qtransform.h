@@ -35,6 +35,7 @@ Copyright (C) 2009 The Scripps Research Institute. All rights reserved.
 #include "qmultiply.h"
 #include "torNorVec.h"
 
+
 void qtransform( const Coord& T,
 	 	 const Quat&  q,
                  /* not const */ Real tcoord[MAX_ATOMS][SPACE],

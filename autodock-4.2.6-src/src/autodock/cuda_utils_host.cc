@@ -161,3 +161,22 @@ int* getTorsionRootList(Molecule* m, int ntors) {
   }
   return rootlist;
 }
+
+
+void print_double_matrix(double* arr, int width, int height) {
+  // Prints a flat matrix of doubles, assuming it 
+  // has width WIDTH and height HEIGHT
+  int i, ii;
+  for(i=0; i<height; ++i) {
+    for(ii=0; ii<width; ++ii) {
+      printf("%f ", arr[i*width + ii]);
+    }
+    printf("\n");
+  }
+}
+
+
+void print_hashes() {
+  // Prints 40 hashes for making stuff look nice
+  printf("########################################\n");
+}

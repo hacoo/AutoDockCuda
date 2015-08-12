@@ -88,6 +88,12 @@ bool allocate_pop_to_gpu(Population& pop_in, int ntors, CudaPtrs* ptrs) {
   gpuErrchk(cudaMemcpy(ptrs->ntors_dev, &ntors, 
 		       sizeof(int), cudaMemcpyHostToDevice));
 
+  gpuErrchk(cudaMalloc((void**) &(ptrs->state_size_dev),
+		       sizeof(int)));
+  gpuErrchk(cudaMemcpy(ptrs->state_size_dev, &state_size, 
+		       sizeof(int), cudaMemcpyHostToDevice));
+
+
 
   gpuErrchk(cudaMalloc((void**) &(ptrs->atom_crds_dev),
 		       sizeof(double)*natoms*SPACE));

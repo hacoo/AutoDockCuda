@@ -22,4 +22,5 @@ typedef struct cudaptrs {
   double* indiv_crds_dev; // each individual's atom coordinates -- filled in by qtransform
   // and torsion kernels
   int* ntors_dev;// number of torsions
+  int* state_size_dev; // the number of parameters in each state
 } CudaPtrs;

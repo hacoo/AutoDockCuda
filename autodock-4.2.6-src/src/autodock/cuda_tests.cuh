@@ -10,5 +10,10 @@
 #ifndef CUDA_TESTS_H
 #define CUDA_TESTS_H
 #endif
+#ifndef CUDA_STRUCTS_H
+#include "cuda_structs.h"
+#endif
+
 
 bool test_memory_transfer(Population& pop_in, int ntors, CudaPtrs* ptrs);
+

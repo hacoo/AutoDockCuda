@@ -350,6 +350,7 @@ autodock4_omp_SOURCES += \
     intnbtable.cc \
     nbe.cc \
     cuda_utils_host.cc \
+    cuda_tests_host.cc \
 		PDBQT_tokens.h \
 		analysis.h \
 		atom_parameter_manager.h \
@@ -461,7 +462,7 @@ autodock4_omp_SOURCES += \
 endif
 
 if WANT_CUDA
-autodock4_SOURCES += cuda_utils_host.cc
+autodock4_SOURCES += cuda_utils_host.cc cuda_tests_host.cc
 endif
 
 BUILT_SOURCES = $(autodock4_SOURCES) default_parameters.h

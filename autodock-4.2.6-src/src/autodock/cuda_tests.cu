@@ -37,10 +37,11 @@
 
 
 
-
 bool test_memory_transfer(Population& pop_in, int ntors, CudaPtrs* ptrs) {
   // Tests that memory already transfered to the GPUb
   // can be transfered back in one piece.
+  // Right now correct transfer is verified by inspection -- will
+  // need to automate this later
   
   int i, ii;
   Molecule* m = pop_in[0].mol;
@@ -50,7 +51,7 @@ bool test_memory_transfer(Population& pop_in, int ntors, CudaPtrs* ptrs) {
   // - 3 trans coords + 4 quat coords + 3 center coords + ntors torsions
 
   
-  int* natoms_t,* ntors_t;
+  int natoms_t, ntors_t, state_size_t;
   double* atom_crds_t = (double*) malloc(sizeof(double)*natoms*SPACE);
   char* atom_strings_t = (char*) malloc(sizeof(char)*natoms*MAX_CHARS);
   double* torsions_t = (double*) malloc(sizeof(double)*ntors*SPACE);
@@ -72,9 +73,11 @@ bool test_memory_transfer(Population& pop_in, int ntors, CudaPtrs* ptrs) {
   gpuErrchk(cudaMemcpy(torsions_t, ptrs->torsions_dev,  
 		       sizeof(double)*ntors*SPACE, cudaMemcpyDeviceToHost));
 
-  gpuErrchk(cudaMemcpy(natoms_t, ptrs->natoms_dev,  
+  gpuErrchk(cudaMemcpy(&natoms_t, ptrs->natoms_dev,  
 		       sizeof(int), cudaMemcpyDeviceToHost));
-  gpuErrchk(cudaMemcpy(ntors_t, ptrs->ntors_dev,  
+  gpuErrchk(cudaMemcpy(&ntors_t, ptrs->ntors_dev,  
+		       sizeof(int), cudaMemcpyDeviceToHost));
+  gpuErrchk(cudaMemcpy(&state_size_t, ptrs->state_size_dev,  
 		       sizeof(int), cudaMemcpyDeviceToHost));
 
   
@@ -102,8 +105,9 @@ bool test_memory_transfer(Population& pop_in, int ntors, CudaPtrs* ptrs) {
   printf("  %f %f %f \n", torsions_t[3*i], torsions_t[3*i+1], torsions_t[3*i+2]);
   }
 
-  printf("There are %d atoms. \n", *natoms_t);
-  printf("There are %d torsions. \n", *ntors_t);
+  printf("There are %d atoms. \n", natoms_t);
+  printf("There are %d torsions. \n", ntors_t);
+  printf("The state size is %d. \n", state_size_t);
   
   gpuErrchk(cudaMemcpy(states_t, ptrs->states_dev,
 		       sizeof(double)*pop_size*state_size, cudaMemcpyDeviceToHost));
@@ -130,5 +134,9 @@ bool test_memory_transfer(Population& pop_in, int ntors, CudaPtrs* ptrs) {
   free(torsion_root_list_t);
   free(states_t);
 
-  return true;
+  return false;
 }
+
+
+
+

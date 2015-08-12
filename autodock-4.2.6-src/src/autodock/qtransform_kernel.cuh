@@ -22,24 +22,4 @@
 
 
 __global__
-void qtransform_kernel(CudaPtrs ptrs) {
-  // Quaternion transformation kernel. Does rigid-body
-  // translation and rotation for each individual configuration.
-  // Each block is responsible for one individual; each
-  // thread handles one atom.
-  
-  // Each block should have natoms threads, or 12 threads,
-  // whichever is greater (at least 12 threads are needed 
-  // to load all data to SM).
-
-  // Based on qtransform.cc (Autodock 4.2.6 equivalent)
-
-  __shared__ double QT[7]; // quaternion and translation --
-    // x, y, z qw, qx, qy, qz
-  __shared__ double r[9]; // these are precomputed constants to each coordinate
-    
-
-    
-  
-  
-}
+void qtransform_kernel(CudaPtrs ptrs);

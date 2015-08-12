@@ -293,11 +293,12 @@ class Phenotype
       unsigned int number_of_dimensions, number_of_points;
       Lookup *lookup;
       Representation **value_vector;
-      double value;
+
       unsigned evalflag : 1;  //  =1 means that this is the current evaluation
       unsigned modified : 1;  //  =1 means that this has been modified
-
+      
    public:
+      double value;
       Phenotype(void);
       Phenotype(Eval *);
       Phenotype(const Phenotype &);
