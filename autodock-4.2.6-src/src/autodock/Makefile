@@ -110,7 +110,7 @@ host_triplet = x86_64-unknown-linux-gnu
 #bin_PROGRAMS = autodock4$(EXEEXT)
 bin_PROGRAMS = autodock4$(EXEEXT) \
 	autodock4.omp$(EXEEXT)
-am__append_1 = start_CUDA_on_population.cc
+am__append_1 = cuda_utils_host.cc cuda_tests_host.cc
 #-lcudart -lcuda -lm
 
 #autodock4_LDADD += start_CUDA_on_population.o
@@ -181,9 +181,9 @@ am__autodock4_SOURCES_DIST = main.cc alea.cc analysis.cc \
 	support.h swap.h threadlog.h timesys.h timesyshms.h \
 	torNorVec.h torsion.h trilinterp.h trjtokens.h typedefs.h \
 	usage.h version.h warn_bad_file.h weedbonds.h writePDBQT.h \
-	start_CUDA_on_population.cc
-am__objects_1 =  \
-	autodock4-start_CUDA_on_population.$(OBJEXT)
+	cuda_utils_host.cc cuda_tests_host.cc
+am__objects_1 = autodock4-cuda_utils_host.$(OBJEXT) \
+	autodock4-cuda_tests_host.$(OBJEXT)
 am_autodock4_OBJECTS = autodock4-main.$(OBJEXT) \
 	autodock4-alea.$(OBJEXT) autodock4-analysis.$(OBJEXT) \
 	autodock4-atom_parameter_manager.$(OBJEXT) \
@@ -275,7 +275,8 @@ am__autodock4_omp_SOURCES_DIST = main.cc alea.cc analysis.cc \
 	strindex.cc success.cc support.cc swap.cc threadlog.cc \
 	timesys.cc timesyshms.cc torNorVec.cc torsion.cc trilinterp.cc \
 	usage.cc weedbonds.cc warn_bad_file.cc coliny.cc eintcal.cc \
-	eintcalPrint.cc intnbtable.cc nbe.cc PDBQT_tokens.h analysis.h \
+	eintcalPrint.cc intnbtable.cc nbe.cc cuda_utils_host.cc \
+	cuda_tests_host.cc PDBQT_tokens.h analysis.h \
 	atom_parameter_manager.h alea.h autocomm.h autoglobal.h \
 	banner.h bestpdb.h calculateEnergies.h call_glss.h call_ls.h \
 	center_ligand.h changeState.h check_header_float.h \
@@ -393,7 +394,9 @@ am_autodock4_omp_OBJECTS =  \
 	autodock4_omp-eintcal.$(OBJEXT) \
 	autodock4_omp-eintcalPrint.$(OBJEXT) \
 	autodock4_omp-intnbtable.$(OBJEXT) \
-	autodock4_omp-nbe.$(OBJEXT)
+	autodock4_omp-nbe.$(OBJEXT) \
+	autodock4_omp-cuda_utils_host.$(OBJEXT) \
+	autodock4_omp-cuda_tests_host.$(OBJEXT)
 autodock4_omp_OBJECTS = $(am_autodock4_omp_OBJECTS)
 am__DEPENDENCIES_3 = $(am__DEPENDENCIES_2)
 autodock4_omp_DEPENDENCIES = $(am__DEPENDENCIES_3)
@@ -529,7 +532,7 @@ LTLIBOBJS =
 MAKEINFO = makeinfo
 MKDIR_P = /bin/mkdir -p
 NVCC = nvcc
-NVCCFLAGS =   -I/usr/local/NVIDIA_GPU_Computing_SDK/C/common/inc/ -I/pkgs/nvidia-cuda/5.5/include -L/pkgs/nvidia-cuda/5.5/lib64 -lcuda -lcudart -lcufft
+NVCCFLAGS =   -I/usr/local/NVIDIA_GPU_Computing_SDK/C/common/inc/ -I/pkgs/nvidia/5.5/include -L/pkgs/nvidia/5.5/lib64 -lcuda -lcudart -lcufft
 OBJEXT = o
 OPENMP_CXXFLAGS = -fopenmp
 PACKAGE = autodock
@@ -690,6 +693,7 @@ autodock4_omp_SOURCES = main.cc alea.cc analysis.cc \
 	torNorVec.cc torsion.cc trilinterp.cc usage.cc \
 	weedbonds.cc warn_bad_file.cc coliny.cc \
 	eintcal.cc eintcalPrint.cc intnbtable.cc nbe.cc \
+	cuda_utils_host.cc cuda_tests_host.cc \
 	PDBQT_tokens.h analysis.h \
 	atom_parameter_manager.h alea.h autocomm.h \
 	autoglobal.h banner.h bestpdb.h \
@@ -877,6 +881,8 @@ include ./$(DEPDIR)/autodock4-cnv_state_to_coords.Po
 include ./$(DEPDIR)/autodock4-coliny.Po
 include ./$(DEPDIR)/autodock4-com.Po
 include ./$(DEPDIR)/autodock4-conformation_sampler.Po
+include ./$(DEPDIR)/autodock4-cuda_tests_host.Po
+include ./$(DEPDIR)/autodock4-cuda_utils_host.Po
 include ./$(DEPDIR)/autodock4-dimLibrary.Po
 include ./$(DEPDIR)/autodock4-distdepdiel.Po
 include ./$(DEPDIR)/autodock4-eintcal.Po
@@ -935,7 +941,6 @@ include ./$(DEPDIR)/autodock4-setflags.Po
 include ./$(DEPDIR)/autodock4-simanneal.Po
 include ./$(DEPDIR)/autodock4-sort_enrg.Po
 include ./$(DEPDIR)/autodock4-stack.Po
-include ./$(DEPDIR)/autodock4-start_CUDA_on_population.Po
 include ./$(DEPDIR)/autodock4-stateLibrary.Po
 include ./$(DEPDIR)/autodock4-stop.Po
 include ./$(DEPDIR)/autodock4-strindex.Po
@@ -971,6 +976,8 @@ include ./$(DEPDIR)/autodock4_omp-cnv_state_to_coords.Po
 include ./$(DEPDIR)/autodock4_omp-coliny.Po
 include ./$(DEPDIR)/autodock4_omp-com.Po
 include ./$(DEPDIR)/autodock4_omp-conformation_sampler.Po
+include ./$(DEPDIR)/autodock4_omp-cuda_tests_host.Po
+include ./$(DEPDIR)/autodock4_omp-cuda_utils_host.Po
 include ./$(DEPDIR)/autodock4_omp-dimLibrary.Po
 include ./$(DEPDIR)/autodock4_omp-distdepdiel.Po
 include ./$(DEPDIR)/autodock4_omp-eintcal.Po
@@ -2362,19 +2369,33 @@ autodock4-nbe.obj: nbe.cc
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o autodock4-nbe.obj `if test -f 'nbe.cc'; then $(CYGPATH_W) 'nbe.cc'; else $(CYGPATH_W) '$(srcdir)/nbe.cc'; fi`
 
-autodock4-start_CUDA_on_population.o: start_CUDA_on_population.cc
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT autodock4-start_CUDA_on_population.o -MD -MP -MF $(DEPDIR)/autodock4-start_CUDA_on_population.Tpo -c -o autodock4-start_CUDA_on_population.o `test -f 'start_CUDA_on_population.cc' || echo '$(srcdir)/'`start_CUDA_on_population.cc
-	$(AM_V_at)$(am__mv) $(DEPDIR)/autodock4-start_CUDA_on_population.Tpo $(DEPDIR)/autodock4-start_CUDA_on_population.Po
-#	$(AM_V_CXX)source='start_CUDA_on_population.cc' object='autodock4-start_CUDA_on_population.o' libtool=no \
+autodock4-cuda_utils_host.o: cuda_utils_host.cc
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT autodock4-cuda_utils_host.o -MD -MP -MF $(DEPDIR)/autodock4-cuda_utils_host.Tpo -c -o autodock4-cuda_utils_host.o `test -f 'cuda_utils_host.cc' || echo '$(srcdir)/'`cuda_utils_host.cc
+	$(AM_V_at)$(am__mv) $(DEPDIR)/autodock4-cuda_utils_host.Tpo $(DEPDIR)/autodock4-cuda_utils_host.Po
+#	$(AM_V_CXX)source='cuda_utils_host.cc' object='autodock4-cuda_utils_host.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o autodock4-start_CUDA_on_population.o `test -f 'start_CUDA_on_population.cc' || echo '$(srcdir)/'`start_CUDA_on_population.cc
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o autodock4-cuda_utils_host.o `test -f 'cuda_utils_host.cc' || echo '$(srcdir)/'`cuda_utils_host.cc
 
-autodock4-start_CUDA_on_population.obj: start_CUDA_on_population.cc
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT autodock4-start_CUDA_on_population.obj -MD -MP -MF $(DEPDIR)/autodock4-start_CUDA_on_population.Tpo -c -o autodock4-start_CUDA_on_population.obj `if test -f 'start_CUDA_on_population.cc'; then $(CYGPATH_W) 'start_CUDA_on_population.cc'; else $(CYGPATH_W) '$(srcdir)/start_CUDA_on_population.cc'; fi`
-	$(AM_V_at)$(am__mv) $(DEPDIR)/autodock4-start_CUDA_on_population.Tpo $(DEPDIR)/autodock4-start_CUDA_on_population.Po
-#	$(AM_V_CXX)source='start_CUDA_on_population.cc' object='autodock4-start_CUDA_on_population.obj' libtool=no \
+autodock4-cuda_utils_host.obj: cuda_utils_host.cc
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT autodock4-cuda_utils_host.obj -MD -MP -MF $(DEPDIR)/autodock4-cuda_utils_host.Tpo -c -o autodock4-cuda_utils_host.obj `if test -f 'cuda_utils_host.cc'; then $(CYGPATH_W) 'cuda_utils_host.cc'; else $(CYGPATH_W) '$(srcdir)/cuda_utils_host.cc'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/autodock4-cuda_utils_host.Tpo $(DEPDIR)/autodock4-cuda_utils_host.Po
+#	$(AM_V_CXX)source='cuda_utils_host.cc' object='autodock4-cuda_utils_host.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o autodock4-start_CUDA_on_population.obj `if test -f 'start_CUDA_on_population.cc'; then $(CYGPATH_W) 'start_CUDA_on_population.cc'; else $(CYGPATH_W) '$(srcdir)/start_CUDA_on_population.cc'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o autodock4-cuda_utils_host.obj `if test -f 'cuda_utils_host.cc'; then $(CYGPATH_W) 'cuda_utils_host.cc'; else $(CYGPATH_W) '$(srcdir)/cuda_utils_host.cc'; fi`
+
+autodock4-cuda_tests_host.o: cuda_tests_host.cc
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT autodock4-cuda_tests_host.o -MD -MP -MF $(DEPDIR)/autodock4-cuda_tests_host.Tpo -c -o autodock4-cuda_tests_host.o `test -f 'cuda_tests_host.cc' || echo '$(srcdir)/'`cuda_tests_host.cc
+	$(AM_V_at)$(am__mv) $(DEPDIR)/autodock4-cuda_tests_host.Tpo $(DEPDIR)/autodock4-cuda_tests_host.Po
+#	$(AM_V_CXX)source='cuda_tests_host.cc' object='autodock4-cuda_tests_host.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o autodock4-cuda_tests_host.o `test -f 'cuda_tests_host.cc' || echo '$(srcdir)/'`cuda_tests_host.cc
+
+autodock4-cuda_tests_host.obj: cuda_tests_host.cc
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT autodock4-cuda_tests_host.obj -MD -MP -MF $(DEPDIR)/autodock4-cuda_tests_host.Tpo -c -o autodock4-cuda_tests_host.obj `if test -f 'cuda_tests_host.cc'; then $(CYGPATH_W) 'cuda_tests_host.cc'; else $(CYGPATH_W) '$(srcdir)/cuda_tests_host.cc'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/autodock4-cuda_tests_host.Tpo $(DEPDIR)/autodock4-cuda_tests_host.Po
+#	$(AM_V_CXX)source='cuda_tests_host.cc' object='autodock4-cuda_tests_host.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o autodock4-cuda_tests_host.obj `if test -f 'cuda_tests_host.cc'; then $(CYGPATH_W) 'cuda_tests_host.cc'; else $(CYGPATH_W) '$(srcdir)/cuda_tests_host.cc'; fi`
 
 autodock4_omp-main.o: main.cc
 	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_omp_CPPFLAGS) $(CPPFLAGS) $(autodock4_omp_CXXFLAGS) $(CXXFLAGS) -MT autodock4_omp-main.o -MD -MP -MF $(DEPDIR)/autodock4_omp-main.Tpo -c -o autodock4_omp-main.o `test -f 'main.cc' || echo '$(srcdir)/'`main.cc
@@ -3678,6 +3699,34 @@ autodock4_omp-nbe.obj: nbe.cc
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_omp_CPPFLAGS) $(CPPFLAGS) $(autodock4_omp_CXXFLAGS) $(CXXFLAGS) -c -o autodock4_omp-nbe.obj `if test -f 'nbe.cc'; then $(CYGPATH_W) 'nbe.cc'; else $(CYGPATH_W) '$(srcdir)/nbe.cc'; fi`
 
+autodock4_omp-cuda_utils_host.o: cuda_utils_host.cc
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_omp_CPPFLAGS) $(CPPFLAGS) $(autodock4_omp_CXXFLAGS) $(CXXFLAGS) -MT autodock4_omp-cuda_utils_host.o -MD -MP -MF $(DEPDIR)/autodock4_omp-cuda_utils_host.Tpo -c -o autodock4_omp-cuda_utils_host.o `test -f 'cuda_utils_host.cc' || echo '$(srcdir)/'`cuda_utils_host.cc
+	$(AM_V_at)$(am__mv) $(DEPDIR)/autodock4_omp-cuda_utils_host.Tpo $(DEPDIR)/autodock4_omp-cuda_utils_host.Po
+#	$(AM_V_CXX)source='cuda_utils_host.cc' object='autodock4_omp-cuda_utils_host.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_omp_CPPFLAGS) $(CPPFLAGS) $(autodock4_omp_CXXFLAGS) $(CXXFLAGS) -c -o autodock4_omp-cuda_utils_host.o `test -f 'cuda_utils_host.cc' || echo '$(srcdir)/'`cuda_utils_host.cc
+
+autodock4_omp-cuda_utils_host.obj: cuda_utils_host.cc
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_omp_CPPFLAGS) $(CPPFLAGS) $(autodock4_omp_CXXFLAGS) $(CXXFLAGS) -MT autodock4_omp-cuda_utils_host.obj -MD -MP -MF $(DEPDIR)/autodock4_omp-cuda_utils_host.Tpo -c -o autodock4_omp-cuda_utils_host.obj `if test -f 'cuda_utils_host.cc'; then $(CYGPATH_W) 'cuda_utils_host.cc'; else $(CYGPATH_W) '$(srcdir)/cuda_utils_host.cc'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/autodock4_omp-cuda_utils_host.Tpo $(DEPDIR)/autodock4_omp-cuda_utils_host.Po
+#	$(AM_V_CXX)source='cuda_utils_host.cc' object='autodock4_omp-cuda_utils_host.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_omp_CPPFLAGS) $(CPPFLAGS) $(autodock4_omp_CXXFLAGS) $(CXXFLAGS) -c -o autodock4_omp-cuda_utils_host.obj `if test -f 'cuda_utils_host.cc'; then $(CYGPATH_W) 'cuda_utils_host.cc'; else $(CYGPATH_W) '$(srcdir)/cuda_utils_host.cc'; fi`
+
+autodock4_omp-cuda_tests_host.o: cuda_tests_host.cc
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_omp_CPPFLAGS) $(CPPFLAGS) $(autodock4_omp_CXXFLAGS) $(CXXFLAGS) -MT autodock4_omp-cuda_tests_host.o -MD -MP -MF $(DEPDIR)/autodock4_omp-cuda_tests_host.Tpo -c -o autodock4_omp-cuda_tests_host.o `test -f 'cuda_tests_host.cc' || echo '$(srcdir)/'`cuda_tests_host.cc
+	$(AM_V_at)$(am__mv) $(DEPDIR)/autodock4_omp-cuda_tests_host.Tpo $(DEPDIR)/autodock4_omp-cuda_tests_host.Po
+#	$(AM_V_CXX)source='cuda_tests_host.cc' object='autodock4_omp-cuda_tests_host.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_omp_CPPFLAGS) $(CPPFLAGS) $(autodock4_omp_CXXFLAGS) $(CXXFLAGS) -c -o autodock4_omp-cuda_tests_host.o `test -f 'cuda_tests_host.cc' || echo '$(srcdir)/'`cuda_tests_host.cc
+
+autodock4_omp-cuda_tests_host.obj: cuda_tests_host.cc
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_omp_CPPFLAGS) $(CPPFLAGS) $(autodock4_omp_CXXFLAGS) $(CXXFLAGS) -MT autodock4_omp-cuda_tests_host.obj -MD -MP -MF $(DEPDIR)/autodock4_omp-cuda_tests_host.Tpo -c -o autodock4_omp-cuda_tests_host.obj `if test -f 'cuda_tests_host.cc'; then $(CYGPATH_W) 'cuda_tests_host.cc'; else $(CYGPATH_W) '$(srcdir)/cuda_tests_host.cc'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/autodock4_omp-cuda_tests_host.Tpo $(DEPDIR)/autodock4_omp-cuda_tests_host.Po
+#	$(AM_V_CXX)source='cuda_tests_host.cc' object='autodock4_omp-cuda_tests_host.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(autodock4_omp_CPPFLAGS) $(CPPFLAGS) $(autodock4_omp_CXXFLAGS) $(CXXFLAGS) -c -o autodock4_omp-cuda_tests_host.obj `if test -f 'cuda_tests_host.cc'; then $(CYGPATH_W) 'cuda_tests_host.cc'; else $(CYGPATH_W) '$(srcdir)/cuda_tests_host.cc'; fi`
+
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
 tags: tags-am
@@ -4200,7 +4249,7 @@ gs.o : gs.cc gs.h ranlib.h eval.h rep.h support.h writePDBQT.h
 	$(CXXCOMPILE) -DCHECK_ISNAN -c $(srcdir)/gs.cc
 
 .cu.o:
-	$(NVCC) -c *.cu $(NVCCFLAGS)
+	$(NVCC) -arch=sm_20 -g -c *.cu $(NVCCFLAGS)
 
 # 2007-04-30 MP & GMM: this line is necessary to be able to compile read_parameter_library.o
 read_parameter_library.o : default_parameters.h
