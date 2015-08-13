@@ -57,14 +57,12 @@ class Eval
 	// the following are constant for a particular receptor-ligand docking
 	//  and so can be shared read-only by concurrent evaluations:
       unsigned int num_evals;
-      int natom, Nnb;
       int *Nnb_array;
       GridMapSetInfo *info;
       MapType *map;
       Boole B_calcIntElec, B_isGaussTorCon, B_ShowTorE;
       unsigned short *US_TorE, (*US_torProfile)[NTORDIVS]; // unused? M Pique
       int *type, (*tlist)[MAX_ATOMS];
-      NonbondParam *nonbondlist;
       Real *charge, *abs_charge, *qsp_abs_charge;
       Real (*crd)[SPACE], (*vt)[SPACE];
       EnergyTables *ptr_ad_energy_tables;
@@ -92,6 +90,19 @@ class Eval
       State stateNow;
 
    public:
+      
+      NonbondParam *nonbondlist;
+      int natom, Nnb;
+      int get_Nnb();
+      int* get_Nnb_array();
+      NonbondParam* get_nonbondlist();
+      EnergyComponent* get_energycomponent();
+      int get_B_calcIntElec(); 
+      int get_B_include_1_4_interactions();
+      int get_B_use_non_bond_cutoff();
+      int get_B_have_flexible_residues();
+      Real* get_qsp_abs_charge();
+      Real get_scale_1_4();  
 
       Eval(void);
       Molecule mol;
@@ -148,6 +159,8 @@ class Eval
       void compute_intermol_energy(const Boole init_B_compute_intermol_energy); // for computing unbound state
       void compute_internal_energy(const Boole init_B_compute_internal_energy); // for computing unbound state	    
       Real get_eintcal_result();
+      EnergyTables* get_energy_tables_ptr();
+      
 };
 
 inline Eval::Eval(void)
@@ -286,5 +299,7 @@ inline void Eval::reset(void)
 {
    num_evals = 0;
 }
+
+
 
 #endif

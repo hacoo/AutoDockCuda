@@ -35,6 +35,11 @@ Copyright (C) 2009 The Scripps Research Institute. All rights reserved.
 #include <stdio.h>
 #include "typedefs.h"
 
+/// INSTERTED #DEFINES -- TEMPORYARY, MAKEFILE SHOULD DO THIS
+//#define USE_DOUBLE
+//#define USE_8A_NBCUTOFF
+///
+
 /*******************************************************************************
 **      Name: autocomm.h                                                      **
 **  Function: Defines Constants, common to both AUTOGRID & AUTODOCK...        **

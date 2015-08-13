@@ -74,7 +74,7 @@ bool test_qtransform_kernel(Population& pop_in, int ntors,
     qtransform(current_state.T, current_state.Q, cpu_results[i], natoms);
   }
   
-
+  /*
   print_hashes();
   printf("CPU result: \n");
   printf("Pop size: %d Num atoms: %d \n", pop_size, natoms);
@@ -102,12 +102,13 @@ bool test_qtransform_kernel(Population& pop_in, int ntors,
   }
   
   print_hashes();
-  
+  */
 
   for(i=0; i<pop_size; ++i) {
     for(ii=0; ii<natoms; ++ii) {
       for(iii=0; iii<SPACE; ++iii){
-	if(cpu_results[i][ii][iii] != gpu_results[i*natoms*SPACE+ii*SPACE+iii]) {
+	if(cpu_results[i][ii][iii] - gpu_results[i*natoms*SPACE+ii*SPACE+iii] > 
+	   0.00001) {
 	  printf("ERROR in test_qtransform_kernel: Results do not agree at %d %d ",
 		 i, ii);
 	  if(iii == 0)
@@ -134,45 +135,35 @@ bool test_eintcal_kernel (Population& pop_in, int ntors,
   // Test the gpu eintcal kernel against CPU version
   
   int pop_size = pop_in.num_individuals();
-  int num_pops_to_print = pop_size;
-  //int num_pops_to_print = 1;
-  int state_size = 10 + ntors; // The total number of items in each STATE item
   Molecule* first_mol = pop_in[0].mol; 
   pop_in.evaluate->compute_intermol_energy(false);
   pop_in.evaluate->compute_internal_energy(true);
-  Molecule* current_mol;
   int natoms = getNumAtoms(first_mol);  
   Real* cpu_result = new Real[pop_size];
-  double* cpu_result2 = new double[pop_size];
+  double* gpu_result = new double[pop_size];
   
   
   for (int i=0; i<pop_size; ++i) {
-    
     cpu_result[i] = pop_in[i].phenotyp.evaluate(Always_Eval);
   }
+
+  
+
   printf("CPU Result: \n");
   for (int i=0; i<pop_size; ++i) {
     printf("  %f \n", cpu_result[i]);
   }
-  
 
-  
+  printf("GPU Result: \n");
   for (int i=0; i<pop_size; ++i) {
-    cpu_result2[i] = pop_in[i].phenotyp.pevaluate->get_eintcal_result();
+    printf("  %f \n", gpu_result[i]);
   }
   
-  
-
-  printf("CPU Result2: \n");
-  for (int i=0; i<pop_size; ++i) {
-    printf("  %f \n", cpu_result2[i]);
-  }
   
   
 
   
   delete cpu_result;
-  delete cpu_result2;
   return false;
   
 }

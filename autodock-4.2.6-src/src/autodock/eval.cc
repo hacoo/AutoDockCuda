@@ -354,4 +354,49 @@ double Eval::eval(const int term)
                  B_use_non_bond_cutoff, B_have_flexible_residues,
 		 outlev, logFile);
 
+ }
+
+EnergyTables* Eval::get_energy_tables_ptr() {
+  return ptr_ad_energy_tables;
+}
+
+int Eval::get_Nnb(){
+  return Nnb;
+}
+
+NonbondParam* Eval::get_nonbondlist(){
+  return nonbondlist;
+}
+
+EnergyComponent* Eval::get_energycomponent() {
+  return peratomE;
+}
+
+
+int Eval::get_B_calcIntElec() {
+  return B_calcIntElec;
+}
+
+int Eval::get_B_include_1_4_interactions() {
+  return B_include_1_4_interactions;
+}
+
+int Eval::get_B_use_non_bond_cutoff() { 
+  return B_use_non_bond_cutoff;
+}
+
+int Eval::get_B_have_flexible_residues() {
+  return B_have_flexible_residues;
+}
+
+Real* Eval::get_qsp_abs_charge() {
+  return qsp_abs_charge;
+}
+
+Real Eval::get_scale_1_4() {
+  return scale_1_4;
+}
+
+int* Eval::get_Nnb_array() {
+  return Nnb_array;
 }

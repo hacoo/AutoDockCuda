@@ -18,4 +18,6 @@
 #define EINTCAL_KERNEL_H
 #endif
 
+__global__
+void eintcal_kernel(CudaPtrs ptrs);
 

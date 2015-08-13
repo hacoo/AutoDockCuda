@@ -127,6 +127,9 @@ bool test_memory_transfer(Population& pop_in, int ntors, CudaPtrs* ptrs) {
     }
     printf("\n");
   }
+
+  // Test eintcal memory transfer:
+  
   
   //free(atom_crds_t);
   free(atom_strings_t);
