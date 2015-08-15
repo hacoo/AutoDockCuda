@@ -10,7 +10,7 @@ To run AutoDockCuda, clone the repository and build it from source. After clonin
 
 Then, run the configuration script. You must use the -enable-cuda flag and give a path to the cuda base directory:
 
-> ./configure --enable-cuda --with-cuda=[path to CUDA toolkit directory>]
+> ./configure --enable-cuda --with-cuda=[path to CUDA toolkit directory]
 
 Example:
 
