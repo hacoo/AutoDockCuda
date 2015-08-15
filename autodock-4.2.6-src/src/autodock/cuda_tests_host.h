@@ -17,6 +17,8 @@
 #include "cuda_structs.h"
 #endif
 
+bool test_torsion_kernel(Population& pop_in, int ntors,
+                CudaPtrs ptrs, double* gpu_results);
 
 bool test_qtransform_kernel(Population& pop_in, int ntors,
 			      CudaPtrs ptrs, double* gpu_results);

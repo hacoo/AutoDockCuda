@@ -68,6 +68,8 @@ bool allocate_pop_to_gpu(Population& pop_in, int ntors, CudaPtrs* ptrs) {
   double* atom_crds = getAtomCrds(first_mol);
   double* torsions = getTorsions(first_mol, ntors);
   int* torsion_root_list = getTorsionRootList(first_mol, ntors); // List of torsion root atoms
+  //int torlistsize = pop_size*MAX_TORS*MAX_ATOMS;
+  //int torsion_root_list[torlistsize];
   char* atom_strings = getAtomStringArray(first_mol); // ragged array of atom strings
   
   double states[pop_size * state_size]; // flat array of individual states
@@ -107,9 +109,20 @@ bool allocate_pop_to_gpu(Population& pop_in, int ntors, CudaPtrs* ptrs) {
   
   gpuErrchk(cudaMalloc((void**) &(ptrs->torsion_root_list_dev),
 		       sizeof(int)*ntors*natoms));
+  
   gpuErrchk(cudaMemcpy(ptrs->torsion_root_list_dev, torsion_root_list, 
 		       sizeof(int)*natoms*ntors, cudaMemcpyHostToDevice));
   
+/*
+  for(i=0; i<pop_size; i++){
+    for(int ii=0; ii<MAX_TORS; ++ii) {
+        for (int iii=0; iii<MAX_ATOMS; ++iii) {
+	        torsion_root_list[i*MAX_TORS*MAX_ATOMS+ii*MAX_ATOMS+iii] = 
+                pop_in[i].mol->tlist[i][ii];
+        }
+    }
+  }
+*/
   gpuErrchk(cudaMalloc((void**) &(ptrs->atom_strings_dev), 
 		       sizeof(char)*natoms*MAX_CHARS));
   for(i=0; i<natoms; ++i){
@@ -157,6 +170,7 @@ bool allocate_pop_to_gpu(Population& pop_in, int ntors, CudaPtrs* ptrs) {
 		       sizeof(double)*pop_size*natoms*SPACE));
   gpuErrchk(cudaMemset(ptrs->indiv_crds_dev, 0x00, 
 		       sizeof(double)*pop_size*natoms*SPACE));
+
 
 
   // Allocate stuff related to eintcal_kernel

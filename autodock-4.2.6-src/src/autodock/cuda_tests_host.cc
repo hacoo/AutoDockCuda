@@ -40,6 +40,80 @@
 #endif
 
 
+bool test_torsion_kernel (Population& pop_in, int ntors,
+                CudaPtrs ptrs, double* gpu_results) {
+
+  int i, ii, iii;
+  int num_pops_to_print = 1;
+  int pop_size = pop_in.num_individuals();
+  Molecule* first_mol = pop_in[0].mol;
+  Molecule* current_mol;
+  int natoms = getNumAtoms(first_mol);
+  Real cpu_results[pop_size][MAX_ATOMS][SPACE];
+  bool result_ok = true;
+
+  State current_state;
+
+
+  // Populate cpu_results array for comparison
+  for(i=0; i<pop_size; ++i) {
+    current_mol = pop_in[i].mol;
+    current_state = pop_in[i].phenotyp.make_state(ntors);
+    memcpy(cpu_results[i], current_mol->crd, sizeof(double)*natoms*SPACE);
+    torsion(current_state, cpu_results[i], current_mol->vt, current_mol->tlist, ntors);
+  }
+
+  for(i=0; i<pop_size; ++i) {
+    for(ii=0; ii<natoms; ++ii) {
+      for(iii=0; iii<SPACE; ++iii){
+	if(cpu_results[i][ii][iii] - gpu_results[i*natoms*SPACE+ii*SPACE+iii] > 
+	   0.00001) {
+	  printf("ERROR in test_torsion_kernel: Results do not agree at %d %d ",
+		 i, ii);
+	  if(iii == 0)
+	    printf("x");
+	  else if (iii == 1)
+	    printf("y");
+	  else
+	    printf("z");
+	  printf("\n");
+	  result_ok = false;
+	  return result_ok;
+	}
+      }
+    }
+  }
+/* 
+print_hashes();
+  printf("CPU result: \n");
+  printf("Pop size: %d Num atoms: %d \n", pop_size, natoms);
+  for(i=0; i<num_pops_to_print; ++i) {
+    printf("INDIVIDUAL: %d \n", i);
+    for(ii=0; ii<natoms; ++ii) {
+    printf("  %f %f %f \n", cpu_results[i][ii][0], cpu_results[i][ii][1],
+	   cpu_results[i][ii][2]);
+    }
+    printf("\n");
+  }
+  print_hashes();
+  
+  
+  print_hashes();
+  printf("GPU result: \n");
+  for(i=0; i<num_pops_to_print; ++i) {
+    printf("INDIVIDUAL: %d \n", i);
+    for(ii=0; ii<natoms; ++ii) {
+      printf("  %f %f %f \n", gpu_results[i*natoms*SPACE+ii*SPACE],
+	     gpu_results[i*natoms*SPACE+ii*SPACE+1], 
+	     gpu_results[i*natoms*SPACE+ii*SPACE+2]);
+    }
+    printf("\n");
+  }
+*/
+  return result_ok;
+
+}
+ 
 bool test_qtransform_kernel(Population& pop_in, int ntors,
 			    CudaPtrs ptrs, double* gpu_results) {
   // Runs qtransform_kernel against CPU qtransform.
@@ -142,12 +216,9 @@ bool test_eintcal_kernel (Population& pop_in, int ntors,
   Real* cpu_result = new Real[pop_size];
   double* gpu_result = new double[pop_size];
   
-  
   for (int i=0; i<pop_size; ++i) {
     cpu_result[i] = pop_in[i].phenotyp.evaluate(Always_Eval);
   }
-
-  
 
   printf("CPU Result: \n");
   for (int i=0; i<pop_size; ++i) {
@@ -159,11 +230,7 @@ bool test_eintcal_kernel (Population& pop_in, int ntors,
     printf("  %f \n", gpu_result[i]);
   }
   
-  
-  
-
-  
   delete cpu_result;
   return false;
-  
 }
+

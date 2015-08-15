@@ -103,9 +103,9 @@ void torsion( const State& now,
               d[X] = (double)crd[mvatm][X] - crdtemp[X];
               d[Y] = (double)crd[mvatm][Y] - crdtemp[Y];
               d[Z] = (double)crd[mvatm][Z] - crdtemp[Z];
-              crd[mvatm][X] = (double)crdtemp[X] + d[X] * k[X][X] + d[Y] * k[X][Y] + d[Z] * k[X][Z]; 
-              crd[mvatm][Y] = (double)crdtemp[Y] + d[X] * k[Y][X] + d[Y] * k[Y][Y] + d[Z] * k[Y][Z]; 
-              crd[mvatm][Z] = (double)crdtemp[Z] + d[X] * k[Z][X] + d[Y] * k[Z][Y] + d[Z] * k[Z][Z]; 
+              crd[mvatm][X] = atmnum; //(double)crdtemp[X] + d[X] * k[X][X] + d[Y] * k[X][Y] + d[Z] * k[X][Z]; 
+              crd[mvatm][Y] = atmnum; //(double)crdtemp[Y] + d[X] * k[Y][X] + d[Y] * k[Y][Y] + d[Z] * k[Y][Z]; 
+              crd[mvatm][Z] = atmnum; //(double)crdtemp[Z] + d[X] * k[Z][X] + d[Y] * k[Z][Y] + d[Z] * k[Z][Z]; 
           }/*a*/
     } /*n*/
 }

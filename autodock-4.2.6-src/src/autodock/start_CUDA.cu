@@ -38,7 +38,9 @@
 #ifndef EINTCAL_KERNEL_H
 #include "eintcal_kernel.cuh"
 #endif
-
+#ifndef TORSION_KERNEL_H
+#include "torsion_kernel.cuh"
+#endif
 
 
 
@@ -59,6 +61,20 @@ void start_CUDA_on_population(Population* this_pop, int ntors) {
   printf("Starting kernels. Block size: %d Grid size: %d\n", natoms, pop_size);
   dim3 dimBlock(natoms);
   dim3 dimGrid(pop_size);
+
+  // Torsion kernel is torsion per block
+  printf("Launching torsion_kernel with dimGrid: %d and dimBlock: %d,3,3 \n", pop_size, ntors);
+  torsion_kernel<<<dim3(pop_size), dim3(ntors,3,3)>>>(ptrs);
+  cudaError_t err1 = cudaGetLastError();
+  if(err1 != cudaSuccess){
+      printf("Error after torsion_kernel: %s\n", cudaGetErrorString(err1));
+      cudaErrorDetected = 1;
+  }
+  double* tor_results = (double*) malloc(sizeof(double)*natoms*SPACE);
+  gpuErrchk(cudaMemcpy(tor_results, ptrs.indiv_crds_dev, 
+                sizeof(double)*natoms*SPACE, cudaMemcpyDeviceToHost));
+
+  // qtransform kernel launch
   printf("Lanching qtransform_kernel with dimGrid: %d dimBlock: %d, for %d atoms \n",
 	 pop_size, natoms, natoms);
   qtransform_kernel<<<dimGrid, dimBlock>>>(ptrs);
@@ -67,7 +83,7 @@ void start_CUDA_on_population(Population* this_pop, int ntors) {
     printf("Error after qtransform_kernel: %s\n", cudaGetErrorString(err));
     cudaErrorDetected = 1;
   }
- 
+
   // Eintcal is per nonbond -- not per atom. So, use a block size of 1024,
   // and request as many blocks as necessary.
   int Nnb = this_pop->evaluate->get_Nnb();
@@ -102,7 +118,14 @@ void start_CUDA_on_population(Population* this_pop, int ntors) {
   else
     printf("test_qtransform_kernel -- OK \n");
   free(quat_results);
-  
+ 
+  // Test Torsion
+  if (!test_torsion_kernel(*this_pop, ntors, ptrs, tor_results))
+    printf("ERROR: test_torsion_kernel -- FAILED \n");
+  else
+    printf("test_torsion_kernel -- OK \n");
+  free(tor_results);
+
 
   // Test eintcal
   double* eintcal_results = (double*) malloc(sizeof(double)*pop_size);

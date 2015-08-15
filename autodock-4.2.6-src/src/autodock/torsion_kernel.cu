@@ -22,22 +22,24 @@ __global__ void torsion_kernel(CudaPtrs ptrs) {
     //double twopi=6.28318530717958647692;
 
     int state_size = *ptrs.state_size_dev;
-    int ix = threadIdx.x;
-    int iy = threadIdx.y;
-    int n = blockIdx.x;
+    int ix = threadIdx.z; //first space vector
+    int iy = threadIdx.y; //second space vector
+    int n = threadIdx.x; //ntors is threadIdx.x to prevent y and z CUDA max limitations
+    int curr_pop = blockIdx.x; //population being calculated
+    int temp = 0;
 
     if(ix == 0 && iy == 0)
-       s = sin(fmod(ptrs.states_dev[n*state_size+10], (double)TWOPI));
+       s = sin(fmod(ptrs.states_dev[curr_pop*state_size+10+n], (double)TWOPI));
     if(ix == 1 && iy == 0)
-       c = cos(fmod(ptrs.states_dev[n*state_size+10], (double)TWOPI));
+       c = cos(fmod(ptrs.states_dev[curr_pop*state_size+10+n], (double)TWOPI));
     if(ix == 2 && iy == 0)
-       o = 1. - cos(fmod(ptrs.states_dev[n*state_size+10], (double)TWOPI));
+       o = 1. - cos(fmod(ptrs.states_dev[curr_pop*state_size+10+n], (double)TWOPI));
 
     __syncthreads();
 
     if(ix == 0)
     {
-        int temp = ptrs.torsion_root_list_dev[n];
+        temp = ptrs.torsion_root_list_dev[n];
         crdtemp[iy] = (double) ptrs.atom_crds_dev[temp*(iy+1)];
     }
     else if (ix == 1)
@@ -45,15 +47,17 @@ __global__ void torsion_kernel(CudaPtrs ptrs) {
     else if ((ix < 6) && (ix != iy))
         k[iy][ix] = ptrs.torsions_dev[n*(iy+1)] * (o * ptrs.torsions_dev[n*(ix+1)]) - (s * ptrs.torsions_dev[n*(iy - ix - 3 + 1)]);
     else if ((ix == 6) && (iy == 0))
-        numatmmoved = ptrs.torsion_root_list_dev[n*(NUM_ATM_MOVED+1)] + 3;
+        numatmmoved = ptrs.torsion_root_list_dev[n*(NUM_ATM_MOVED)] + 3;
 
     __syncthreads();
 
-    if(ix <= numatmmoved)
+    if(ix == 0)
+    //for(int a = 3; a <= numatmmoved; a++)
     {
-        mvatm = ptrs.torsion_root_list_dev[n*(ix+1)];
-        d[iy] = (double)ptrs.atom_crds_dev[mvatm*(iy+1)] - crdtemp[iy];
+        mvatm = ptrs.torsion_root_list_dev[n];
+        //d[iy] = (double)ptrs.atom_crds_dev[mvatm*(iy+1)] - crdtemp[iy];
         __syncthreads();
-        ptrs.atom_crds_dev[mvatm*(iy+1)] = (double)crdtemp[iy] + d[0] * k[iy][0] + d[1] * k[iy][1] + d[2] * k[iy][2];
+        ptrs.indiv_crds_dev[curr_pop+mvatm*(iy+1)] = mvatm;
+        //(double)crdtemp[iy] + d[0] * k[iy][0] + d[1] * k[iy][1] + d[2] * k[iy][2];
     }
 }
