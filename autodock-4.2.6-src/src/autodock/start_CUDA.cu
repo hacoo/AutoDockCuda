@@ -35,6 +35,9 @@
 #ifndef QTRANSFORM_KERNEL_H
 #include "qtransform_kernel.cuh"
 #endif
+#ifndef EINTCAL_KERNEL_H
+#include "eintcal_kernel.cuh"
+#endif
 
 
 
@@ -56,13 +59,28 @@ void start_CUDA_on_population(Population* this_pop, int ntors) {
   printf("Starting kernels. Block size: %d Grid size: %d\n", natoms, pop_size);
   dim3 dimBlock(natoms);
   dim3 dimGrid(pop_size);
-
+  printf("Lanching qtransform_kernel with dimGrid: %d dimBlock: %d, for %d atoms \n",
+	 pop_size, natoms, natoms);
   qtransform_kernel<<<dimGrid, dimBlock>>>(ptrs);
   cudaError_t err = cudaGetLastError();
   if (err != cudaSuccess) {
-    printf("Error: %s\n", cudaGetErrorString(err));
+    printf("Error after qtransform_kernel: %s\n", cudaGetErrorString(err));
     cudaErrorDetected = 1;
   }
+ 
+  // Eintcal is per nonbond -- not per atom. So, use a block size of 1024,
+  // and request as many blocks as necessary.
+  int Nnb = this_pop->evaluate->get_Nnb();
+  int num_eintcal_blocks = (Nnb/512+ 1);
+  printf("Lanching eintcal_kernel with dimGrid: %d,%d dimBlock: 512, for %d nonbonds \n",
+	 num_eintcal_blocks, pop_size, Nnb);
+  eintcal_kernel<<<dim3(num_eintcal_blocks, pop_size), dim3(512, 1, 1)>>>(ptrs);
+  err = cudaGetLastError();
+  if (err != cudaSuccess) {
+    printf("Error after eintcal_kernel: %s\n", cudaGetErrorString(err));
+    cudaErrorDetected = 1;
+  }
+
 
 
   //////////////////////////////
@@ -72,20 +90,30 @@ void start_CUDA_on_population(Population* this_pop, int ntors) {
 
   // Test memory transfer
   //test_memory_transfer(*this_pop, ntors, &ptrs);
-  
+ 
   // Test qtransform
+  
   double* quat_results = (double*) malloc(sizeof(double)*natoms*pop_size*SPACE);
   gpuErrchk(cudaMemcpy(quat_results, ptrs.indiv_crds_dev, 
 		       sizeof(double)*pop_size*natoms*SPACE, cudaMemcpyDeviceToHost));
 
   if (!test_qtransform_kernel(*this_pop, ntors, ptrs, quat_results))
-    printf("ERROR: test_qtransform_kernel failed \n");
+    printf("ERROR: test_qtransform_kernel -- FAILED \n");
+  else
+    printf("test_qtransform_kernel -- OK \n");
   free(quat_results);
+  
 
   // Test eintcal
   double* eintcal_results = (double*) malloc(sizeof(double)*pop_size);
+  gpuErrchk(cudaMemcpy(eintcal_results, ptrs.internal_energies_dev, 
+		       sizeof(double)*pop_size, cudaMemcpyDeviceToHost));
+
   if (!test_eintcal_kernel(*this_pop, ntors, ptrs, eintcal_results))
-      printf("ERROR: test_eintcal_kernel failed \n");
+      printf("ERROR: test_eintcal_kernel -- FAILED \n");
+  else
+    printf("test_eintcal_kernel -- OK \n");
+
   free(eintcal_results);
       
   

@@ -474,6 +474,7 @@ AM_CXXFLAGS = -g # debug
 AM_CXXFLAGS += -Wall # All warnings
 AM_CXXFLAGS += -Wno-write-strings # increase compatibility with pre 4.x compilers for string handling
 AM_CXXFLAGS += -L/pkgs/nvidia-cuda/5.5/lib64
+AM_CXXFLAGS += -DUSE_8A_NBCUTOFF -DUSE_DOUBLE
 #AM_CXXFLAGS += -lcudart # link in cuda runtime -- only if using cuda...
 
 if WANT_OMP  

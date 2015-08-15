@@ -153,8 +153,12 @@ Copyright (C) 2009 The Scripps Research Institute. All rights reserved.
 
 #else
 
-#define NBC        64.00      /* Non-bonded cutoff for internal energy calc./Ang*/
-#define NEINT  131072         /* Number of values in internal energy table */
+//#define NBC        64.00      /* Non-bonded cutoff for internal energy calc./Ang*/
+//#define NEINT  131072         /* Number of values in internal energy table */
+//#define A_DIV     100.00      /* Used in distance look-up table. */
+
+#define NBC         8.00      /* Non-bonded cutoff for internal energy calc./Ang*/ 
+#define NEINT    2048         /* Number of values in internal energy table */
 #define A_DIV     100.00      /* Used in distance look-up table. */
 
 #endif
