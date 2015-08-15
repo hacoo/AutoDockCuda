@@ -10,7 +10,7 @@ To run AutoDockCuda, clone the repository and build it from source. After clonin
 
 Then, run the configuration script. You must use the -enable-cuda flag and give a path to the cuda base directory:
 
-> ./configure --enable-cuda --with-cuda=<path to CUDA toolkit directory>
+> ./configure --enable-cuda --with-cuda=[path to CUDA toolkit directory>]
 
 Example:
 
@@ -21,8 +21,8 @@ Finally, make the project:
 > make
 
 
-With a little luck, this will work. The autodock executable is autodock4, it will be created in the same 
-directory. See autodock4 documentation for information on using this.
+The autodock executable is autodock4, it will be created in the same 
+directory. See autodock4 documentation for information on using autodock4.
 
 Our project comes with a crude shell script to automate running autodock. It is included in the source directory.
 To run it:
