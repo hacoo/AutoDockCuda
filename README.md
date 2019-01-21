@@ -2,9 +2,9 @@
 
 AutoDockCuda is a GPU accelerated impementation of Autodock 4.2.6, using Nvidia CUDA. It requires CUDA-capable hardware to run. It was developed by students at Portland State University as part of CS510 - Accelerated Computing with GPUs, APUs and FPGAs, under Prof. Karen Karavanic.
 
-AutoDockCuda is not complete, and should NOT be used in research.
+AutoDockCuda is not complete, and should NOT be used in research in its present state..
 
-AutoDockCuda is not under active development. That said, if you are interested in taking on the enormous task of fully porting AutoDock to the GPU, feel free to get in touch with me (Henry) at hacoo36@gmail.com. We were able to gain a lot of useful information about parallelizing AutoDock, which I would be happy to share.
+AutoDockCuda has not been under active develpment.
 
 To run AutoDockCuda, you will first need to build it from source. After cloning the repository, cd into it and go to the autodock source directory:
 
